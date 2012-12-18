@@ -14,6 +14,7 @@ class Release(object):
     ready = db.Column(db.Boolean(), nullable=False, default=False)
     complete = db.Column(db.Boolean(), nullable=False, default=False)
     status = db.Column(db.String(250), default="")
+    log = db.Column(db.Text(), default="")
 
     def __init__(self, submitter, version, buildNumber, branch,
                  mozillaRevision, l10nChangesets, dashboardCheck):

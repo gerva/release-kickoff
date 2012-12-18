@@ -38,7 +38,8 @@ class TestReleaseAPI(ViewTest):
             'partials': '0',
             'ready': True,
             'complete': True,
-            'status': ''
+            'status': '',
+            'log': '',
         }
         self.assertEquals(ret.status_code, 200)
         self.assertEquals(json.loads(ret.data), expected)
@@ -60,6 +61,19 @@ class TestReleaseAPI(ViewTest):
         self.assertEquals(ret.status_code, 200)
         self.assertEquals(ret.content_type, 'text/plain')
         self.assertEquals(ret.data, 'ja zu')
+
+class TestReleaseLogAPI(ViewTest):
+    def testUpdateLog(self):
+        ret = self.post('/releases/Fennec-1-build1/log', data={'message': '123\n'})
+        self.assertEquals(ret.status_code, 201)
+        with app.test_request_context():
+            self.assertEquals(FennecRelease.query.filter_by(name='Fennec-1-build1').first().log, '123\n')
+
+    def testAppendLog(self):
+        ret = self.post('/releases/Firefox-2-build1/log', data={'message': '123\n'})
+        self.assertEquals(ret.status_code, 200)
+        with app.test_request_context():
+            self.assertEquals(FirefoxRelease.query.filter_by(name='Firefox-2-build1').first().log, 'omg\n123\n')
 
 class TestReleasesView(ViewTest):
     def testMakeReady(self):

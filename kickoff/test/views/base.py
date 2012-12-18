@@ -24,6 +24,7 @@ class ViewTest(unittest.TestCase):
             r = FennecRelease('joe', '4', 5, 'a', 'abc', 'kl mn', False)
             db.session.add(r)
             r = FirefoxRelease('0,1', 'joe', '2', 1, 'a', 'def', 'ja zu', True)
+            r.log = 'omg\n'
             r.complete = True
             r.ready = True
             db.session.add(r)

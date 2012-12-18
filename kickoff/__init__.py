@@ -6,7 +6,7 @@ db = SQLAlchemy()
 
 from kickoff.model import Release
 from kickoff.views.csrf import CSRFView
-from kickoff.views.releases import ReleasesAPI, Releases, ReleaseAPI, ReleaseL10nAPI
+from kickoff.views.releases import ReleasesAPI, Releases, ReleaseAPI, ReleaseL10nAPI, ReleaseLogAPI
 from kickoff.views.submit import SubmitRelease
 
 # Ensure X-Frame-Options is set to protect against clickjacking attacks:
@@ -38,3 +38,4 @@ app.add_url_rule('/releases', view_func=ReleasesAPI.as_view('releases_api'), met
 app.add_url_rule('/releases.html', view_func=Releases.as_view('releases'), methods=['GET', 'POST'])
 app.add_url_rule('/releases/<releaseName>', view_func=ReleaseAPI.as_view('release_api'), methods=['GET', 'POST'])
 app.add_url_rule('/releases/<releaseName>/l10n', view_func=ReleaseL10nAPI.as_view('release_l10n_api'), methods=['GET'])
+app.add_url_rule('/releases/<releaseName>/log', view_func=ReleaseLogAPI.as_view('release_log_api'), methods=['POST'])

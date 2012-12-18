@@ -2,7 +2,7 @@ from flask import request, jsonify, render_template, Response, redirect, make_re
 from flask.views import MethodView
 
 from flask.ext.wtf import Form, BooleanField, StringField, SelectMultipleField, \
-  ListWidget, CheckboxInput, Length
+  ListWidget, CheckboxInput, Length, DataRequired
 
 from kickoff import app, db
 from kickoff.model import FennecRelease, FirefoxRelease, ThunderbirdRelease, \
@@ -22,6 +22,9 @@ class CompleteForm(Form):
     complete = BooleanField('complete')
     # Use the Column length directly rather than duplicating its value.
     status = StringField('status', [Length(max=Release.status.type.length)])
+
+class LogForm(Form):
+    message = StringField('message', validators=[DataRequired('A log message is required')])
 
 class ReleasesAPI(MethodView):
     def get(self):
@@ -66,6 +69,23 @@ class ReleaseL10nAPI(MethodView):
         table = getReleaseTable(releaseName)
         l10n = table.query.filter_by(name=releaseName).first().l10nChangesets
         return Response(status=200, response=l10n, content_type='text/plain')
+
+class ReleaseLogAPI(MethodView):
+    def post(self, releaseName):
+        table = getReleaseTable(releaseName)
+        form = LogForm()
+        if not form.validate():
+            return Response(status=400, response=form.errors)
+
+        release = table.query.filter_by(name=releaseName).first()
+        release.log += form.message.data
+        db.session.add(release)
+        db.session.commit()
+        if release.log == form.message.data:
+            # Log didn't exist before, so we should return a Created response.
+            return Response(status=201)
+        else:
+            return Response(status=200)
 
 class Releases(MethodView):
     def get(self):
