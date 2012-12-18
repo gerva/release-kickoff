@@ -71,6 +71,11 @@ class ReleaseL10nAPI(MethodView):
         return Response(status=200, response=l10n, content_type='text/plain')
 
 class ReleaseLogAPI(MethodView):
+    def get(self, releaseName):
+        table = getReleaseTable(releaseName)
+        log = table.query.filter_by(name=releaseName).first().log
+        return Response(status=200, response=log, content_type='text/plain')
+
     def post(self, releaseName):
         table = getReleaseTable(releaseName)
         form = LogForm()

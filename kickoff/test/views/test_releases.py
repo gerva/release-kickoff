@@ -63,6 +63,12 @@ class TestReleaseAPI(ViewTest):
         self.assertEquals(ret.data, 'ja zu')
 
 class TestReleaseLogAPI(ViewTest):
+    def testGetLog(self):
+        ret = self.get('/releases/Firefox-2-build1/log')
+        self.assertEquals(ret.status_code, 200)
+        with app.test_request_context():
+            self.assertEquals(FirefoxRelease.query.filter_by(name='Firefox-2-build1').first().log, 'omg\n')
+
     def testUpdateLog(self):
         ret = self.post('/releases/Fennec-1-build1/log', data={'message': '123\n'})
         self.assertEquals(ret.status_code, 201)
