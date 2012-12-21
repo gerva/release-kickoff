@@ -65,6 +65,7 @@ class SubmitRelease(MethodView):
             firefoxForm=FirefoxReleaseForm(), thunderbirdForm=ThunderbirdReleaseForm())
 
     def post(self):
+        # REMOTE_USER is enforced elsewhere
         submitter = request.environ.get('REMOTE_USER')
         forms = {
             'fennecForm': FennecReleaseForm(formdata=None),
