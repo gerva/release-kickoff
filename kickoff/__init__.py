@@ -4,10 +4,12 @@ from flask.ext.sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 db = SQLAlchemy()
 
-from kickoff.model import Release
+from kickoff.log import cef_event
 from kickoff.views.csrf import CSRFView
 from kickoff.views.releases import ReleasesAPI, Releases, ReleaseAPI, ReleaseL10nAPI
 from kickoff.views.submit import SubmitRelease
+
+version = '0.5'
 
 # Ensure X-Frame-Options is set to protect against clickjacking attacks:
 # https://wiki.mozilla.org/WebAppSec/Secure_Coding_QA_Checklist#Test:_X-Frame-Options
@@ -16,9 +18,12 @@ def add_xframe_options(response):
     response.headers['X-Frame-Options'] = 'SAMEORIGIN'
     return response
 
+# Apache should always be configured to ask for a login, so we should never
+# hit a case where REMOTE_USER isn't set. But just in case...
 @app.before_request
 def require_login():
     if not request.environ.get('REMOTE_USER'):
+        cef_event('Login Required', 'Warn')
         return Response(status=401)
 
 @app.route('/', methods=['GET'])
