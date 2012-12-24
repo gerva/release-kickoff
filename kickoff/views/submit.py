@@ -3,12 +3,15 @@ import simplejson as json
 from flask import request, render_template, Response, redirect, make_response
 from flask.views import MethodView
 
-from flask.ext.wtf import Form, TextField, DataRequired, BooleanField, IntegerField, TextAreaField, HiddenField, Regexp, Optional
+from flask.ext.wtf import Form, TextField, DataRequired, BooleanField, IntegerField, TextAreaField, HiddenField, Regexp
 
 from mozilla.build.versions import ANY_VERSION_REGEX
 
-from kickoff import app, db
-from kickoff.model import FennecRelease, FirefoxRelease, ThunderbirdRelease, getReleaseTable
+from kickoff import db, cef
+from kickoff.model import getReleaseTable
+
+import logging
+log = logging.getLogger(__name__)
 
 PARTIAL_VERSIONS_REGEX = ('^(%sbuild\d+)(,%sbuild\d)*$' % (ANY_VERSION_REGEX, ANY_VERSION_REGEX))
 
@@ -22,6 +25,8 @@ class JSONField(TextAreaField):
                 # raw string version, not the parsed object.
                 json.loads(self.data)
             except ValueError, e:
+                log.info("JSON in field '%s' didn't validate" % self.name)
+                log.debug("Raw JSON for '%s' is: %s" % (self.name, repr(self.data)))
                 self.process_errors.append(e.args[0])
         else:
             self.data = None
@@ -81,10 +86,15 @@ class SubmitRelease(MethodView):
             form = forms['firefoxForm'] = FirefoxReleaseForm()
         elif product == 'thunderbird':
             form = forms['thunderbirdForm'] = ThunderbirdReleaseForm()
+        else:
+            cef.event('User Input Failed', 'Alert', custom_exts=dict(ProductName=product))
+            return Response(status=400, response="Unknown product name '%s'" % product)
+
         errors = []
         if not form.validate():
-            for errlist in form.errors.values():
-                errors.extend(errlist)
+            cef.event('User Input Failed', 'Alert', custom_exts=form.errors)
+            for field, error in form.errors.values():
+                errors.extend(error)
         if errors:
             return make_response(render_template('submit_release.html', errors=errors, **forms), 400)
 

@@ -1,13 +1,17 @@
+import logging
+
 from flask import Flask, render_template, Response, request
 from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 db = SQLAlchemy()
 
-from kickoff.log import cef_event
+from kickoff import cef
 from kickoff.views.csrf import CSRFView
 from kickoff.views.releases import ReleasesAPI, Releases, ReleaseAPI, ReleaseL10nAPI
 from kickoff.views.submit import SubmitRelease
+
+log = logging.getLogger(__name__)
 
 version = '0.5'
 
@@ -15,6 +19,7 @@ version = '0.5'
 # https://wiki.mozilla.org/WebAppSec/Secure_Coding_QA_Checklist#Test:_X-Frame-Options
 @app.after_request
 def add_xframe_options(response):
+    log.info('Adding X-Frame-Options: SAMEORIGIN to response')
     response.headers['X-Frame-Options'] = 'SAMEORIGIN'
     return response
 
@@ -23,7 +28,7 @@ def add_xframe_options(response):
 @app.before_request
 def require_login():
     if not request.environ.get('REMOTE_USER'):
-        cef_event('Login Required', 'Warn')
+        cef.event('Login Required', 'Warn')
         return Response(status=401)
 
 @app.route('/', methods=['GET'])
