@@ -7,7 +7,8 @@ mydir = path.dirname(path.abspath(__file__))
 site.addsitedir(mydir)
 site.addsitedir(path.join(mydir, 'vendor/lib/python'))
 
-from kickoff import db, cef, app as application
+from kickoff import db, app as application
+from kickoff.log import cef_config
 
 cfg = RawConfigParser()
 cfg.read(path.join(mydir, 'kickoff.ini'))
@@ -21,6 +22,6 @@ logging.basicConfig(filename=logfile, level=loglevel, format='%(asctime)s - %(na
 application.config['SQLALCHEMY_DATABASE_URI'] = dburi
 application.config['SQLALCHEMY_POOL_RECYCLE'] = 60
 application.config['SECRET_KEY'] = secretKey
-application.config.update(cef.config(cef_logfile))
+application.config.update(cef_config(cef_logfile))
 with application.test_request_context():
     db.init_app(application)

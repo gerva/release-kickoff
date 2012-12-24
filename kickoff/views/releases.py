@@ -4,7 +4,8 @@ from flask.views import MethodView
 from flask.ext.wtf import Form, BooleanField, StringField, SelectMultipleField, \
   ListWidget, CheckboxInput, Length
 
-from kickoff import db, cef
+from kickoff import db
+from kickoff.log import cef_event, CEF_ALERT
 from kickoff.model import getReleaseTable, getReleases, Release
 
 class MultiCheckboxField(SelectMultipleField):
@@ -54,7 +55,7 @@ class ReleasesAPI(MethodView):
             if complete is not None:
                 complete = bool(complete)
         except ValueError:
-            cef.event('User Input Failed', cef.ALERT, custom_exts=dict(ready=ready, complete=complete))
+            cef_event('User Input Failed', CEF_ALERT, custom_exts=dict(ready=ready, complete=complete))
             return Response(status=400, response="Got unparseable value for ready or complete")
         releases = [r.name for r in getReleases(ready, complete)]
         return jsonify({'releases': releases})
@@ -68,7 +69,7 @@ class ReleaseAPI(MethodView):
         table = getReleaseTable(releaseName)
         form = CompleteForm()
         if not form.validate():
-            cef.event('User Input Failed', cef.ALERT, custom_exts=form.errors)
+            cef_event('User Input Failed', CEF_ALERT, custom_exts=form.errors)
             return Response(status=400, response=form.errors)
 
         release = table.query.filter_by(name=releaseName).first()
@@ -102,7 +103,7 @@ class Releases(MethodView):
         form.readyReleases.choices = [(r.name, r.name) for r in getReleases(ready=False)]
         if not form.validate():
             form = ReadyForm()
-            cef.event('User Input Failed', cef.ALERT, custom_exts=form.errors)
+            cef_event('User Input Failed', CEF_ALERT, custom_exts=form.errors)
             return make_response(render_template('releases.html', errors=form.errors, releases=sortedReleases(), form=form), 400)
 
         for release in form.readyReleases.data:

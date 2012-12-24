@@ -7,7 +7,8 @@ from flask.ext.wtf import Form, TextField, DataRequired, BooleanField, IntegerFi
 
 from mozilla.build.versions import ANY_VERSION_REGEX
 
-from kickoff import db, cef
+from kickoff import db
+from kickoff.log import cef_event, CEF_ALERT
 from kickoff.model import getReleaseTable
 
 import logging
@@ -87,13 +88,13 @@ class SubmitRelease(MethodView):
         elif product == 'thunderbird':
             form = forms['thunderbirdForm'] = ThunderbirdReleaseForm()
         else:
-            cef.event('User Input Failed', cef.ALERT, custom_exts=dict(ProductName=product))
+            cef_event('User Input Failed', CEF_ALERT, custom_exts=dict(ProductName=product))
             return Response(status=400, response="Unknown product name '%s'" % product)
 
         errors = []
         if not form.validate():
-            cef.event('User Input Failed', cef.ALERT, custom_exts=form.errors)
-            for field, error in form.errors.values():
+            cef_event('User Input Failed', CEF_ALERT, custom_exts=form.errors)
+            for error in form.errors.values():
                 errors.extend(error)
         if errors:
             return make_response(render_template('submit_release.html', errors=errors, **forms), 400)

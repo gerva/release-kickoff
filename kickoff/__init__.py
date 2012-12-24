@@ -6,7 +6,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 db = SQLAlchemy()
 
-from kickoff import cef
+from kickoff.log import cef_event, CEF_WARN
 from kickoff.views.csrf import CSRFView
 from kickoff.views.releases import ReleasesAPI, Releases, ReleaseAPI, ReleaseL10nAPI
 from kickoff.views.submit import SubmitRelease
@@ -28,7 +28,7 @@ def add_xframe_options(response):
 @app.before_request
 def require_login():
     if not request.environ.get('REMOTE_USER'):
-        cef.event('Login Required', cef.WARN)
+        cef_event('Login Required', CEF_WARN)
         return Response(status=401)
 
 @app.route('/', methods=['GET'])

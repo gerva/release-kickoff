@@ -14,11 +14,11 @@ CEF_WARN = 6
 CEF_ALERT = 8
 CEF_EMERG = 10
 
-def event(name, severity, **custom_exts):
+def cef_event(name, severity, **custom_exts):
     # Extra values need to be in the format csNLabel=xxx, csN=yyy
     extra_exts = {}
     n = 1
-    for k, v in custom_exts:
+    for k, v in custom_exts.iteritems():
         valueKey = 'cs%d' % n
         labelKey = '%sLabel' % valueKey
         extra_exts[labelKey] = k
@@ -28,9 +28,11 @@ def event(name, severity, **custom_exts):
     username = request.environ.get('REMOTE_USER', 'Unknown User')
     cef.log_cef(name, severity, request.environ, kickoff.app.config, username=username, **extra_exts)
 
-def config(logfile):
+def cef_config(logfile):
     return {
-        'cef_file': logfile,
-        'cef_version': kickoff.version,
-        'cef_product': 'Release Kickoff',
+        'cef.file': logfile,
+        'cef.version': kickoff.version,
+        'cef.product': 'Release Kickoff',
+        'cef.vendor': 'Mozilla',
+        'cef.device_version': 'N/A',
     }
