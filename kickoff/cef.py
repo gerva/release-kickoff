@@ -1,6 +1,6 @@
 from flask import request
 
-from cef import log_cef
+import cef
 
 import kickoff
 
@@ -26,10 +26,11 @@ def event(name, severity, **custom_exts):
         n += 1
 
     username = request.environ.get('REMOTE_USER', 'Unknown User')
-    log_cef(name, severity, request.environ, kickoff.app.config, username=username, **extra_exts)
+    cef.log_cef(name, severity, request.environ, kickoff.app.config, username=username, **extra_exts)
 
-def config():
+def config(logfile):
     return {
+        'cef_file': logfile,
         'cef_version': kickoff.version,
         'cef_product': 'Release Kickoff',
     }

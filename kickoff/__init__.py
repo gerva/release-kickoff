@@ -28,7 +28,7 @@ def add_xframe_options(response):
 @app.before_request
 def require_login():
     if not request.environ.get('REMOTE_USER'):
-        cef.event('Login Required', 'Warn')
+        cef.event('Login Required', cef.WARN)
         return Response(status=401)
 
 @app.route('/', methods=['GET'])
