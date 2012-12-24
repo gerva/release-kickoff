@@ -1,6 +1,6 @@
 import simplejson as json
 
-from flask import request, render_template, Response, redirect, make_response
+from flask import request, render_template, redirect, make_response
 from flask.views import MethodView
 
 from flask.ext.wtf import Form, TextField, DataRequired, BooleanField, IntegerField, TextAreaField, HiddenField, Regexp
@@ -71,6 +71,7 @@ class SubmitRelease(MethodView):
             firefoxForm=FirefoxReleaseForm(), thunderbirdForm=ThunderbirdReleaseForm())
 
     def post(self):
+        # This is checked for in a before_request hook.
         submitter = request.environ.get('REMOTE_USER')
         forms = {
             'fennecForm': FennecReleaseForm(formdata=None),
