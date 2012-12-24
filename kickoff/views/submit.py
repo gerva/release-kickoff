@@ -88,12 +88,12 @@ class SubmitRelease(MethodView):
         elif product == 'thunderbird':
             form = forms['thunderbirdForm'] = ThunderbirdReleaseForm()
         else:
-            cef_event('User Input Failed', CEF_ALERT, custom_exts=dict(ProductName=product))
+            cef_event('User Input Failed', CEF_ALERT, ProductName=product)
             return Response(status=400, response="Unknown product name '%s'" % product)
 
         errors = []
         if not form.validate():
-            cef_event('User Input Failed', CEF_ALERT, custom_exts=form.errors)
+            cef_event('User Input Failed', CEF_ALERT, **form.errors)
             for error in form.errors.values():
                 errors.extend(error)
         if errors:

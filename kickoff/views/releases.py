@@ -55,7 +55,7 @@ class ReleasesAPI(MethodView):
             if complete is not None:
                 complete = bool(complete)
         except ValueError:
-            cef_event('User Input Failed', CEF_ALERT, custom_exts=dict(ready=ready, complete=complete))
+            cef_event('User Input Failed', CEF_ALERT, ready=ready, complete=complete)
             return Response(status=400, response="Got unparseable value for ready or complete")
         releases = [r.name for r in getReleases(ready, complete)]
         return jsonify({'releases': releases})
@@ -69,7 +69,7 @@ class ReleaseAPI(MethodView):
         table = getReleaseTable(releaseName)
         form = CompleteForm()
         if not form.validate():
-            cef_event('User Input Failed', CEF_ALERT, custom_exts=form.errors)
+            cef_event('User Input Failed', CEF_ALERT, **form.errors)
             return Response(status=400, response=form.errors)
 
         release = table.query.filter_by(name=releaseName).first()
@@ -103,7 +103,7 @@ class Releases(MethodView):
         form.readyReleases.choices = [(r.name, r.name) for r in getReleases(ready=False)]
         if not form.validate():
             form = ReadyForm()
-            cef_event('User Input Failed', CEF_ALERT, custom_exts=form.errors)
+            cef_event('User Input Failed', CEF_ALERT, **form.errors)
             return make_response(render_template('releases.html', errors=form.errors, releases=sortedReleases(), form=form), 400)
 
         for release in form.readyReleases.data:

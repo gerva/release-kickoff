@@ -17,7 +17,7 @@ CEF_EMERG = 10
 def cef_event(name, severity, **custom_exts):
     # Extra values need to be in the format csNLabel=xxx, csN=yyy
     extra_exts = {}
-    n = 1
+    n = 2
     for k, v in custom_exts.iteritems():
         valueKey = 'cs%d' % n
         labelKey = '%sLabel' % valueKey
