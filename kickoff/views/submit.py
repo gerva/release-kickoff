@@ -8,7 +8,7 @@ from flask.ext.wtf import Form, TextField, DataRequired, BooleanField, IntegerFi
 from mozilla.build.versions import ANY_VERSION_REGEX
 
 from kickoff import db
-from kickoff.log import cef_event, CEF_ALERT
+from kickoff.log import cef_event, CEF_ALERT, CEF_INFO
 from kickoff.model import getReleaseTable
 
 import logging
@@ -93,7 +93,7 @@ class SubmitRelease(MethodView):
 
         errors = []
         if not form.validate():
-            cef_event('User Input Failed', CEF_ALERT, **form.errors)
+            cef_event('User Input Failed', CEF_INFO, **form.errors)
             for error in form.errors.values():
                 errors.extend(error)
         if errors:
