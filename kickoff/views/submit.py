@@ -6,6 +6,7 @@ from flask.views import MethodView
 from flask.ext.wtf import Form, TextField, DataRequired, BooleanField, IntegerField, TextAreaField, HiddenField, Regexp
 
 from mozilla.build.versions import ANY_VERSION_REGEX
+from mozilla.release.l10n import parsePlainL10nChangesets
 
 from kickoff import db
 from kickoff.model import getReleaseTable
@@ -23,6 +24,19 @@ class JSONField(TextAreaField):
                 json.loads(self.data)
             except ValueError, e:
                 self.process_errors.append(e.args[0])
+        else:
+            self.data = None
+
+class PlainChangesetsField(TextAreaField):
+    def process_formdata(self, valuelist):
+        if valuelist and valuelist[0]:
+            self.data = valuelist[0]
+            try:
+                # Like the JSON object, we merely care about if the data
+                # is valid or not, so we don't save the results anywhere.
+                parsePlainL10nChangesets(self.data)
+            except ValueError:
+                self.process_errors.append('Bad format in %s field' % self.name)
         else:
             self.data = None
 
@@ -44,7 +58,7 @@ class DesktopReleaseForm(ReleaseForm):
     partials = TextField('Partial versions:',
         validators=[Regexp(PARTIAL_VERSIONS_REGEX, message='Invalid partials format.')]
     )
-    l10nChangesets = TextAreaField('L10n Changesets:', validators=[DataRequired('L10n Changesets are required.')])
+    l10nChangesets = PlainChangesetsField('L10n Changesets:', validators=[DataRequired('L10n Changesets are required.')])
 
 class FirefoxReleaseForm(DesktopReleaseForm):
     product = HiddenField('product')
