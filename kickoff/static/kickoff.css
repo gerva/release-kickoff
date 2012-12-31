@@ -96,6 +96,8 @@ tr, td, th {
 th {
     background-color: #cccccc;
     padding: .25em 1ex .25em .5ex;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
 }
 
 td {
@@ -107,11 +109,16 @@ h2 {
     margin-bottom: 1ex;
 }
 
+.heading {
+    text-align: center;
+    font-weight: bold;
+}
+
 .complete {
     background-color: lime;
 }
 
-.notready {
+.incomplete {
     background-color: yellow;
 }
 

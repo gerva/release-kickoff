@@ -2,6 +2,8 @@ from flask import Flask, render_template, Response, request
 from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+# Enable Jinja's expression statement, so we can use "do" in templates.
+app.jinja_env.add_extension('jinja2.ext.do')
 db = SQLAlchemy()
 
 from kickoff.views.csrf import CSRFView

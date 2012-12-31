@@ -1,14 +1,33 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block content %}
 <ul id='errors'>
     {% for e in errors %}
     <li class='error'>{{ e }}</li>
     {% endfor %}
 </ul>
-<h2 class="title">Releases:</h2>
+<h2 class='title'>Releases:</h2>
 <form id='release_readyness' action='{{ url_for('releases') }}' method='post'>
 {{ form.hidden_tag() }}
-<table id="releases">
+{% set notreadyReleases = [] %}
+{% set incompleteReleases = [] %}
+{% set completeReleases = [] %}
+{% for rel in releases %}
+    {% if not rel.ready %}
+        {% do notreadyReleases.append(rel) %}
+    {% elif not rel.complete %}
+        {% do incompleteReleases.append(rel) %}
+    {% else %}
+        {% do completeReleases.append(rel) %}
+    {% endif %}
+{% endfor %}
+
+<ul id='notready_releases'>
+</ul>
+
+<table id='other_releases'>
+<tr>
+    <td colspan='9' class='incomplete heading'>Incomplete releases</td>
+</tr>
 <tr>
     <th>Name</th>
     <th>Submitted By</th>
@@ -18,18 +37,10 @@
     <th>Check Dashboard?</th>
     <th>L10n Changesets</th>
     <th>Partial Versions</th>
-    <th>Ready?</th>
     <th>Status</th>
-    <th>Delete?</th>
 </tr>
-{% for rel in releases %}
-{% if not rel.ready %}
-<tr class='notready'>
-{% elif not rel.complete %}
+{% for rel in incompleteReleases %}
 <tr class='incomplete'>
-{% else %}
-<tr class='complete'>
-{% endif %}
     <td>{{ rel.name }}</td>
     <td>{{ rel.submitter }}</td>
     <td>{{ rel.branch }}</td>
@@ -37,38 +48,62 @@
     {% if 'Thunderbird' in rel.name %}
         <td>{{ rel.commRevision }}</td>
     {% else %}
-        <td class="irrelevant">N/A</td>
+        <td class='irrelevant'>N/A</td>
     {% endif %}
     {% if rel.dashboardCheck %}
         <td>Yes</td>
     {% else %}
         <td>No</td>
     {% endif %}
-    <td><a href="/releases/{{ rel.name }}/l10n">Link</a></td>
+    <td><a href='/releases/{{ rel.name }}/l10n'>Link</a></td>
     {% if 'Fennec' in rel.name %}
-        <td class="irrelevant">N/A</td>
+        <td class='irrelevant'>N/A</td>
     {% else %}
         <td>{{ rel.partials }}</td>
     {% endif %}
-    <td>
-    {% if rel.ready %}
-        <input id='readyReleases_{{ rel.name }}' type='checkbox' name='readyReleases' value='{{ rel.name }}' checked='checked' disabled='disabled' />
-    {% else %}
-        <input id='readyReleases_{{ rel.name }}' type='checkbox' name='readyReleases' value='{{ rel.name }}' />
-    {% endif %}
-    </td>
     <td>{{ rel.status }}</td>
-    <td>
-    {% if not rel.complete and not rel.ready %}
-        <input id='deleteReleases_{{ rel.name }}' type='checkbox' name='deleteReleases' value='{{ rel.name }}' onclick='disableReady("{{ rel.name }}")' />
+</tr>
+{% endfor %}
+<tr>
+    <td colspan='9' class='complete heading'>Completed releases</td>
+</tr>
+<tr>
+    <th>Name</th>
+    <th>Submitted By</th>
+    <th>Branch</th>
+    <th>Mozilla Revision</th>
+    <th>Comm Revision</th>
+    <th>Check Dashboard?</th>
+    <th>L10n Changesets</th>
+    <th>Partial Versions</th>
+    <th>Status</th>
+</tr>
+{% for rel in completeReleases %}
+<tr class='complete'>
+    <td>{{ rel.name }}</td>
+    <td>{{ rel.submitter }}</td>
+    <td>{{ rel.branch }}</td>
+    <td>{{ rel.mozillaRevision }}</td>
+    {% if 'Thunderbird' in rel.name %}
+        <td>{{ rel.commRevision }}</td>
     {% else %}
-        <input type='checkbox' name='deleteReleases' value='{{ rel.name }}' disabled='disabled' />
+        <td class='irrelevant'>N/A</td>
     {% endif %}
-    </td>
+    {% if rel.dashboardCheck %}
+        <td>Yes</td>
+    {% else %}
+        <td>No</td>
+    {% endif %}
+    <td><a href='/releases/{{ rel.name }}/l10n'>Link</a></td>
+    {% if 'Fennec' in rel.name %}
+        <td class='irrelevant'>N/A</td>
+    {% else %}
+        <td>{{ rel.partials }}</td>
+    {% endif %}
+    <td>{{ rel.status }}</td>
+</tr>
 {% endfor %}
 </table>
-<input type='submit' value='Do eet!' />
-</form>
 
 <script type='text/javascript'>
 function disableReady(release) {
