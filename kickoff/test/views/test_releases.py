@@ -75,6 +75,10 @@ class TestReleasesView(ViewTest):
         with app.test_request_context():
             self.assertEquals(FennecRelease.query.filter_by(name='Fennec-4-build4').count(), 0)
 
+    def testDeleteReadyRelease(self):
+        ret = self.post('/releases.html', data='deleteReleases=Fennec-1-build1', content_type='application/x-www-form-urlencoded')
+        self.assertEquals(ret.status_code, 400)
+
     def testDeleteCompletedRelease(self):
         ret = self.post('/releases.html', data='deleteReleases=Thunderbird-2-build2', content_type='application/x-www-form-urlencoded')
         self.assertEquals(ret.status_code, 400)

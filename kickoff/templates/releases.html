@@ -59,7 +59,7 @@
     </td>
     <td>{{ rel.status }}</td>
     <td>
-    {% if not rel.complete %}
+    {% if not rel.complete and not rel.ready %}
         <input id='deleteReleases_{{ rel.name }}' type='checkbox' name='deleteReleases' value='{{ rel.name }}' onclick='disableReady("{{ rel.name }}")' />
     {% else %}
         <input type='checkbox' name='deleteReleases' value='{{ rel.name }}' disabled='disabled' />

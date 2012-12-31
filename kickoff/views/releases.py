@@ -116,8 +116,8 @@ class Releases(MethodView):
     def post(self):
         form = ReadyForm()
         form.readyReleases.choices = [(r.name, r.name) for r in getReleases(ready=False)]
-        # Don't include completed releases, because they shouldn't be deleted.
-        form.deleteReleases.choices = [(r.name, r.name) for r in getReleases(complete=False)]
+        # Don't include completed or ready releases, because they aren't allowed to be deleted
+        form.deleteReleases.choices = [(r.name, r.name) for r in getReleases(complete=False, ready=False)]
         if not form.validate():
             return make_response(render_template('releases.html', errors=form.errors, releases=sortReleases(), form=form), 400)
 
