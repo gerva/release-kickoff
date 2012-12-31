@@ -64,7 +64,21 @@ class TestReleaseAPI(ViewTest):
 class TestReleasesView(ViewTest):
     def testMakeReady(self):
         ret = self.post('/releases.html', data='readyReleases=Fennec-4-build4&readyReleases=Fennec-4-build5', content_type='application/x-www-form-urlencoded')
-        self.assertEquals(ret.status_code, 302, ret.data)
+        self.assertEquals(ret.status_code, 200)
         with app.test_request_context():
             self.assertEquals(FennecRelease.query.filter_by(name='Fennec-4-build4').first().ready, True)
             self.assertEquals(FennecRelease.query.filter_by(name='Fennec-4-build5').first().ready, True)
+
+    def testDelete(self):
+        ret = self.post('/releases.html', data='deleteReleases=Fennec-4-build4', content_type='application/x-www-form-urlencoded')
+        self.assertEquals(ret.status_code, 200)
+        with app.test_request_context():
+            self.assertEquals(FennecRelease.query.filter_by(name='Fennec-4-build4').count(), 0)
+
+    def testDeleteCompletedRelease(self):
+        ret = self.post('/releases.html', data='deleteReleases=Thunderbird-2-build2', content_type='application/x-www-form-urlencoded')
+        self.assertEquals(ret.status_code, 400)
+
+    def testDeleteWhileMarkingAsReady(self):
+        ret = self.post('/releases.html', data='deleteReleases=Fennec-4-build5&readyReleases=Fennec-4-build5', content_type='application/x-www-form-urlencoded')
+        self.assertEquals(ret.status_code, 400)
