@@ -68,3 +68,34 @@ class TestReleasesView(ViewTest):
         with app.test_request_context():
             self.assertEquals(FennecRelease.query.filter_by(name='Fennec-4-build4').first().ready, True)
             self.assertEquals(FennecRelease.query.filter_by(name='Fennec-4-build5').first().ready, True)
+
+class TestReleaseView(ViewTest):
+    def testEditRelease(self):
+        data = [
+            'fennec-version=1.0',
+            'fennec-buildNumber=1',
+            'fennec-branch=a',
+            'fennec-mozillaRevision=abc',
+            'fennec-dashboardCheck=y',
+            'fennec-l10nChangesets={"af":"de"}',
+            'fennec-product=fennec',
+        ]
+        ret = self.post('/release.html', query_string={'release': 'Fennec-1-build1'}, data='&'.join(data), content_type='application/x-www-form-urlencoded')
+        self.assertEquals(ret.status_code, 302, ret.data)
+        with app.test_request_context():
+            got = FennecRelease.query.filter_by(name='Fennec-1.0-build1').first()
+            self.assertEquals(got.version, '1.0')
+            self.assertEquals(got.l10nChangesets, '{"af":"de"}')
+
+    def testEditReleaseInvalid(self):
+        data = [
+            'fennec-version=1.0',
+            'fennec-buildNumber=1',
+            'fennec-branch=a',
+            'fennec-mozillaRevision=abc',
+            'fennec-dashboardCheck=y',
+            'fennec-l10nChangesets=xxxx',
+            'fennec-product=fennec',
+        ]
+        ret = self.post('/release.html', query_string={'release': 'Fennec-1-build1'}, data='&'.join(data), content_type='application/x-www-form-urlencoded')
+        self.assertEquals(ret.status_code, 400)

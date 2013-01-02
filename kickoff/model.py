@@ -37,6 +37,9 @@ class Release(object):
     def createFromForm(self):
         raise NotImplementedError
 
+    def updateFromForm(self):
+        raise NotImplementedError
+
     def __repr__(self):
         return '<Release %r>' % self.name
 
@@ -49,6 +52,15 @@ class FennecRelease(Release, db.Model):
         return cls(submitter, form.version.data,
             form.buildNumber.data, form.branch.data, form.mozillaRevision.data,
             form.l10nChangesets.data, form.dashboardCheck.data)
+
+    def updateFromForm(self, form):
+        self.version = form.version.data
+        self.buildNumber = form.buildNumber.data
+        self.branch = form.branch.data
+        self.mozillaRevision = form.mozillaRevision.data
+        self.l10nChangesets = form.l10nChangesets.data
+        self.dashboardCheck = form.dashboardCheck.data
+        self.name = getReleaseName(self.product, self.version, self.buildNumber)
 
 class DesktopRelease(Release):
     partials = db.Column(db.String(100))
@@ -67,6 +79,16 @@ class FirefoxRelease(DesktopRelease, db.Model):
             form.buildNumber.data, form.branch.data, form.mozillaRevision.data,
             form.l10nChangesets.data, form.dashboardCheck.data)
 
+    def updateFromForm(self, form):
+        self.version = form.version.data
+        self.buildNumber = form.buildNumber.data
+        self.branch = form.branch.data
+        self.mozillaRevision = form.mozillaRevision.data
+        self.partials = form.partials.data
+        self.l10nChangesets = form.l10nChangesets.data
+        self.dashboardCheck = form.dashboardCheck.data
+        self.name = getReleaseName(self.product, self.version, self.buildNumber)
+
 class ThunderbirdRelease(DesktopRelease, db.Model):
     __tablename__ = 'thunderbird_release'
     product = 'thunderbird'
@@ -82,6 +104,17 @@ class ThunderbirdRelease(DesktopRelease, db.Model):
             submitter, form.version.data, form.buildNumber.data,
             form.branch.data, form.mozillaRevision.data,
             form.l10nChangesets.data, form.dashboardCheck.data)
+
+    def updateFromForm(self, form):
+        self.version = form.version.data
+        self.buildNumber = form.buildNumber.data
+        self.branch = form.branch.data
+        self.mozillaRevision = form.mozillaRevision.data
+        self.commRevision = form.commRevision.data
+        self.partials = form.partials.data
+        self.l10nChangesets = form.l10nChangesets.data
+        self.dashboardCheck = form.dashboardCheck.data
+        self.name = getReleaseName(self.product, self.version, self.buildNumber)
 
 def getReleaseTable(release):
     """Helper method to figure out what type of release a request is for.

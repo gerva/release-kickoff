@@ -5,18 +5,17 @@
     <li class='error'>{{ e }}</li>
     {% endfor %}
 </ul>
-<div id='column_container'>
-<div>
-    <h3>Fennec</h3>
+<div id='edit_container'>
+<h3>{{ release }}</h3>
+{% if form.product.data == 'fennec' %}
+    {% set fennecForm = form %}
     {% include 'includes/fennec_release.html' %}
-</div>
-<div>
-    <h3>Firefox</h3>
+{% elif form.product.data == 'firefox' %}
+    {% set firefoxForm = form %}
     {% include 'includes/firefox_release.html' %}
-</div>
-<div>
-    <h3>Thunderbird</h3>
+{% elif form.product.data == 'thunderbird' %}
+    {% set thunderbirdForm = form %}
     {% include 'includes/thunderbird_release.html' %}
-</div>
+{% endif %}
 </div>
 {% endblock %}

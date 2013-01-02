@@ -3,7 +3,7 @@ from flask.views import MethodView
 
 from kickoff import db
 from kickoff.model import getReleaseTable, getReleases
-from kickoff.views.forms import CompleteForm, ReadyForm
+from kickoff.views.forms import CompleteForm, ReadyForm, getReleaseForm
 
 def sortedRelease():
     def sortReleases(x, y):
@@ -91,5 +91,25 @@ class Releases(MethodView):
             r.ready = True
             r.status = 'Pending'
             db.session.add(r)
+        db.session.commit()
+        return redirect('releases.html')
+
+class Release(MethodView):
+    def get(self):
+        name = request.args.get('name')
+        form = getReleaseForm(name)()
+        row = getReleaseTable(name).query.filter_by(name=name).first()
+        form.updateFromRow(row)
+        return render_template('release.html', form=form, release=name)
+
+    def post(self):
+        release = request.args.get('release')
+        form = getReleaseForm(release)()
+        if not form.validate():
+            return make_response(render_template('release.html', errors=form.errors.values(), form=form, release=release), 400)
+
+        r = getReleaseTable(release).query.filter_by(name=release).first()
+        r.updateFromForm(form)
+        db.session.add(r)
         db.session.commit()
         return redirect('releases.html')

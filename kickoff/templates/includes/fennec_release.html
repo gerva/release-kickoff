@@ -1,0 +1,32 @@
+<form class='submit_release_form' action='{{ url_for('submit_release') }}' method='post'>
+<fieldset>
+    {{ fennecForm.hidden_tag() }}
+    <div>
+        {{ fennecForm.version.label()|safe }}
+        {{ fennecForm.version()|safe }}
+    </div>
+    <div>
+        {{ fennecForm.buildNumber.label()|safe }}
+        {{ fennecForm.buildNumber()|safe }}
+    </div>
+    <div>
+        {{ fennecForm.branch.label()|safe }}
+        {{ fennecForm.branch()|safe }}
+    </div>
+    <div>
+        {{ fennecForm.mozillaRevision.label()|safe }}
+        {{ fennecForm.mozillaRevision()|safe }}
+    </div>
+    <div>
+        {{ fennecForm.dashboardCheck.label()|safe }}
+        {{ fennecForm.dashboardCheck()|safe }}
+    </div>
+    <div>
+        {{ fennecForm.l10nChangesets.label()|safe }}
+        {{ fennecForm.l10nChangesets()|safe }}
+    </div>
+    <div>
+        <input type='submit' value='Gimme a Fennec!' />
+    </div>
+</fieldset>
+</form>

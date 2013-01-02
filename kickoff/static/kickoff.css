@@ -42,7 +42,7 @@ a {
 #column_container > h3 {
 }
 
-#column_container > div {
+#column_container > div, #edit_container {
     float: left;
     width: 32%;
     margin-right: 2%;

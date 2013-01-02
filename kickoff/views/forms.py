@@ -57,6 +57,14 @@ class FennecReleaseForm(ReleaseForm):
     def __init__(self, *args, **kwargs):
         ReleaseForm.__init__(self, prefix='fennec', product='fennec', *args, **kwargs)
 
+    def updateFromRow(self, row):
+        self.version.data = row.version
+        self.buildNumber.data = row.buildNumber
+        self.branch.data = row.branch
+        self.mozillaRevision.data = row.mozillaRevision
+        self.dashboardCheck.data = row.dashboardCheck
+        self.l10nChangesets.data = row.l10nChangesets
+
 class DesktopReleaseForm(ReleaseForm):
     partials = StringField('Partial versions:',
         validators=[Regexp(PARTIAL_VERSIONS_REGEX, message='Invalid partials format.')]
@@ -69,12 +77,31 @@ class FirefoxReleaseForm(DesktopReleaseForm):
     def __init__(self, *args, **kwargs):
         ReleaseForm.__init__(self, prefix='firefox', product='firefox', *args, **kwargs)
 
+    def updateFromRow(self, row):
+        self.version.data = row.version
+        self.buildNumber.data = row.buildNumber
+        self.branch.data = row.branch
+        self.mozillaRevision.data = row.mozillaRevision
+        self.partials.data = row.partials
+        self.dashboardCheck.data = row.dashboardCheck
+        self.l10nChangesets.data = row.l10nChangesets
+
 class ThunderbirdReleaseForm(DesktopReleaseForm):
     product = HiddenField('product')
     commRevision = StringField('Comm Revision:', validators=[DataRequired('Comm revision is required.')])
 
     def __init__(self, *args, **kwargs):
         ReleaseForm.__init__(self, prefix='thunderbird', product='thunderbird', *args, **kwargs)
+
+    def updateFromRow(self, row):
+        self.version.data = row.version
+        self.buildNumber.data = row.buildNumber
+        self.branch.data = row.branch
+        self.mozillaRevision.data = row.mozillaRevision
+        self.commRevision.data = row.commRevision
+        self.partials.data = row.partials
+        self.dashboardCheck.data = row.dashboardCheck
+        self.l10nChangesets.data = row.l10nChangesets
 
 def getReleaseForm(release):
     """Helper method to figure out which form is needed for a release, based
