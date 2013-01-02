@@ -7,6 +7,7 @@
 </ul>
 <div id='edit_container'>
 <h3>{{ release }}</h3>
+<form class='submit_release_form' action='{{ url_for('release', name=release) }}' method='post'>
 {% if form.product.data == 'fennec' %}
     {% set fennecForm = form %}
     {% include 'includes/fennec_release.html' %}
@@ -17,5 +18,6 @@
     {% set thunderbirdForm = form %}
     {% include 'includes/thunderbird_release.html' %}
 {% endif %}
+</form>
 </div>
 {% endblock %}

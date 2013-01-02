@@ -8,15 +8,21 @@
 <div id='column_container'>
 <div>
     <h3>Fennec</h3>
+    <form class='submit_release_form' action='{{ url_for('submit_release') }}' method='post'>
     {% include 'includes/fennec_release.html' %}
+    </form>
 </div>
 <div>
     <h3>Firefox</h3>
+    <form class='submit_release_form' action='{{ url_for('submit_release') }}' method='post'>
     {% include 'includes/firefox_release.html' %}
+    </form>
 </div>
 <div>
     <h3>Thunderbird</h3>
+    <form class='submit_release_form' action='{{ url_for('submit_release') }}' method='post'>
     {% include 'includes/thunderbird_release.html' %}
+    </form>
 </div>
 </div>
 {% endblock %}

@@ -103,7 +103,7 @@ class Release(MethodView):
         return render_template('release.html', form=form, release=name)
 
     def post(self):
-        release = request.args.get('release')
+        release = request.args.get('name')
         form = getReleaseForm(release)()
         if not form.validate():
             return make_response(render_template('release.html', errors=form.errors.values(), form=form, release=release), 400)

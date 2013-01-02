@@ -86,6 +86,7 @@ class TestReleaseView(ViewTest):
             got = FennecRelease.query.filter_by(name='Fennec-1.0-build1').first()
             self.assertEquals(got.version, '1.0')
             self.assertEquals(got.l10nChangesets, '{"af":"de"}')
+            self.assertEquals(FennecRelease.query.filter_by(name='Fennec-1-build1').count(), 0)
 
     def testEditReleaseInvalid(self):
         data = [
