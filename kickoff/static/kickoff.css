@@ -61,7 +61,7 @@ label {
     margin-right: 0;
 }
 
-#column_container > div > form > fieldset > div:last-child {
+#column_container > div > form > div:last-child, #edit_container > div:last-child {
     text-align: center;
 }
 

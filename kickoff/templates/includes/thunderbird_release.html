@@ -1,38 +1,33 @@
-<fieldset>
-    {{ thunderbirdForm.hidden_tag() }}
-    <div>
-        {{ thunderbirdForm.version.label()|safe }}
-        {{ thunderbirdForm.version()|safe }}
-    </div>
-    <div>
-        {{ thunderbirdForm.buildNumber.label()|safe }}
-        {{ thunderbirdForm.buildNumber()|safe }}
-    </div>
-    <div>
-        {{ thunderbirdForm.branch.label()|safe }}
-        {{ thunderbirdForm.branch()|safe }}
-    </div>
-    <div>
-        {{ thunderbirdForm.mozillaRevision.label()|safe }}
-        {{ thunderbirdForm.mozillaRevision()|safe }}
-    </div>
-    <div>
-        {{ thunderbirdForm.commRevision.label()|safe }}
-        {{ thunderbirdForm.commRevision()|safe }}
-    </div>
-    <div>
-        {{ thunderbirdForm.partials.label()|safe }}
-        {{ thunderbirdForm.partials()|safe }}
-    </div>
-    <div>
-        {{ thunderbirdForm.dashboardCheck.label()|safe }}
-        {{ thunderbirdForm.dashboardCheck()|safe }}
-    </div>
-    <div>
-        {{ thunderbirdForm.l10nChangesets.label()|safe }}
-        {{ thunderbirdForm.l10nChangesets()|safe }}
-    </div>
-    <div>
-        <input type='submit' value='Gimme a Thunderbird!' />
-    </div>
-</fieldset>
+{{ thunderbirdForm.hidden_tag() }}
+<div>
+    {{ thunderbirdForm.version.label()|safe }}
+    {{ thunderbirdForm.version()|safe }}
+</div>
+<div>
+    {{ thunderbirdForm.buildNumber.label()|safe }}
+    {{ thunderbirdForm.buildNumber()|safe }}
+</div>
+<div>
+    {{ thunderbirdForm.branch.label()|safe }}
+    {{ thunderbirdForm.branch()|safe }}
+</div>
+<div>
+    {{ thunderbirdForm.mozillaRevision.label()|safe }}
+    {{ thunderbirdForm.mozillaRevision()|safe }}
+</div>
+<div>
+    {{ thunderbirdForm.commRevision.label()|safe }}
+    {{ thunderbirdForm.commRevision()|safe }}
+</div>
+<div>
+    {{ thunderbirdForm.partials.label()|safe }}
+    {{ thunderbirdForm.partials()|safe }}
+</div>
+<div>
+    {{ thunderbirdForm.dashboardCheck.label()|safe }}
+    {{ thunderbirdForm.dashboardCheck()|safe }}
+</div>
+<div>
+    {{ thunderbirdForm.l10nChangesets.label()|safe }}
+    {{ thunderbirdForm.l10nChangesets()|safe }}
+</div>
