@@ -29,7 +29,11 @@
 {% else %}
 <tr class='complete'>
 {% endif %}
-    <td>{{ rel.name }}</td>
+    {% if not rel.ready %}
+        <td><a href="/release.html?name={{ rel.name }}">{{ rel.name }}</a></td>
+    {% else %}
+        <td>{{ rel.name }}</td>
+    {% endif %}
     <td>{{ rel.submitter }}</td>
     <td>{{ rel.branch }}</td>
     <td>{{ rel.mozillaRevision }}</td>

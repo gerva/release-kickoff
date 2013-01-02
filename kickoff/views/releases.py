@@ -1,30 +1,9 @@
 from flask import request, jsonify, render_template, Response, redirect, make_response
 from flask.views import MethodView
 
-from flask.ext.wtf import Form, BooleanField, StringField, SelectMultipleField, \
-  ListWidget, CheckboxInput, Length
-
 from kickoff import db
-from kickoff.model import getReleaseTable, getReleases, Release
-
-# From http://wtforms.simplecodes.com/docs/1.0.2/specific_problems.html#specialty-field-tricks
-class MultiCheckboxField(SelectMultipleField):
-    """A multiple-select, except displays a list of checkboxes. Iterating the
-       field will produce subfields, allowing custom rendering of the enclosed
-       checkbox fields."""
-    widget = ListWidget(prefix_label=False)
-    option_widget = CheckboxInput()
-
-class ReadyForm(Form):
-    readyReleases = MultiCheckboxField('readyReleases')
-
-    def __init__(self, *args, **kwargs):
-        Form.__init__(self, *args, **kwargs)
-
-class CompleteForm(Form):
-    complete = BooleanField('complete')
-    # Use the Column length directly rather than duplicating its value.
-    status = StringField('status', [Length(max=Release.status.type.length)])
+from kickoff.model import getReleaseTable, getReleases
+from kickoff.views.forms import CompleteForm, ReadyForm
 
 def sortedRelease():
     def sortReleases(x, y):
