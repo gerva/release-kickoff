@@ -73,20 +73,20 @@ class TestReleaseView(ViewTest):
     def testEditRelease(self):
         data = [
             'fennec-version=1.0',
-            'fennec-buildNumber=1',
+            'fennec-buildNumber=4',
             'fennec-branch=a',
             'fennec-mozillaRevision=abc',
             'fennec-dashboardCheck=y',
             'fennec-l10nChangesets={"af":"de"}',
             'fennec-product=fennec',
         ]
-        ret = self.post('/release.html', query_string={'release': 'Fennec-1-build1'}, data='&'.join(data), content_type='application/x-www-form-urlencoded')
+        ret = self.post('/release.html', query_string={'name': 'Fennec-4-build4'}, data='&'.join(data), content_type='application/x-www-form-urlencoded')
         self.assertEquals(ret.status_code, 302, ret.data)
         with app.test_request_context():
-            got = FennecRelease.query.filter_by(name='Fennec-1.0-build1').first()
+            got = FennecRelease.query.filter_by(name='Fennec-1.0-build4').first()
             self.assertEquals(got.version, '1.0')
             self.assertEquals(got.l10nChangesets, '{"af":"de"}')
-            self.assertEquals(FennecRelease.query.filter_by(name='Fennec-1-build1').count(), 0)
+            self.assertEquals(FennecRelease.query.filter_by(name='Fennec-4-build4').count(), 0)
 
     def testEditReleaseInvalid(self):
         data = [
@@ -98,5 +98,47 @@ class TestReleaseView(ViewTest):
             'fennec-l10nChangesets=xxxx',
             'fennec-product=fennec',
         ]
-        ret = self.post('/release.html', query_string={'release': 'Fennec-1-build1'}, data='&'.join(data), content_type='application/x-www-form-urlencoded')
+        ret = self.post('/release.html', query_string={'name': 'Fennec-4-build4'}, data='&'.join(data), content_type='application/x-www-form-urlencoded')
         self.assertEquals(ret.status_code, 400)
+
+    def testEditNonExistentRelease(self):
+        ret = self.post('/release.html', query_string={'name': 'Fennec-blahblah'}, data='fennec-product=fennec', content_type='application/x-www-form-urlencoded')
+        self.assertEquals(ret.status_code, 404)
+
+    def testEditReadyRelease(self):
+        ret = self.get('/release.html', query_string={'name': 'Thunderbird-2-build2'})
+        self.assertEquals(ret.status_code, 302)
+        self.assertTrue('/releases.html' in ret.location)
+
+    def testEditCompletedRelease(self):
+        ret = self.get('/release.html', query_string={'name': 'Thunderbird-2-build2'})
+        self.assertEquals(ret.status_code, 302)
+        self.assertTrue('/releases.html' in ret.location)
+
+    def testEditReadyReleasePost(self):
+        data = [
+            'fennec-version=4',
+            'fennec-buildNumber=5',
+            'fennec-branch=a',
+            'fennec-mozillaRevision=abc',
+            'fennec-dashboardCheck=y',
+            'fennec-l10nChangesets=xxxx',
+            'fennec-product=fennec',
+        ]
+        ret = self.post('/release.html', query_string={'name': 'Thunderbird-2-build2'}, data='&'.join(data), content_type='application/x-www-form-urlencoded')
+        self.assertEquals(ret.status_code, 403)
+
+    def testEditCompletedReleasePost(self):
+        data = [
+            'thunderbird-version=0',
+            'thunderbird-buildNumber=2',
+            'thunderbird-branch=a',
+            'thunderbird-mozillaRevision=abc',
+            'thunderbird-commRevision=def',
+            'thunderbird-dashboardCheck=y',
+            'thunderbird-partials=1.0build1',
+            'thunderbird-l10nChangesets=xxxx',
+            'thunderbird-product=thunderbird',
+        ]
+        ret = self.post('/release.html', query_string={'name': 'Thunderbird-2-build2'}, data='&'.join(data), content_type='application/x-www-form-urlencoded')
+        self.assertEquals(ret.status_code, 403)

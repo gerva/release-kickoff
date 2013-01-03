@@ -1,4 +1,4 @@
-from flask import request, jsonify, render_template, Response, redirect, make_response
+from flask import request, jsonify, render_template, Response, redirect, make_response, abort
 from flask.views import MethodView
 
 from kickoff import db
@@ -98,18 +98,38 @@ class Release(MethodView):
     def get(self):
         name = request.args.get('name')
         form = getReleaseForm(name)()
-        row = getReleaseTable(name).query.filter_by(name=name).first()
-        form.updateFromRow(row)
+        release = getReleaseTable(name).query.filter_by(name=name).first()
+        if not release:
+            abort(404)
+        # If this release is already ready or complete, edits aren't allowed.
+        # It would be best to display an error here, but considering that there
+        # aren't even links to this page for these releases, redirecting back
+        # to the list of release seems OK.
+        if release.ready or release.complete:
+            return redirect('releases.html')
+
+        # If the release is editable, prepopulate the form with the current
+        # values from the database.
+        form.updateFromRow(release)
         return render_template('release.html', form=form, release=name)
 
     def post(self):
-        release = request.args.get('name')
-        form = getReleaseForm(release)()
-        if not form.validate():
-            return make_response(render_template('release.html', errors=form.errors.values(), form=form, release=release), 400)
+        name = request.args.get('name')
+        form = getReleaseForm(name)()
+        release = getReleaseTable(name).query.filter_by(name=name).first()
+        if not release:
+            abort(404)
+        # Similar to the above, don't allow edits to ready or completed
+        # releases. Unless someone has constructed a POST by hand, this code
+        # should never be hit.
+        if release.ready or release.complete:
+            errors = ["Cannot update a release that's been marked as ready or is complete"]
+            return make_response(render_template('release.html', errors=errors, form=form, release=name), 403)
 
-        r = getReleaseTable(release).query.filter_by(name=release).first()
-        r.updateFromForm(form)
-        db.session.add(r)
+        if not form.validate():
+            return make_response(render_template('release.html', errors=form.errors.values(), form=form, release=name), 400)
+
+        release.updateFromForm(form)
+        db.session.add(release)
         db.session.commit()
         return redirect('releases.html')
