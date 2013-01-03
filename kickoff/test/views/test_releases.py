@@ -1,3 +1,6 @@
+import datetime
+import mock
+
 import simplejson as json
 
 from kickoff import app
@@ -28,6 +31,7 @@ class TestReleaseAPI(ViewTest):
             'name': 'Thunderbird-2-build2',
             'product': 'thunderbird',
             'submitter': 'bob',
+            'submitted_at': datetime.datetime(2005, 1, 1, 1, 1, 1, 1).isoformat(),
             'version': '2',
             'buildNumber': 2,
             'branch': 'b',

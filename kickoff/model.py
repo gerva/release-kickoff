@@ -1,3 +1,7 @@
+from datetime import datetime
+
+import pytz
+
 from mozilla.release.info import getReleaseName
 
 from kickoff import db
@@ -6,6 +10,7 @@ class Release(object):
     """A base class with all of the common columns for any release."""
     name = db.Column(db.String(100), primary_key=True)
     submitter = db.Column(db.String(250), nullable=False)
+    submitted_at = db.Column(db.DateTime(pytz.utc), nullable=False, default=datetime.utcnow)
     version = db.Column(db.String(10), nullable=False)
     buildNumber = db.Column(db.Integer(), nullable=False)
     branch = db.Column(db.String(50), nullable=False)
@@ -17,7 +22,8 @@ class Release(object):
     status = db.Column(db.String(250), default="")
 
     def __init__(self, submitter, version, buildNumber, branch,
-                 mozillaRevision, l10nChangesets, dashboardCheck):
+                 mozillaRevision, l10nChangesets, dashboardCheck,
+                 submitted_at=None):
         self.name = getReleaseName(self.product, version, buildNumber)
         self.submitter = submitter
         self.version = version
@@ -26,11 +32,14 @@ class Release(object):
         self.mozillaRevision = mozillaRevision
         self.l10nChangesets = l10nChangesets
         self.dashboardCheck = dashboardCheck
+        if submitted_at:
+            self.submitted_at = submitted_at
     
     def toDict(self):
         me = {'product': self.product}
         for c in self.__table__.columns:
             me[c.name] = getattr(self, c.name)
+        me['submitted_at'] = me['submitted_at'].isoformat()
         return me
 
     @classmethod

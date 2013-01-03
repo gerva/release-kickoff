@@ -12,6 +12,7 @@
 <tr>
     <th>Name</th>
     <th>Submitted By</th>
+    <th>Submitted At</th>
     <th>Branch</th>
     <th>Mozilla Revision</th>
     <th>Comm Revision</th>
@@ -31,6 +32,9 @@
 {% endif %}
     <td>{{ rel.name }}</td>
     <td>{{ rel.submitter }}</td>
+    <!-- Ideally, we'd convert to the users local time -->
+    <td>{{ timezone.localize(rel.submitted_at).strftime('%m/%d/%Y %H:%M %Z') }}</td>
+    <td>{{ rel.submitted_at.strftime('%m/%d/%Y %H:%M %Z') }}</td>
     <td>{{ rel.branch }}</td>
     <td>{{ rel.mozillaRevision }}</td>
     {% if 'Thunderbird' in rel.name %}

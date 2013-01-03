@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 from tempfile import mkstemp
 import unittest
@@ -27,7 +28,7 @@ class ViewTest(unittest.TestCase):
             r.complete = True
             r.ready = True
             db.session.add(r)
-            r = ThunderbirdRelease('ghi', '0', 'bob', '2', 2, 'b', 'ghi', 'li', True)
+            r = ThunderbirdRelease('ghi', '0', 'bob', '2', 2, 'b', 'ghi', 'li', True, submitted_at=datetime(2005, 1, 1, 1, 1, 1, 1))
             r.complete = True
             r.ready = True
             db.session.add(r)

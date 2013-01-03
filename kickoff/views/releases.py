@@ -1,3 +1,5 @@
+import pytz
+
 from flask import request, jsonify, render_template, Response, redirect, make_response
 from flask.views import MethodView
 
@@ -97,7 +99,9 @@ class Releases(MethodView):
         # http://stackoverflow.com/questions/8463421/how-to-render-my-select-field-with-wtforms
         #form.readyReleases.choices = [(r.name, r.name) for r in getReleases(ready=False)]
         form = ReadyForm()
-        return render_template('releases.html', releases=sortedRelease(), form=form)
+        # XXX: Hardcoding to a single timezone sucks.
+        timezone = pytz.timezone('US/Pacific')
+        return render_template('releases.html', releases=sortedRelease(), form=form, timezone=timezone)
 
     def post(self):
         form = ReadyForm()
