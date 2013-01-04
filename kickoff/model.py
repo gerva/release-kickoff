@@ -4,7 +4,8 @@ from kickoff import db
 
 class Release(object):
     """A base class with all of the common columns for any release."""
-    name = db.Column(db.String(100), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True)
     submitter = db.Column(db.String(250), nullable=False)
     version = db.Column(db.String(10), nullable=False)
     buildNumber = db.Column(db.Integer(), nullable=False)
