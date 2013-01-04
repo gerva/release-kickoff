@@ -6,6 +6,7 @@ from flask.ext.wtf import SelectMultipleField, ListWidget, CheckboxInput, Form, 
   HiddenField, Regexp, ValidationError
 
 from mozilla.build.versions import ANY_VERSION_REGEX
+from mozilla.release.l10n import parsePlainL10nChangesets
 
 from kickoff.model import Release
 
@@ -62,6 +63,19 @@ class JSONField(TextAreaField):
         else:
             self.data = None
 
+class PlainChangesetsField(TextAreaField):
+    def process_formdata(self, valuelist):
+        if valuelist and valuelist[0]:
+            self.data = valuelist[0]
+            try:
+                # Like the JSON object, we merely care about if the data
+                # is valid or not, so we don't save the results anywhere.
+                parsePlainL10nChangesets(self.data)
+            except ValueError:
+                self.process_errors.append('Bad format in %s field' % self.name)
+        else:
+            self.data = None
+
 class ReleaseForm(Form):
     version = StringField('Version:', validators=[Regexp(ANY_VERSION_REGEX, message='Invalid version format.')])
     buildNumber = IntegerField('Build Number:', validators=[DataRequired('Build number is required.')])
@@ -88,7 +102,7 @@ class DesktopReleaseForm(ReleaseForm):
     partials = StringField('Partial versions:',
         validators=[Regexp(PARTIAL_VERSIONS_REGEX, message='Invalid partials format.')]
     )
-    l10nChangesets = TextAreaField('L10n Changesets:', validators=[DataRequired('L10n Changesets are required.')])
+    l10nChangesets = PlainChangesetsField('L10n Changesets:', validators=[DataRequired('L10n Changesets are required.')])
 
 class FirefoxReleaseForm(DesktopReleaseForm):
     product = HiddenField('product')

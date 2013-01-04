@@ -11,7 +11,7 @@ class TestSubmitRelease(ViewTest):
             'firefox-mozillaRevision=abc',
             'firefox-partials=1.0build1',
             'firefox-dashboardCheck=y',
-            'firefox-l10nChangesets=def',
+            'firefox-l10nChangesets=af%20def',
             'firefox-product=firefox',
         ]
         ret = self.post('/submit_release.html', data='&'.join(data), content_type='application/x-www-form-urlencoded')
@@ -23,7 +23,7 @@ class TestSubmitRelease(ViewTest):
             self.assertEquals(got.branch, 'z')
             self.assertEquals(got.mozillaRevision, 'abc')
             self.assertEquals(got.partials, '1.0build1')
-            self.assertEquals(got.l10nChangesets, 'def')
+            self.assertEquals(got.l10nChangesets, 'af def')
             self.assertEquals(got.ready, False)
             self.assertEquals(got.complete, False)
             self.assertEquals(got.status, '')
