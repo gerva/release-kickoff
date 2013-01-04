@@ -2,7 +2,7 @@ from flask import request, jsonify, render_template, Response, redirect, make_re
 from flask.views import MethodView
 
 from flask.ext.wtf import Form, BooleanField, StringField, SelectMultipleField, \
-  ListWidget, CheckboxInput, Length
+  ListWidget, CheckboxInput, Length, ValidationError
 
 from kickoff import db
 from kickoff.log import cef_event, CEF_WARN, CEF_INFO
@@ -18,9 +18,23 @@ class MultiCheckboxField(SelectMultipleField):
 
 class ReadyForm(Form):
     readyReleases = MultiCheckboxField('readyReleases')
+    deleteReleases = MultiCheckboxField('deleteReleases')
 
     def __init__(self, *args, **kwargs):
         Form.__init__(self, *args, **kwargs)
+
+    def validate(self, *args, **kwargs):
+        valid = Form.validate(self, *args, **kwargs)
+        readyAndDeleted = set(self.readyReleases.data).intersection(self.deleteReleases.data)
+        if readyAndDeleted:
+            valid = False
+            msg = 'Cannot delete releases that were also marked as ready: '
+            msg += ', '.join([r[0] for r in readyAndDeleted])
+            if 'deleteReleases' not in self.errors:
+                self.errors['deleteReleases'] = []
+            self.errors['deleteReleases'].append(msg)
+
+        return valid
 
 class CompleteForm(Form):
     complete = BooleanField('complete')
@@ -28,7 +42,7 @@ class CompleteForm(Form):
     status = StringField('status', [Length(max=Release.status.type.length)])
 
 def sortedReleases():
-    def sortReleases(x, y):
+    def cmpReleases(x, y):
         # Not ready releases should come before ready ones.
         # Incomplete releases should come before completed ones.
         # After that, sort by name.
@@ -43,7 +57,7 @@ def sortedReleases():
         elif y.complete:
             return -1
         return cmp(x.name, y.name)
-    return sorted(getReleases(), cmp=sortReleases)
+    return sorted(getReleases(), cmp=cmpReleases)
 
 class ReleasesAPI(MethodView):
     def get(self):
@@ -105,11 +119,16 @@ class Releases(MethodView):
     def post(self):
         form = ReadyForm()
         form.readyReleases.choices = [(r.name, r.name) for r in getReleases(ready=False)]
+        # Don't include completed or ready releases, because they aren't allowed to be deleted
+        form.deleteReleases.choices = [(r.name, r.name) for r in getReleases(complete=False, ready=False)]
         if not form.validate():
-            form = ReadyForm()
             cef_event('User Input Failed', CEF_WARN, **form.errors)
             return make_response(render_template('releases.html', errors=form.errors, releases=sortedReleases(), form=form), 400)
 
+        for release in form.deleteReleases.data:
+            table = getReleaseTable(release)
+            r = table.query.filter_by(name=release).first()
+            db.session.delete(r)
         for release in form.readyReleases.data:
             table = getReleaseTable(release)
             r = table.query.filter_by(name=release).first()
@@ -117,4 +136,4 @@ class Releases(MethodView):
             r.status = 'Pending'
             db.session.add(r)
         db.session.commit()
-        return redirect('releases.html')
+        return render_template('releases.html', releases=sortedReleases(), form=form)
