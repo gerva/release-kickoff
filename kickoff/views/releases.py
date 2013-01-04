@@ -5,6 +5,7 @@ from flask.ext.wtf import Form, BooleanField, StringField, SelectMultipleField, 
   ListWidget, CheckboxInput, Length
 
 from kickoff import db
+from kickoff.log import cef_event, CEF_WARN, CEF_INFO
 from kickoff.model import getReleaseTable, getReleases, Release
 
 # From http://wtforms.simplecodes.com/docs/1.0.2/specific_problems.html#specialty-field-tricks
@@ -26,7 +27,7 @@ class CompleteForm(Form):
     # Use the Column length directly rather than duplicating its value.
     status = StringField('status', [Length(max=Release.status.type.length)])
 
-def sortedRelease():
+def sortedReleases():
     def sortReleases(x, y):
         # Not ready releases should come before ready ones.
         # Incomplete releases should come before completed ones.
@@ -52,12 +53,13 @@ class ReleasesAPI(MethodView):
         # roundabout here.
         try:
             ready = request.args.get('ready', type=int)
+            complete = request.args.get('complete', type=int)
             if ready is not None:
                 ready = bool(ready)
-            complete = request.args.get('complete', type=int)
             if complete is not None:
                 complete = bool(complete)
         except ValueError:
+            cef_event('User Input Failed', CEF_INFO, ready=ready, complete=complete)
             return Response(status=400, response="Got unparseable value for ready or complete")
         releases = [r.name for r in getReleases(ready, complete)]
         return jsonify({'releases': releases})
@@ -71,6 +73,7 @@ class ReleaseAPI(MethodView):
         table = getReleaseTable(releaseName)
         form = CompleteForm()
         if not form.validate():
+            cef_event('User Input Failed', CEF_INFO, **form.errors)
             return Response(status=400, response=form.errors)
 
         release = table.query.filter_by(name=releaseName).first()
@@ -97,14 +100,15 @@ class Releases(MethodView):
         # http://stackoverflow.com/questions/8463421/how-to-render-my-select-field-with-wtforms
         #form.readyReleases.choices = [(r.name, r.name) for r in getReleases(ready=False)]
         form = ReadyForm()
-        return render_template('releases.html', releases=sortedRelease(), form=form)
+        return render_template('releases.html', releases=sortedReleases(), form=form)
 
     def post(self):
         form = ReadyForm()
         form.readyReleases.choices = [(r.name, r.name) for r in getReleases(ready=False)]
         if not form.validate():
             form = ReadyForm()
-            return make_response(render_template('releases.html', errors=form.errors, releases=sortedRelease(), form=form))
+            cef_event('User Input Failed', CEF_WARN, **form.errors)
+            return make_response(render_template('releases.html', errors=form.errors, releases=sortedReleases(), form=form), 400)
 
         for release in form.readyReleases.data:
             table = getReleaseTable(release)

@@ -8,7 +8,11 @@ from flask.ext.wtf import Form, TextField, DataRequired, BooleanField, IntegerFi
 from mozilla.build.versions import ANY_VERSION_REGEX
 
 from kickoff import db
+from kickoff.log import cef_event, CEF_ALERT, CEF_INFO
 from kickoff.model import getReleaseTable
+
+import logging
+log = logging.getLogger(__name__)
 
 PARTIAL_VERSIONS_REGEX = ('^(%sbuild\d+)(,%sbuild\d)*$' % (ANY_VERSION_REGEX, ANY_VERSION_REGEX))
 
@@ -22,6 +26,8 @@ class JSONField(TextAreaField):
                 # raw string version, not the parsed object.
                 json.loads(self.data)
             except ValueError, e:
+                log.info("JSON in field '%s' didn't validate" % self.name)
+                log.debug("Raw JSON for '%s' is: %s" % (self.name, repr(self.data)))
                 self.process_errors.append(e.args[0])
         else:
             self.data = None
@@ -82,10 +88,15 @@ class SubmitRelease(MethodView):
             form = forms['firefoxForm'] = FirefoxReleaseForm()
         elif product == 'thunderbird':
             form = forms['thunderbirdForm'] = ThunderbirdReleaseForm()
+        else:
+            cef_event('User Input Failed', CEF_ALERT, ProductName=product)
+            return Response(status=400, response="Unknown product name '%s'" % product)
+
         errors = []
         if not form.validate():
-            for errlist in form.errors.values():
-                errors.extend(errlist)
+            cef_event('User Input Failed', CEF_INFO, **form.errors)
+            for error in form.errors.values():
+                errors.extend(error)
         if errors:
             return make_response(render_template('submit_release.html', errors=errors, **forms), 400)
 
