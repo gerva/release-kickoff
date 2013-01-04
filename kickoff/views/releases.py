@@ -1,45 +1,10 @@
-from flask import request, jsonify, render_template, Response, redirect, make_response
+from flask import request, jsonify, render_template, Response, redirect, make_response, abort
 from flask.views import MethodView
-
-from flask.ext.wtf import Form, BooleanField, StringField, SelectMultipleField, \
-  ListWidget, CheckboxInput, Length, ValidationError
 
 from kickoff import db
 from kickoff.log import cef_event, CEF_WARN, CEF_INFO
-from kickoff.model import getReleaseTable, getReleases, Release
-
-# From http://wtforms.simplecodes.com/docs/1.0.2/specific_problems.html#specialty-field-tricks
-class MultiCheckboxField(SelectMultipleField):
-    """A multiple-select, except displays a list of checkboxes. Iterating the
-       field will produce subfields, allowing custom rendering of the enclosed
-       checkbox fields."""
-    widget = ListWidget(prefix_label=False)
-    option_widget = CheckboxInput()
-
-class ReadyForm(Form):
-    readyReleases = MultiCheckboxField('readyReleases')
-    deleteReleases = MultiCheckboxField('deleteReleases')
-
-    def __init__(self, *args, **kwargs):
-        Form.__init__(self, *args, **kwargs)
-
-    def validate(self, *args, **kwargs):
-        valid = Form.validate(self, *args, **kwargs)
-        readyAndDeleted = set(self.readyReleases.data).intersection(self.deleteReleases.data)
-        if readyAndDeleted:
-            valid = False
-            msg = 'Cannot delete releases that were also marked as ready: '
-            msg += ', '.join([r[0] for r in readyAndDeleted])
-            if 'deleteReleases' not in self.errors:
-                self.errors['deleteReleases'] = []
-            self.errors['deleteReleases'].append(msg)
-
-        return valid
-
-class CompleteForm(Form):
-    complete = BooleanField('complete')
-    # Use the Column length directly rather than duplicating its value.
-    status = StringField('status', [Length(max=Release.status.type.length)])
+from kickoff.model import getReleaseTable, getReleases
+from kickoff.views.forms import CompleteForm, ReadyForm, getReleaseForm
 
 def sortedReleases():
     def cmpReleases(x, y):
@@ -137,3 +102,43 @@ class Releases(MethodView):
             db.session.add(r)
         db.session.commit()
         return render_template('releases.html', releases=sortedReleases(), form=form)
+
+class Release(MethodView):
+    def get(self):
+        name = request.args.get('name')
+        form = getReleaseForm(name)()
+        release = getReleaseTable(name).query.filter_by(name=name).first()
+        if not release:
+            abort(404)
+        # If this release is already ready or complete, edits aren't allowed.
+        # It would be best to display an error here, but considering that there
+        # aren't even links to this page for these releases, redirecting back
+        # to the list of release seems OK.
+        if release.ready or release.complete:
+            return redirect('releases.html')
+
+        # If the release is editable, prepopulate the form with the current
+        # values from the database.
+        form.updateFromRow(release)
+        return render_template('release.html', form=form, release=name)
+
+    def post(self):
+        name = request.args.get('name')
+        form = getReleaseForm(name)()
+        release = getReleaseTable(name).query.filter_by(name=name).first()
+        if not release:
+            abort(404)
+        # Similar to the above, don't allow edits to ready or completed
+        # releases. Unless someone has constructed a POST by hand, this code
+        # should never be hit.
+        if release.ready or release.complete:
+            errors = ["Cannot update a release that's been marked as ready or is complete"]
+            return make_response(render_template('release.html', errors=errors, form=form, release=name), 403)
+
+        if not form.validate():
+            return make_response(render_template('release.html', errors=form.errors.values(), form=form, release=name), 400)
+
+        release.updateFromForm(form)
+        db.session.add(release)
+        db.session.commit()
+        return redirect('releases.html')
