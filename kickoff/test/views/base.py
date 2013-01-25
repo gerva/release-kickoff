@@ -4,6 +4,7 @@ from tempfile import mkstemp
 import unittest
 
 from kickoff import app, db
+from kickoff.log import cef_config
 from kickoff.model import FennecRelease, FirefoxRelease, ThunderbirdRelease
 
 class ViewTest(unittest.TestCase):
@@ -11,24 +12,46 @@ class ViewTest(unittest.TestCase):
 
     def setUp(self):
         self.db_fd, self.db_file = mkstemp()
+        self.cef_fd, self.cef_file = mkstemp()
         app.config['DEBUG'] = True
         app.config['CSRF_ENABLED'] = False
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///%s' % self.db_file
+        app.config.update(cef_config(self.cef_file))
         with app.test_request_context():
             db.init_app(app)
             db.create_all()
-            r = FennecRelease('joe', '1', 1, 'a', 'abc', 'af de', True)
+            r = FennecRelease(submitter='joe', version='1', buildNumber=1,
+                              branch='a', mozillaRevision='abc',
+                              l10nChangesets='af de', dashboardCheck=True,
+                              mozillaRelbranch=None)
             r.ready = True
             db.session.add(r)
-            r = FennecRelease('joe', '4', 4, 'a', 'abc', 'gh ij', True)
+            r = FennecRelease(submitter='joe', version='4', buildNumber=4,
+                              branch='a', mozillaRevision='abc',
+                              l10nChangesets='gh ij', dashboardCheck=True,
+                              mozillaRelbranch=None)
             db.session.add(r)
-            r = FennecRelease('joe', '4', 5, 'a', 'abc', 'kl mn', False)
+            r = FennecRelease(submitter='joe', version='4', buildNumber=5,
+                              branch='a', mozillaRevision='abc',
+                              l10nChangesets='lk mn', dashboardCheck=False,
+                              mozillaRelbranch='BAR')
             db.session.add(r)
-            r = FirefoxRelease('0,1', 'joe', '2', 1, 'a', 'def', 'ja zu', True)
+            r = FirefoxRelease(partials='0,1', promptWaitTime=5,
+                               submitter='joe', version='2', buildNumber=1,
+                               branch='a', mozillaRevision='def',
+                               l10nChangesets='ja zu', dashboardCheck=True,
+                               mozillaRelbranch='FOO',
+                               submitted_at=datetime(2005, 1, 2, 3, 4, 5, 6))
             r.complete = True
             r.ready = True
             db.session.add(r)
-            r = ThunderbirdRelease('ghi', '0', 'bob', '2', 2, 'b', 'ghi', 'li', True, submitted_at=datetime(2005, 1, 1, 1, 1, 1, 1))
+            r = ThunderbirdRelease(commRevision='ghi', commRelbranch=None,
+                                   partials='0', promptWaitTime=None,
+                                   submitter='bob', version='2', buildNumber=2,
+                                   branch='b', mozillaRevision='ghi',
+                                   l10nChangesets='li', dashboardCheck=True,
+                                   mozillaRelbranch=None,
+                                   submitted_at=datetime(2005, 1, 1, 1, 1, 1, 1))
             r.complete = True
             r.ready = True
             db.session.add(r)
@@ -41,6 +64,8 @@ class ViewTest(unittest.TestCase):
         app._got_first_request = False
         os.close(self.db_fd)
         os.remove(self.db_file)
+        os.close(self.cef_fd)
+        os.remove(self.cef_file)
 
     def get(self, *args, **kwargs):
         return self.client.get(*args, environ_base=self.auth, **kwargs)
