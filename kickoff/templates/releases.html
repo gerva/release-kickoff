@@ -41,11 +41,10 @@
     {% endif %}
     <td>{{ rel.submitter }}</td>
     <td id='{{ rel.name }}_submitted_at'>
-        {% set date = timezone.localize(rel.submitted_at).isoformat() %}
         <script type='text/javascript'>
             document.addEventListener('readystatechange', function() {
                 if (document.readyState == 'complete') {
-                    localdate = new Date('{{ date }}');
+                    localdate = new Date('{{ rel.submitted_at }}');
                     var e = document.getElementById('{{ rel.name }}_submitted_at');
                     e.textContent = localdate.toLocaleString();
                 }

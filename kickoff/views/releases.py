@@ -8,9 +8,6 @@ from kickoff.log import cef_event, CEF_WARN, CEF_INFO
 from kickoff.model import getReleaseTable, getReleases
 from kickoff.views.forms import CompleteForm, ReadyForm, getReleaseForm
 
-# XXX: Hardcoding to a single timezone sucks.
-timezone = pytz.timezone('US/Pacific')
-
 def sortedReleases():
     def cmpReleases(x, y):
         # Not ready releases should come before ready ones.
@@ -84,7 +81,7 @@ class Releases(MethodView):
         # http://stackoverflow.com/questions/8463421/how-to-render-my-select-field-with-wtforms
         #form.readyReleases.choices = [(r.name, r.name) for r in getReleases(ready=False)]
         form = ReadyForm()
-        return render_template('releases.html', releases=sortedReleases(), form=form, timezone=timezone)
+        return render_template('releases.html', releases=sortedReleases(), form=form)
 
     def post(self):
         form = ReadyForm()
@@ -93,7 +90,7 @@ class Releases(MethodView):
         form.deleteReleases.choices = [(r.name, r.name) for r in getReleases(complete=False, ready=False)]
         if not form.validate():
             cef_event('User Input Failed', CEF_WARN, **form.errors)
-            return make_response(render_template('releases.html', errors=form.errors, releases=sortedReleases(), form=form, timezone=timezone), 400)
+            return make_response(render_template('releases.html', errors=form.errors, releases=sortedReleases(), form=form), 400)
 
         for release in form.deleteReleases.data:
             table = getReleaseTable(release)
@@ -106,7 +103,7 @@ class Releases(MethodView):
             r.status = 'Pending'
             db.session.add(r)
         db.session.commit()
-        return render_template('releases.html', releases=sortedReleases(), form=form, timezone=timezone)
+        return render_template('releases.html', releases=sortedReleases(), form=form)
 
 class Release(MethodView):
     def get(self):
