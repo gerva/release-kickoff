@@ -1,6 +1,6 @@
 from build.versions import getNextPossibleVersions
 
-from kickoff.model 
+from kickoff.model
 
 def getVersionSuggestions(table, max_=5):
-    
+
