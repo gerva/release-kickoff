@@ -40,12 +40,12 @@
         <td>{{ rel.name }}</td>
     {% endif %}
     <td>{{ rel.submitter }}</td>
-    <td id='{{ rel.name }}_submitted_at'>
+    <td id='{{ rel.name }}_submittedAt'>
         <script type='text/javascript'>
             document.addEventListener('readystatechange', function() {
                 if (document.readyState == 'complete') {
-                    localdate = new Date('{{ rel.submitted_at }}');
-                    var e = document.getElementById('{{ rel.name }}_submitted_at');
+                    localdate = new Date('{{ rel.submittedAt }}');
+                    var e = document.getElementById('{{ rel.name }}_submittedAt');
                     e.textContent = localdate.toLocaleString();
                 }
             })

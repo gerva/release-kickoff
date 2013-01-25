@@ -42,7 +42,7 @@ class ViewTest(unittest.TestCase):
                                branch='a', mozillaRevision='def',
                                l10nChangesets='ja zu', dashboardCheck=True,
                                mozillaRelbranch='FOO',
-                               submitted_at=datetime(2005, 1, 2, 3, 4, 5, 6))
+                               submittedAt=datetime(2005, 1, 2, 3, 4, 5, 6))
             r.complete = True
             r.ready = True
             db.session.add(r)
@@ -52,7 +52,7 @@ class ViewTest(unittest.TestCase):
                                    branch='b', mozillaRevision='ghi',
                                    l10nChangesets='li', dashboardCheck=True,
                                    mozillaRelbranch=None,
-                                   submitted_at=datetime(2005, 1, 1, 1, 1, 1, 1))
+                                   submittedAt=datetime(2005, 1, 1, 1, 1, 1, 1))
             r.complete = True
             r.ready = True
             db.session.add(r)

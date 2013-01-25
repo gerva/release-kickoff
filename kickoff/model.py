@@ -12,7 +12,7 @@ class Release(object):
     """A base class with all of the common columns for any release."""
     name = db.Column(db.String(100), primary_key=True)
     submitter = db.Column(db.String(250), nullable=False)
-    _submitted_at = db.Column('submitted_at', db.DateTime(pytz.utc), nullable=False, default=datetime.utcnow)
+    _submittedAt = db.Column('submittedAt', db.DateTime(pytz.utc), nullable=False, default=datetime.utcnow)
     version = db.Column(db.String(10), nullable=False)
     buildNumber = db.Column(db.Integer(), nullable=False)
     branch = db.Column(db.String(50), nullable=False)
@@ -25,16 +25,16 @@ class Release(object):
     mozillaRelbranch = db.Column(db.String(50), default=None, nullable=True)
 
     @hybrid_property
-    def submitted_at(self):
-        return pytz.utc.localize(self._submitted_at).isoformat()
+    def submittedAt(self):
+        return pytz.utc.localize(self._submittedAt).isoformat()
 
-    @submitted_at.setter
-    def submitted_at(self, submitted_at):
-        self._submitted_at = submitted_at
+    @submittedAt.setter
+    def submittedAt(self, submittedAt):
+        self._submittedAt = submittedAt
 
     def __init__(self, submitter, version, buildNumber, branch,
                  mozillaRevision, l10nChangesets, dashboardCheck,
-                 mozillaRelbranch, submitted_at=None):
+                 mozillaRelbranch, submittedAt=None):
         self.name = getReleaseName(self.product, version, buildNumber)
         self.submitter = submitter
         self.version = version
@@ -44,14 +44,14 @@ class Release(object):
         self.l10nChangesets = l10nChangesets
         self.dashboardCheck = dashboardCheck
         self.mozillaRelbranch = mozillaRelbranch
-        if submitted_at:
-            self.submitted_at = submitted_at
+        if submittedAt:
+            self.submittedAt = submittedAt
 
     def toDict(self):
         me = {'product': self.product}
         for c in self.__table__.columns:
             me[c.name] = getattr(self, c.name)
-        me['submitted_at'] = me['submitted_at']
+        me['submittedAt'] = me['submittedAt']
         return me
 
     @classmethod
