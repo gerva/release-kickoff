@@ -42,7 +42,6 @@
     <td>{{ rel.submitter }}</td>
     <!-- Ideally, we'd convert to the users local time -->
     <td>{{ timezone.localize(rel.submitted_at).strftime('%m/%d/%Y %H:%M %Z') }}</td>
-    <td>{{ rel.submitted_at.strftime('%m/%d/%Y %H:%M %Z') }}</td>
     <td>{{ rel.branch }}</td>
     <td>{{ rel.mozillaRevision }}</td>
     <td>{{ rel.mozillaRelbranch }}</td>
