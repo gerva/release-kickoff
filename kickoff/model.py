@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pytz
 
@@ -10,8 +10,7 @@ from kickoff import db
 
 class Release(object):
     """A base class with all of the common columns for any release."""
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), unique=True)
+    name = db.Column(db.String(100), primary_key=True)
     submitter = db.Column(db.String(250), nullable=False)
     _submittedAt = db.Column('submittedAt', db.DateTime(pytz.utc), nullable=False, default=datetime.utcnow)
     version = db.Column(db.String(10), nullable=False)
@@ -58,7 +57,7 @@ class Release(object):
         return me
 
     @classmethod
-    def createFromForm(self, form):
+    def createFromForm(cls, form):
         raise NotImplementedError
 
     def updateFromForm(self, form):
@@ -70,6 +69,11 @@ class Release(object):
         self.dashboardCheck = form.dashboardCheck.data
         self.mozillaRelbranch = form.mozillaRelbranch.data
         self.name = getReleaseName(self.product, self.version, self.buildNumber)
+
+    @classmethod
+    def getRecent(cls, since=timedelta(weeks=7)):
+        since = datetime.now() - since
+        return cls.query.filter(cls._submittedAt > since).all()
 
     def __repr__(self):
         return '<Release %r>' % self.name

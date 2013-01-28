@@ -1,8 +1,10 @@
-from release.info import isFinalRelease
+import re
+
+from mozilla.release.info import isFinalRelease
 
 # Regex that matches all possible versions and milestones
 ANY_VERSION_REGEX =\
-    ('\d+\.\d[\d\.]*'    # A version number
+    ('(\d+\.\d[\d\.]*)'  # A version number
     '([a-zA-Z]+\d+)?'    # Might be a project branch
     '((a|b)\d+)?'        # Might be an alpha or beta
     '(esr)?'             # Might be an esr
@@ -20,10 +22,12 @@ def getPossibleNextVersions(version):
 
        Versions with 'pre' are deprecated, and explicitly not supported.
     """
+    print version
     ret = set()
     # Get the parts we care about from the version. The last group is the 'pre'
     # tag, which doesn't affect our work.
     base, beta, _, esr = re.match(ANY_VERSION_REGEX, version).groups()[:4]
+    print base
     # The next major version is used in a couple of places, so we figure it out
     # ahead of time. Eg: 17.0 -> 18.0 or 15.0.3 -> 16.0
     nextMajorVersion = increment(base.split('.')[0]) + '.0'
@@ -43,3 +47,16 @@ def getPossibleNextVersions(version):
         else:
             ret.add(increment(version))
     return ret
+
+
+# The following function was copied from http://code.activestate.com/recipes/442460/
+# Written by Chris Olds
+lastNum = re.compile(r'(?:[^\d]*(\d+)[^\d]*)+')
+def increment(s):
+    """ look for the last sequence of number(s) in a string and increment """
+    m = lastNum.search(s)
+    if m:
+        next = str(int(m.group(1))+1)
+        start, end = m.span(1)
+        s = s[:max(end-len(next), start)] + next + s[end:]
+    return s
