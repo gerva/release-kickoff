@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 from tempfile import mkstemp
 import unittest
@@ -5,6 +6,7 @@ import unittest
 from kickoff import app, db
 from kickoff.log import cef_config
 from kickoff.model import FennecRelease, FirefoxRelease, ThunderbirdRelease
+
 
 class ViewTest(unittest.TestCase):
     auth = {'REMOTE_USER': 'bob'}
@@ -39,7 +41,8 @@ class ViewTest(unittest.TestCase):
                                submitter='joe', version='2', buildNumber=1,
                                branch='a', mozillaRevision='def',
                                l10nChangesets='ja zu', dashboardCheck=True,
-                               mozillaRelbranch='FOO')
+                               mozillaRelbranch='FOO',
+                               submittedAt=datetime(2005, 1, 2, 3, 4, 5, 6))
             r.complete = True
             r.ready = True
             db.session.add(r)
@@ -48,7 +51,8 @@ class ViewTest(unittest.TestCase):
                                    submitter='bob', version='2', buildNumber=2,
                                    branch='b', mozillaRevision='ghi',
                                    l10nChangesets='li', dashboardCheck=True,
-                                   mozillaRelbranch=None)
+                                   mozillaRelbranch=None,
+                                   submittedAt=datetime(2005, 1, 1, 1, 1, 1, 1))
             r.complete = True
             r.ready = True
             db.session.add(r)
