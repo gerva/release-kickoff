@@ -37,7 +37,6 @@ class ThreeStateField(StringField):
 
 class SuggestableTextInput(TextInput):
     def __call__(self, field, *args, **kwargs):
-        # TODO: write the JS that renders the pop up stuff
         suggestions = json.dumps(list(field.suggestions))
         html = """
 <script>
