@@ -35,41 +35,6 @@ class ThreeStateField(StringField):
             self.data = None
 
 
-class SuggestableTextInput(TextInput):
-    def __call__(self, field, *args, **kwargs):
-        suggestions = json.dumps(list(field.suggestions))
-        html = """
-<script>
-$(document).ready(function() {
-    var branches = %(suggestions)s;
-    $('#%(id)s').autocomplete({
-        source: branches,
-        minLength: 0,
-        delay: 0,
-        position: {
-            my: "left",
-            at: "right",
-            of: "#%(id)s",
-            collision: "flip",
-        },
-    });
-    $('#%(id)s').focus(function() {
-        $(this).autocomplete('search');
-    });
-});
-</script>
-""" % {'id': field.id, 'suggestions': suggestions}
-        return html + TextInput.__call__(self, field, *args, **kwargs)
-
-
-class SuggestableStringField(StringField):
-    widget = SuggestableTextInput()
-
-    def __init__(self, suggestions=[], *args, **kwargs):
-        self.suggestions = suggestions
-        StringField.__init__(self, *args, **kwargs)
-
-
 class ReleasesForm(Form):
     readyReleases = MultiCheckboxField('readyReleases')
     deleteReleases = MultiCheckboxField('deleteReleases')
@@ -159,9 +124,9 @@ def noneFilter(value):
 
 
 class ReleaseForm(Form):
-    version = SuggestableStringField('Version:', validators=[Regexp(ANY_VERSION_REGEX, message='Invalid version format.')])
+    version = StringField('Version:', validators=[Regexp(ANY_VERSION_REGEX, message='Invalid version format.')])
     buildNumber = IntegerField('Build Number:', validators=[DataRequired('Build number is required.')])
-    branch = SuggestableStringField('Branch:', validators=[DataRequired('Branch is required')])
+    branch = StringField('Branch:', validators=[DataRequired('Branch is required')])
     mozillaRevision = StringField('Mozilla Revision:', validators=[DataRequired('Mozilla revision is required.')])
     dashboardCheck = BooleanField('Dashboard check?', default=True)
     mozillaRelbranch = StringField('Mozilla Relbranch:', filters=[noneFilter])
@@ -169,27 +134,25 @@ class ReleaseForm(Form):
     def __init__(self, suggest=True, *args, **kwargs):
         Form.__init__(self, *args, **kwargs)
         if suggest:
-            self.calculateSuggestions()
+            self.addSuggestions()
 
-    def calculateSuggestions(self):
-        # branch suggestion
+    def addSuggestions(self):
         table = getReleaseTable(self.product.data)
         recentReleases = table.getRecent()
+
+        # branch
         branches = list(set([r.branch for r in recentReleases]))
-        self.branch.suggestions = branches
+        self.branch.suggestions = json.dumps(branches)
 
         # version
         recentVersions = set([r.version for r in recentReleases])
-        versions = set()
+        versions = {}
         for version in recentVersions:
             for v in getPossibleNextVersions(version):
                 if v not in recentVersions:
-                    versions.add(v)
-        self.version.suggestions = versions
+                    versions[v] = 1
+        self.version.suggestions = json.dumps(versions)
 
-        # build number
-
-        # partials
 
 class FennecReleaseForm(ReleaseForm):
     product = HiddenField('product')
