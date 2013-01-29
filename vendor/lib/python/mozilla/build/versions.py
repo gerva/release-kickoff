@@ -24,7 +24,10 @@ def getPossibleNextVersions(version):
     ret = set()
     # Get the parts we care about from the version. The last group is the 'pre'
     # tag, which doesn't affect our work.
-    base, beta, _, esr = re.match(ANY_VERSION_REGEX, version).groups()[:4]
+    m = re.match(ANY_VERSION_REGEX, version)
+    if not m:
+        return ret
+    base, beta, _, esr = m.groups()[:4]
     # The next major version is used in a couple of places, so we figure it out
     # ahead of time. Eg: 17.0 -> 18.0 or 15.0.3 -> 16.0
     nextMajorVersion = increment(base.split('.')[0]) + '.0'
