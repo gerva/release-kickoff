@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 
 import pytz
 
+from sqlalchemy import func
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from mozilla.release.info import getReleaseName
@@ -74,6 +75,13 @@ class Release(object):
     def getRecent(cls, since=timedelta(weeks=7)):
         since = datetime.now() - since
         return cls.query.filter(cls._submittedAt > since).all()
+
+    @classmethod
+    def getMaxBuildNumber(cls, version):
+        return cls.query \
+            .with_entities(func.max(cls.buildNumber)) \
+            .filter_by(version=version) \
+            .one()[0]
 
     def __repr__(self):
         return '<Release %r>' % self.name

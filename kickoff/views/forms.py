@@ -2,8 +2,6 @@ from ast import literal_eval
 import logging
 import simplejson as json
 
-from sqlalchemy import func
-
 from flask.ext.wtf import SelectMultipleField, ListWidget, CheckboxInput, \
     Form, BooleanField, StringField, Length, TextAreaField, DataRequired, \
     IntegerField, HiddenField, Regexp, TextInput
@@ -152,10 +150,7 @@ class ReleaseForm(Form):
                 if v not in recentVersions:
                     versions.add(v)
             if release.version not in buildNumbers:
-                maxBuildNumber = (table.query
-                    .with_entities(func.max(table.buildNumber))
-                    .filter_by(version=release.version)
-                    .one())[0]
+                maxBuildNumber = table.getMaxBuildNumber(release.version)
                 buildNumbers[release.version] = maxBuildNumber + 1
         self.branch.suggestions = json.dumps(list(branches))
         self.version.suggestions = json.dumps(list(versions))
@@ -210,9 +205,14 @@ class DesktopReleaseForm(ReleaseForm):
         table = getReleaseTable(self.product.data)
         recentReleases = table.getRecent()
         partials = {}
-        for release in recentReleases:
+        # Because we sort in reverse order (by build number) it's easy
+        # to skip over duplicate version numbers inside the loop while
+        # ensuring we use the highest build number.
+        for release in sorted(recentReleases, key=lambda x: 'buildNumber', reverse=True):
             if release.branch not in partials:
-                partials[release.branch] = ['a', 'b', 'c']
+                partials[release.branch] = []
+            if release.version not in partials[release.branch]:
+                partials[release.branch].append('%sbuild%d' % (release.version, release.buildNumber))
         self.partials.suggestions = json.dumps(partials)
 
 
