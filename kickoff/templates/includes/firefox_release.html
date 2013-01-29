@@ -1,3 +1,12 @@
+<script type='text/javascript'>
+$(document).ready(function() {
+    addVersionSuggestions(
+        $('#{{ firefoxForm.version.id }}'),
+        $('#{{ firefoxForm.buildNumber.id }}'),
+        {{ firefoxForm.version.suggestions|safe }}
+    );
+})
+</script>
 {{ firefoxForm.hidden_tag() }}
 <div>
     {{ firefoxForm.version.label()|safe }}

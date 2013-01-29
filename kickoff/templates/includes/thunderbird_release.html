@@ -1,3 +1,12 @@
+<script type='text/javascript'>
+$(document).ready(function() {
+    addVersionSuggestions(
+        $('#{{ thunderbirdForm.version.id }}'),
+        $('#{{ thunderbirdForm.buildNumber.id }}'),
+        {{ thunderbirdForm.version.suggestions|safe }}
+    );
+})
+</script>
 {{ thunderbirdForm.hidden_tag() }}
 <div>
     {{ thunderbirdForm.version.label()|safe }}
