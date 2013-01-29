@@ -5,7 +5,6 @@ from mozilla.release.info import isFinalRelease
 # Regex that matches all possible versions and milestones
 ANY_VERSION_REGEX =\
     ('(\d+\.\d[\d\.]*)'  # A version number
-    '([a-zA-Z]+\d+)?'    # Might be a project branch
     '((a|b)\d+)?'        # Might be an alpha or beta
     '(esr)?'             # Might be an esr
     '(pre)?')            # Might be a 'pre' (nightly) version
@@ -25,7 +24,7 @@ def getPossibleNextVersions(version):
     ret = set()
     # Get the parts we care about from the version. The last group is the 'pre'
     # tag, which doesn't affect our work.
-    base, beta, _, _, esr = re.match(ANY_VERSION_REGEX, version).groups()[:5]
+    base, beta, _, esr = re.match(ANY_VERSION_REGEX, version).groups()[:4]
     # The next major version is used in a couple of places, so we figure it out
     # ahead of time. Eg: 17.0 -> 18.0 or 15.0.3 -> 16.0
     nextMajorVersion = increment(base.split('.')[0]) + '.0'
