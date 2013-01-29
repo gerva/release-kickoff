@@ -2,8 +2,13 @@
 $(document).ready(function() {
     addVersionSuggestions(
         $('#{{ thunderbirdForm.version.id }}'),
+        {{ thunderbirdForm.version.suggestions|safe }},
         $('#{{ thunderbirdForm.buildNumber.id }}'),
-        {{ thunderbirdForm.version.suggestions|safe }}
+        {{ thunderbirdForm.buildNumber.suggestions|safe }}
+    );
+    addBranchSuggestions(
+        $('#{{ thunderbirdForm.branch.id }}'),
+        {{ thunderbirdForm.branch.suggestions|safe }}
     );
 })
 </script>

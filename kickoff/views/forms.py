@@ -2,6 +2,8 @@ from ast import literal_eval
 import logging
 import simplejson as json
 
+from sqlalchemy import func
+
 from flask.ext.wtf import SelectMultipleField, ListWidget, CheckboxInput, \
     Form, BooleanField, StringField, Length, TextAreaField, DataRequired, \
     IntegerField, HiddenField, Regexp, TextInput
@@ -139,20 +141,25 @@ class ReleaseForm(Form):
     def addSuggestions(self):
         table = getReleaseTable(self.product.data)
         recentReleases = table.getRecent()
+        recentVersions = [r.version for r in recentReleases]
+        branches = []
+        versions = set()
+        buildNumbers = {}
 
-        # branch
-        branches = list(set([r.branch for r in recentReleases]))
-        self.branch.suggestions = json.dumps(branches)
-
-        # version
-        recentVersions = set([r.version for r in recentReleases])
-        versions = {}
-        for version in recentVersions:
-            for v in getPossibleNextVersions(version):
+        for release in recentReleases:
+            branches.append(release.branch)
+            for v in getPossibleNextVersions(release.version):
                 if v not in recentVersions:
-                    versions[v] = 1
-        self.version.suggestions = json.dumps(versions)
-
+                    versions.add(v)
+            if release.version not in buildNumbers:
+                maxBuildNumber = (table.query
+                    .with_entities(func.max(table.buildNumber))
+                    .filter_by(version=release.version)
+                    .one())[0]
+                buildNumbers[release.version] = maxBuildNumber + 1
+        self.branch.suggestions = json.dumps(branches)
+        self.version.suggestions = json.dumps(list(versions))
+        self.buildNumber.suggestions = json.dumps(buildNumbers)
 
 class FennecReleaseForm(ReleaseForm):
     product = HiddenField('product')

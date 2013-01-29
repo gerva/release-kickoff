@@ -2,8 +2,13 @@
 $(document).ready(function() {
     addVersionSuggestions(
         $('#{{ firefoxForm.version.id }}'),
+        {{ firefoxForm.version.suggestions|safe }},
         $('#{{ firefoxForm.buildNumber.id }}'),
-        {{ firefoxForm.version.suggestions|safe }}
+        {{ firefoxForm.buildNumber.suggestions|safe }}
+    );
+    addBranchSuggestions(
+        $('#{{ firefoxForm.branch.id }}'),
+        {{ firefoxForm.branch.suggestions|safe }}
     );
 })
 </script>

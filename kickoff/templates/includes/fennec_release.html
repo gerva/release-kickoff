@@ -2,8 +2,13 @@
 $(document).ready(function() {
     addVersionSuggestions(
         $('#{{ fennecForm.version.id }}'),
+        {{ fennecForm.version.suggestions|safe }},
         $('#{{ fennecForm.buildNumber.id }}'),
-        {{ fennecForm.version.suggestions|safe }}
+        {{ fennecForm.buildNumber.suggestions|safe }}
+    );
+    addBranchSuggestions(
+        $('#{{ fennecForm.branch.id }}'),
+        {{ fennecForm.branch.suggestions|safe }}
     );
 })
 </script>
