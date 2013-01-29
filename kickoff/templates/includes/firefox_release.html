@@ -8,7 +8,9 @@ $(document).ready(function() {
     );
     addBranchSuggestions(
         $('#{{ firefoxForm.branch.id }}'),
-        {{ firefoxForm.branch.suggestions|safe }}
+        {{ firefoxForm.branch.suggestions|safe }},
+        $('#{{ firefoxForm.partials.id }}'),
+        {{ firefoxForm.partials.suggestions|safe }}
     );
 })
 </script>

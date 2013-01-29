@@ -8,7 +8,9 @@ $(document).ready(function() {
     );
     addBranchSuggestions(
         $('#{{ thunderbirdForm.branch.id }}'),
-        {{ thunderbirdForm.branch.suggestions|safe }}
+        {{ thunderbirdForm.branch.suggestions|safe }},
+        $('#{{ thunderbirdForm.partials.id }}'),
+        {{ thunderbirdForm.partials.suggestions|safe }}
     );
 })
 </script>

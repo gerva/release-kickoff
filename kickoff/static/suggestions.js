@@ -33,9 +33,9 @@ function addVersionSuggestions(versionElement, versionSuggestions, buildNumberEl
     });
 }
 
-function addBranchSuggestions(branchElement, suggestions) {
+function addBranchSuggestions(branchElement, branchSuggestions, partialsElement, partialsSuggestions) {
     branchElement.autocomplete({
-        source: suggestions,
+        source: branchSuggestions,
         minLength: 0,
         delay: 0,
         position: {
@@ -47,7 +47,48 @@ function addBranchSuggestions(branchElement, suggestions) {
     }).focus(function() {
         $(this).autocomplete('search');
     });
+    if (partialsElement != null) {
+        function populatePartials(branch) {
+            partialsElement.autocomplete({
+                source: function(request, response) {
+                    response($.ui.autocomplete.filter(
+                        partialsSuggestions[branch], extractLast(request.term)
+                    ));
+                },
+                minLength: 0,
+                delay: 0,
+                position: {
+                    my: 'left',
+                    at: 'right',
+                    of: partialsElement,
+                    collision: 'flip',
+                },
+                select: function(event, ui) {
+                    var terms = split(this.value);
+                    terms.pop();
+                    terms.push(ui.item.value);
+                    this.value = terms.join(", ");
+                    return false;
+                }
+            }).focus(function() {
+                $(this).autocomplete('search');
+                // prevent value inserted on focus
+                return false;
+            });
+        }
+        branchElement.on('autocompleteselect', function(event, ui) {
+            populatePartials(ui.item.value);
+        });
+        branchElement.on('autocompletechange', function() {
+            populatePartials(this.value);
+        });
+    }
 }
 
-function addPartialsSuggestions(partialsElement, suggestions) {
+function split(val) {
+    return val.split(/,\s*/);
+}
+
+function extractLast(term) {
+    return split(term).pop();
 }

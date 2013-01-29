@@ -142,12 +142,12 @@ class ReleaseForm(Form):
         table = getReleaseTable(self.product.data)
         recentReleases = table.getRecent()
         recentVersions = [r.version for r in recentReleases]
-        branches = []
+        branches = set()
         versions = set()
         buildNumbers = {}
 
         for release in recentReleases:
-            branches.append(release.branch)
+            branches.add(release.branch)
             for v in getPossibleNextVersions(release.version):
                 if v not in recentVersions:
                     versions.add(v)
@@ -157,7 +157,7 @@ class ReleaseForm(Form):
                     .filter_by(version=release.version)
                     .one())[0]
                 buildNumbers[release.version] = maxBuildNumber + 1
-        self.branch.suggestions = json.dumps(branches)
+        self.branch.suggestions = json.dumps(list(branches))
         self.version.suggestions = json.dumps(list(versions))
         self.buildNumber.suggestions = json.dumps(buildNumbers)
 
@@ -204,6 +204,16 @@ class DesktopReleaseForm(ReleaseForm):
     )
     promptWaitTime = NullableIntegerField('Update prompt wait time:')
     l10nChangesets = PlainChangesetsField('L10n Changesets:', validators=[DataRequired('L10n Changesets are required.')])
+
+    def addSuggestions(self):
+        ReleaseForm.addSuggestions(self)
+        table = getReleaseTable(self.product.data)
+        recentReleases = table.getRecent()
+        partials = {}
+        for release in recentReleases:
+            if release.branch not in partials:
+                partials[release.branch] = ['a', 'b', 'c']
+        self.partials.suggestions = json.dumps(partials)
 
 
 class FirefoxReleaseForm(DesktopReleaseForm):
