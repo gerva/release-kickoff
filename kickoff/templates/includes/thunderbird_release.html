@@ -1,12 +1,12 @@
 <script type='text/javascript'>
 $(document).ready(function() {
-    addVersionSuggestions(
+    setupVersionSuggestions(
         $('#{{ thunderbirdForm.version.id }}'),
         {{ thunderbirdForm.version.suggestions|safe }},
         $('#{{ thunderbirdForm.buildNumber.id }}'),
         {{ thunderbirdForm.buildNumber.suggestions|safe }}
     );
-    addBranchSuggestions(
+    setupBranchSuggestions(
         $('#{{ thunderbirdForm.branch.id }}'),
         {{ thunderbirdForm.branch.suggestions|safe }},
         $('#{{ thunderbirdForm.partials.id }}'),

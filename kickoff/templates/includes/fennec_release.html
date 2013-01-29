@@ -1,12 +1,12 @@
 <script type='text/javascript'>
 $(document).ready(function() {
-    addVersionSuggestions(
+    setupVersionSuggestions(
         $('#{{ fennecForm.version.id }}'),
         {{ fennecForm.version.suggestions|safe }},
         $('#{{ fennecForm.buildNumber.id }}'),
         {{ fennecForm.buildNumber.suggestions|safe }}
     );
-    addBranchSuggestions(
+    setupBranchSuggestions(
         $('#{{ fennecForm.branch.id }}'),
         {{ fennecForm.branch.suggestions|safe }}
     );

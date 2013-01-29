@@ -72,12 +72,14 @@ class Release(object):
         self.name = getReleaseName(self.product, self.version, self.buildNumber)
 
     @classmethod
-    def getRecent(cls, since=timedelta(weeks=7)):
-        since = datetime.now() - since
+    def getRecent(cls, age=timedelta(weeks=7)):
+        """Returns all releases of 'age' or newer."""
+        since = datetime.now() - age
         return cls.query.filter(cls._submittedAt > since).all()
 
     @classmethod
     def getMaxBuildNumber(cls, version):
+        """Returns the highest build number known for the version provided."""
         return cls.query \
             .with_entities(func.max(cls.buildNumber)) \
             .filter_by(version=version) \

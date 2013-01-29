@@ -1,21 +1,22 @@
-function addVersionSuggestions(versionElement, versionSuggestions, buildNumberElement, buildNumberSuggestions) {
-    versionSuggestions.sort(function(a, b) {
+function setupVersionSuggestions(versionElement, versions, buildNumberElement, buildNumbers) {
+    versions.sort(function(a, b) {
         return a > b;
     });
-    // We need to fire this for two different events
-    // so it must be defined up here.
+    // We need to fire this both when a version is selected
+    // from the suggestions and when it is entered manually,
+    // so we need this in a named function.
     function populateBuildNumber(version) {
         // If we have a build number for the version we're given, use it!
-        if (buildNumberSuggestions.hasOwnProperty(version)) {
-            buildNumberElement.val(buildNumberSuggestions[version]);
+        if (buildNumbers.hasOwnProperty(version)) {
+            buildNumberElement.val(buildNumbers[version]);
         }
-        // If not, reset to nothing to help avoid accidentally using a bad value
+        // If not, it's probably "1"
         else {
             buildNumberElement.val('1');
         }
     }
     versionElement.autocomplete({
-        source: versionSuggestions,
+        source: versions,
         minLength: 0,
         delay: 0,
         // Put the autocomplete drop down to the right of the field, unless
@@ -36,12 +37,12 @@ function addVersionSuggestions(versionElement, versionSuggestions, buildNumberEl
     });
 }
 
-function addBranchSuggestions(branchElement, branchSuggestions, partialsElement, partialsSuggestions) {
-    branchSuggestions.sort(function(a, b) {
+function setupBranchSuggestions(branchElement, branches, partialsElement, partials) {
+    branches.sort(function(a, b) {
         return a > b;
     });
     branchElement.autocomplete({
-        source: branchSuggestions,
+        source: branches,
         minLength: 0,
         delay: 0,
         position: {
@@ -53,16 +54,22 @@ function addBranchSuggestions(branchElement, branchSuggestions, partialsElement,
     }).focus(function() {
         $(this).autocomplete('search');
     });
+    // Not all types of releases can have partials
     if (partialsElement != null) {
+        // We don't know what partials we want until the branch is selected,
+        // so all of the partials autocomplete setup needs to be done after
+        // branch is selected/entered.
+        // Most of this is taken directly from the jquery-ui example at:
+        // http://jqueryui.com/autocomplete/#multiple
         function populatePartials(branch) {
             partialsElement.autocomplete({
                 source: function(request, response) {
-                    var suggest = partialsSuggestions[branch];
-                    suggest.sort(function(a, b) {
+                    var suggestions = partials[branch];
+                    suggestions.sort(function(a, b) {
                         return a > b;
                     });
                     response($.ui.autocomplete.filter(
-                        suggest, extractLast(request.term)
+                        suggestions, extractLast(request.term)
                     ));
                 },
                 minLength: 0,
@@ -95,6 +102,7 @@ function addBranchSuggestions(branchElement, branchSuggestions, partialsElement,
     }
 }
 
+// Helper methods for the partials' autocomplete.
 function split(val) {
     return val.split(/,\s*/);
 }

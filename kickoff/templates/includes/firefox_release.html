@@ -1,12 +1,12 @@
 <script type='text/javascript'>
 $(document).ready(function() {
-    addVersionSuggestions(
+    setupVersionSuggestions(
         $('#{{ firefoxForm.version.id }}'),
         {{ firefoxForm.version.suggestions|safe }},
         $('#{{ firefoxForm.buildNumber.id }}'),
         {{ firefoxForm.buildNumber.suggestions|safe }}
     );
-    addBranchSuggestions(
+    setupBranchSuggestions(
         $('#{{ firefoxForm.branch.id }}'),
         {{ firefoxForm.branch.suggestions|safe }},
         $('#{{ firefoxForm.partials.id }}'),
