@@ -1,4 +1,7 @@
 function addVersionSuggestions(versionElement, versionSuggestions, buildNumberElement, buildNumberSuggestions) {
+    versionSuggestions.sort(function(a, b) {
+        return a > b;
+    });
     // We need to fire this for two different events
     // so it must be defined up here.
     function populateBuildNumber(version) {
@@ -34,6 +37,9 @@ function addVersionSuggestions(versionElement, versionSuggestions, buildNumberEl
 }
 
 function addBranchSuggestions(branchElement, branchSuggestions, partialsElement, partialsSuggestions) {
+    branchSuggestions.sort(function(a, b) {
+        return a > b;
+    });
     branchElement.autocomplete({
         source: branchSuggestions,
         minLength: 0,
@@ -51,8 +57,12 @@ function addBranchSuggestions(branchElement, branchSuggestions, partialsElement,
         function populatePartials(branch) {
             partialsElement.autocomplete({
                 source: function(request, response) {
+                    var suggest = partialsSuggestions[branch];
+                    suggest.sort(function(a, b) {
+                        return a > b;
+                    });
                     response($.ui.autocomplete.filter(
-                        partialsSuggestions[branch], extractLast(request.term)
+                        suggest, extractLast(request.term)
                     ));
                 },
                 minLength: 0,
