@@ -81,7 +81,7 @@ function setupBranchSuggestions(branchElement, branches, partialsElement, partia
                     collision: 'flip',
                 },
                 select: function(event, ui) {
-                    var terms = split(this.value);
+                    var terms = this.value.split(/,\s*/);
                     terms.pop();
                     terms.push(ui.item.value);
                     this.value = terms.join(", ");
@@ -102,11 +102,6 @@ function setupBranchSuggestions(branchElement, branches, partialsElement, partia
     }
 }
 
-// Helper methods for the partials' autocomplete.
-function split(val) {
-    return val.split(/,\s*/);
-}
-
 function extractLast(term) {
-    return split(term).pop();
+    return term.split(/,\s*/).pop();
 }
