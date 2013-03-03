@@ -19,28 +19,37 @@ class SubmitRelease(MethodView):
         # We need copies of all the forms to reprint the page if there's any
         # errors. The form that was actually submitted will get overridden with
         # data later on.
-        forms = {
-            'fennecForm': FennecReleaseForm(formdata=None),
-            'firefoxForm': FirefoxReleaseForm(formdata=None),
-            'thunderbirdForm': ThunderbirdReleaseForm(formdata=None)
-        }
         for field, value in request.form.items():
             if field.endswith('product'):
                 product = value
                 break
 
+        def getForms(prduct, form):
+            try:
+                return form(getReleaseForm(product))
+            except ValueError:
+                return form(formdata=None)
+
+        forms = {
+            'fennecForm': getForms('fennec', FennecReleaseForm),
+            'firefoxForm': getForms('firefox', FirefoxReleaseForm),
+            'thunderbirdForm': getForms('thuderbird', ThunderbirdReleaseForm)
+        }
         try:
             form = getReleaseForm(product)()
         except ValueError:
             cef_event('User Input Failed', CEF_ALERT, ProductName=product)
-            return Response(status=400, response="Unknown product name '%s'" % product)
+            return Response(response="Unknown product name '%s'" % product,
+                            status=400)
         errors = []
         if not form.validate():
             cef_event('User Input Failed', CEF_INFO, **form.errors)
             for error in form.errors.values():
                 errors.extend(error)
+            errors.append(product)
         if errors:
-            return make_response(render_template('submit_release.html', errors=errors, **forms), 400)
+            return make_response(render_template('submit_release.html',
+                                                 errors=errors, **forms), 400)
 
         table = getReleaseTable(form.product.data)
         release = table.createFromForm(submitter, form)
