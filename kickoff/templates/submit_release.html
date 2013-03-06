@@ -5,6 +5,24 @@
     <li class='error'>{{ e }}</li>
     {% endfor %}
 </ul>
+<form>
+    <input type="button" value="Show Advanced Options" onclick="switchView(this);">
+</form>
+<script>
+$(document).ready(function(){
+    /* when page loads, hide <div class='advanced'> */
+    $(".advanced").hide()
+;})
+
+function switchView(button) {
+  if (button.value == "Show Advanced Options") {
+    button.value = "Show Basic Options";
+  } else {
+    button.value = "Show Advanced Options";
+  }
+  $(".advanced").toggle();
+}
+</script>
 <div id='column_container'>
 <div>
     <h3>Fennec</h3>
