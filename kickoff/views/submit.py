@@ -19,16 +19,17 @@ class SubmitRelease(MethodView):
         # We need copies of all the forms to reprint the page if there's any
         # errors. The form that was actually submitted will get overridden with
         # data later on.
-        for field, value in request.form.items():
-            if field.endswith('product'):
-                product = value
-                break
-
         forms = {
             'fennecForm': FennecReleaseForm(formdata=None),
             'firefoxForm': FirefoxReleaseForm(formdata=None),
             'thunderbirdForm': ThunderbirdReleaseForm(formdata=None),
         }
+
+        for field, value in request.form.items():
+            if field.endswith('product'):
+                product = value
+                break
+
         try:
             form = getReleaseForm(product)()
         except ValueError:
