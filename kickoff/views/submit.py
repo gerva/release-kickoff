@@ -24,16 +24,10 @@ class SubmitRelease(MethodView):
                 product = value
                 break
 
-        def getForms(prduct, form):
-            try:
-                return form(getReleaseForm(product))
-            except ValueError:
-                return form(formdata=None)
-
         forms = {
-            'fennecForm': getForms('fennec', FennecReleaseForm),
-            'firefoxForm': getForms('firefox', FirefoxReleaseForm),
-            'thunderbirdForm': getForms('thuderbird', ThunderbirdReleaseForm)
+            'fennecForm': FennecReleaseForm(formdata=None),
+            'firefoxForm': FirefoxReleaseForm(formdata=None),
+            'thunderbirdForm': ThunderbirdReleaseForm(formdata=None),
         }
         try:
             form = getReleaseForm(product)()
