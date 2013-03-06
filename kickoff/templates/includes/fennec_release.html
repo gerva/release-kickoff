@@ -33,10 +33,6 @@ $(document).ready(function() {
     {{ fennecForm.mozillaRevision.label()|safe }}
     {{ fennecForm.mozillaRevision(placeholder='abcdef123456')|safe }}
 </div>
-<div class="advanced">
-    {{ fennecForm.mozillaRelbranch.label()|safe }}
-    {{ fennecForm.mozillaRelbranch(title='The relbranch to put version bumps/tags for this release on. If not specified, one will be generated automatically.')|safe }}
-</div>
 <div>
     {{ fennecForm.dashboardCheck.label()|safe }}
     {{ fennecForm.dashboardCheck(title='Whether or not to ensure that the changesets given in the form match the ones on the dashboard. Generally only used for betas.')|safe }}
@@ -44,4 +40,8 @@ $(document).ready(function() {
 <div>
     {{ fennecForm.l10nChangesets.label()|safe }}
     {{ fennecForm.l10nChangesets(placeholder='{"ca": {"revision": "abcdef123456", "platforms": ["android"]}', title='The l10n changesets, in JSON format. Generally these are copied and pasted from elsewhere.')|safe }}
+</div>
+<div class="advanced">
+    {{ fennecForm.mozillaRelbranch.label()|safe }}
+    {{ fennecForm.mozillaRelbranch(title='The relbranch to put version bumps/tags for this release on. If not specified, one will be generated automatically.')|safe }}
 </div>
