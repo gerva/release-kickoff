@@ -22,7 +22,7 @@ class SubmitRelease(MethodView):
         forms = {
             'fennecForm': FennecReleaseForm(formdata=None),
             'firefoxForm': FirefoxReleaseForm(formdata=None),
-            'thunderbirdForm': ThunderbirdReleaseForm(formdata=None),
+            'thunderbirdForm': ThunderbirdReleaseForm(formdata=None)
         }
 
         for field, value in request.form.items():
@@ -42,6 +42,7 @@ class SubmitRelease(MethodView):
             for error in form.errors.values():
                 errors.extend(error)
         if errors:
+            forms['{0}Form'.format(product)] = getReleaseForm(product)()
             return make_response(render_template('submit_release.html',
                                                  errors=errors, **forms), 400)
 
