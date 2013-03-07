@@ -55,16 +55,17 @@ $(document).ready(function() {
     {{ thunderbirdForm.l10nChangesets.label()|safe }}
     {{ thunderbirdForm.l10nChangesets(placeholder='ru abcdef123456', title='The l10n changesets, in release automation format.')|safe }}
 </div>
-<div class="advanced"><hr></div>
 <div class="advanced">
+<div>
     {{ thunderbirdForm.mozillaRelbranch.label()|safe }}
     {{ thunderbirdForm.mozillaRelbranch(title='The relbranch to put version bumps/tags for this release on. If not specified, one will be generated automatically.')|safe }}
 </div>
-<div class="advanced">
+<div>
     {{ thunderbirdForm.promptWaitTime.label()|safe }}
     {{ thunderbirdForm.promptWaitTime(title='Amount of time to wait before prompting users to apply the update to this release. Not specifying this will use the default value as specified in the application.')|safe }}
 </div>
-<div class="advanced">
+<div>
     {{ thunderbirdForm.commRelbranch.label()|safe }}
     {{ thunderbirdForm.commRelbranch(title='The relbranch to put version bumps/tags for this release on. If not specified, one will be generated automatically.')|safe }}
 </div>
+</div> <!-- advanced -->
