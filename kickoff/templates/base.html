@@ -2,14 +2,30 @@
 <html lang='en-US'>
 <head>
 <title>Ship it!</title>
+<!--
 <link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="kickoff.css") }}' />
+-->
 <link rel='icon' href="{{ url_for('static', filename='favicon.ico') }}" />
-<link rel='stylesheet' type='text/css' media='all' href='{{ url_for("static", filename="jquery-ui-1.10.0.custom.min.css") }}' />
 <script type='text/javascript' src='{{ url_for("static", filename="suggestions.js") }}'></script>
-<script type='text/javascript' src='{{ url_for("static", filename="jquery-1.9.0.js") }}'></script>
-<script type='text/javascript' src='{{ url_for("static", filename="jquery-ui-1.10.0.custom.min.js") }}'></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css" />
+<script>
+$(function() {
+  $( "#tabs" ).tabs();
+});
+</script>
 </head>
 <body>
+<div id="radioset" class="ui-buttonset">
+  <input id="radio1" class="ui-helper-hidden-accessible" type="radio" name="radio"></input>
+  <label class="ui-button ui-widget ui-state-default ui-button-text-only ui-corner-left ui-state-active" for="radio1" role="button" aria-disabled="false" aria-pressed="true">
+  <span class="ui-button-text">Submit a new release</span>
+   </label>
+  <label class="ui-button ui-widget ui-state-default ui-button-text-only ui-corner-left ui-state-active" for="radio2" role="button" aria-disabled="false" aria-pressed="true">
+  <span class="ui-button-text">View releases</span>
+   </label>
 <ul id='nav'>
     <li><a href='{{ url_for('submit_release') }}'>Submit a new release</a></li>
     <li><a href='{{ url_for('releases') }}'>View releases</a></li>
