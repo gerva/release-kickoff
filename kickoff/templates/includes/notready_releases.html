@@ -1,4 +1,4 @@
-{% block notready %}
+<table id="releases">
 <form id='release_readyness' action='{{ url_for('releases') }}' method='post'>
 <table id="releases">
 {{ form.hidden_tag() }}
@@ -79,4 +79,3 @@
 {% endfor %}
 <input type='submit' value='Do eet!' /></form>
 </table>
-{% endblock %}
