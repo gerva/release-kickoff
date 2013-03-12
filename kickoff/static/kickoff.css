@@ -56,3 +56,9 @@ tr:last-child
 {
    border-bottom: none;
 }
+
+#edit_container {
+    font-family: Verdana,Arial,sans-serif;
+    font-size: 1.1em;
+    width: 70%;
+}
