@@ -12,28 +12,26 @@
 <!-- css -->
 <link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="jquery-ui-1.10.0.custom.min.css") }}' />
 <link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="jquery-ui.css") }}' />
+<link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="jquery-ui.css1") }}' />
 <link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="kickoff.css") }}' />
 <script>
 $(function() {
   $( "#tabs" ).tabs();
-  $( "#radio" ).buttonset();
 });
 </script>
 </head>
 <body>
 <h1>Ship it</h1>
-<form>
 <div id="radio">
-<input type="radio" id="new_release" name="radio" />
-  <a href='{{ url_for('submit_release') }}'>
-    <label for="new_release">Submit a new release</label>
-  </a>
-<input type="radio" id="submit_release" name="radio" />
-  <a href='{{ url_for('releases') }}'>
-    <label for="submit_release">View Releases</label>
-  </a>
+  <input type="radio" id="submitrelease" name="radio" onclick='document.location="{{ url_for('submit_release') }}";'/>
+  <label for="submitrelease">Submit a new release</label>
+  <input type="radio" id="viewreleases" name="radio" onclick='document.location="{{ url_for('releases') }}";'/>
+  <label for="viewreleases">View Releases</label>
 </div> <!--radio -->
-</form>
+<script>
+$( "#radio" ).buttonset();
+</script>
+
 {% block content %}{% endblock %}
 </body>
 </html>
