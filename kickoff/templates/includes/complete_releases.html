@@ -1,5 +1,5 @@
 <table id="releases">
-{% for rel in releases if rel.ready and rel.complete %}
+<thead>
 <tr>
     <th>Name</th>
     <th>Submitted By</th>
@@ -17,6 +17,8 @@
     <th>Status</th>
     <th>Delete?</th>
 </tr>
+</thead>
+{% for rel in releases if rel.ready and rel.complete %}
 <tr class='complete'>
   <td>{{ rel.name }}</td>
   <td>{{ rel.submitter }}</td>

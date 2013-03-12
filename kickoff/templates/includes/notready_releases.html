@@ -1,8 +1,8 @@
 {% block notready %}
-<table id="releases">
 <form id='release_readyness' action='{{ url_for('releases') }}' method='post'>
+<table id="releases">
 {{ form.hidden_tag() }}
-
+<thead>
 <tr>
   <th>Name</th>
   <th>Submitted By</th>
@@ -17,9 +17,9 @@
   <th>Partial Versions</th>
   <th>Update Prompt Wait Time</th>
   <th>Ready?</th>
-  <th>Status</th>
   <th>Delete?</th>
 </tr>
+</thead>
 {% for rel in releases if not rel.ready %}
 <tr>
   <td><a href="/release.html?name={{ rel.name }}">{{ rel.name }}</a></td>
@@ -68,7 +68,6 @@
   <td>
     <input id='readyReleases_{{ rel.name }}' type='checkbox' name='readyReleases' value='{{ rel.name }}' />
   </td>
-  <td>{{ rel.status }}</td>
   <td>
   {% if not rel.complete %}
     <input id='deleteReleases_{{ rel.name }}' type='checkbox' name='deleteReleases' value='{{ rel.name }}' onclick='disableReady("{{ rel.name }}")' />
