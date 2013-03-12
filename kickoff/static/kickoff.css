@@ -26,6 +26,7 @@ input[type=text] {
 div#viewtabs {
     width: 50%;
     margin: 0px auto;
+    display: inline-block;
     text-align: center;
     background: black;
 }

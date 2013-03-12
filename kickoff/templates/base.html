@@ -2,35 +2,38 @@
 <html lang='en-US'>
 <head>
 <title>Ship it!</title>
-<!--
--->
-<link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="kickoff.css") }}' />
+<!-- favicon -->
 <link rel='icon' href="{{ url_for('static', filename='favicon.ico') }}" />
-<script type='text/javascript' src='{{ url_for("static", filename="suggestions.js") }}'></script>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
-<link rel="stylesheet" href="/resources/demos/style.css" />
+<!-- js -->
+<script type='text/javascript' src="{{ url_for("static", filename="suggestions.js") }}"></script>
+<script type='text/javascript' src="{{ url_for("static", filename="jquery-ui-1.10.0.custom.min.js") }}"></script>
+<script type='text/javascript' src="{{ url_for("static", filename="jquery-1.9.1.js") }}"></script>
+<script type='text/javascript' src="{{ url_for("static", filename="jquery-ui.js") }}"></script>
+<!-- css -->
+<link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="jquery-ui-1.10.0.custom.min.css") }}' />
+<link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="jquery-ui.css") }}' />
+<link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="kickoff.css") }}' />
 <script>
 $(function() {
   $( "#tabs" ).tabs();
+  $( "#radio" ).buttonset();
 });
 </script>
 </head>
 <body>
 <h1>Ship it</h1>
-<div class="topmenu">
-<div class="ui-buttonset" id="viewtabs">
-    <input class="ui-helper-hidden-accessible" id="menu-slaves" name="viewmenu" type="radio">
-    <label role="button" class="ui-button ui-widget ui-state-default ui-button-text-only ui-corner-left" aria-pressed="false" value='{{ url_for('submit_release') }}'>
-      <a href='{{ url_for('submit_release') }}'>  <span class="ui-button-text">Submit a new release</span></a>
-    </label>
-    <input class="ui-helper-hidden-accessible" id="menu-masters" name="viewmenu" type="radio" >
-    <label role="button" class="ui-button ui-widget ui-state-default ui-button-text-only ui-corner-right" aria-pressed="false" value='{{ url_for('releases') }}'>
-        <a href='{{ url_for('releases') }}'>  <span class="ui-button-text">View releases</span></a>
-   </label>
-</div>
-</div><!-- topmenu -->
+<form>
+<div id="radio">
+<input type="radio" id="new_release" name="radio" />
+  <a href='{{ url_for('submit_release') }}'>
+    <label for="new_release">Submit a new release</label>
+  </a>
+<input type="radio" id="submit_release" name="radio" />
+  <a href='{{ url_for('releases') }}'>
+    <label for="submit_release">View Releases</label>
+  </a>
+</div> <!--radio -->
+</form>
 {% block content %}{% endblock %}
 </body>
 </html>
