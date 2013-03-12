@@ -5,27 +5,6 @@
     <li class='error'>{{ e }}</li>
     {% endfor %}
 </ul>
-<form>
-  <input id="switchView" type="button" value="Show Advanced Options" onclick="switchView(this);">
-</form>
-<script>
- $(document).ready(function(){
-    /* when page loads, hide <div class='advanced'> */
-    $(".advanced").hide();
-;})
-}
-</script>
-<script>
-function switchView(button) {
-  if (button.value == "Show Advanced Options") {
-    button.value = "Hide Advanced Options";
-  } else {
-    button.value = "Show Advanced Options";
-  }
-  $(".advanced").fadeToggle();
-}
-</script>
-
 <div id='tabs'>
   <ul>
       {% for prod in ('fennec', 'firefox', 'thunderbird') %}
@@ -34,7 +13,7 @@ function switchView(button) {
   </ul>
   {% for prod in ('fennec', 'firefox', 'thunderbird') %}
   <div id={{prod}} >
-      <h3>{{prod|capitalize}}</h3>
+    <h3>{{prod|capitalize}}</h3>
     <form class='submit_release_form' action='{{ url_for('submit_release') }}' method='post'>
     {% set product_template = 'includes/' + prod + '_release.html' %}
     {% include product_template %}
