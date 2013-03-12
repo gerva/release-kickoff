@@ -15,7 +15,6 @@ input[type=text] {
 }
 
 .topmenu {
-    background: black;
     text-align: center;
     display: inline-block;
     padding: 10px;
@@ -29,7 +28,6 @@ div#viewtabs {
     margin: 0px auto;
     text-align: center;
     background: black;
-    padding: 4px;
 }
 
 .advanced {
