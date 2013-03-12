@@ -35,6 +35,8 @@ div#viewtabs {
 }
 
 .advanced {
-
+    border-top:2px solid LightGray;
+    margin-top:20px;
+    padding-top: 20px
 }
 
