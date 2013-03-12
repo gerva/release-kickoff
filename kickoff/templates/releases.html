@@ -14,7 +14,6 @@
    </ul>
 {% for release_type in ('notready','incomplete', 'complete') %}
 <div id="{{ release_type }}">
-    <h2>{{ release_type }}</h2>
     {% set release_type_template = 'includes/' + release_type + '_releases.html' %}
     {% include release_type_template %}
 </div> <!-- div id={{ release_type }} -->
