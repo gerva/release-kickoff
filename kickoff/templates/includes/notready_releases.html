@@ -1,4 +1,3 @@
-<table id="releases">
 <form id='release_readyness' action='{{ url_for('releases') }}' method='post'>
 <table id="releases">
 {{ form.hidden_tag() }}
@@ -77,5 +76,7 @@
   </td>
 </tr>
 {% endfor %}
-<input type='submit' value='Do eet!' /></form>
 </table>
+<div class="doeet">
+<input type='submit' value='Do eet!' />
+</div></form>
