@@ -3,8 +3,8 @@
 <head>
 <title>Ship it!</title>
 <!--
-<link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="kickoff.css") }}' />
 -->
+<link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="kickoff.css") }}' />
 <link rel='icon' href="{{ url_for('static', filename='favicon.ico') }}" />
 <script type='text/javascript' src='{{ url_for("static", filename="suggestions.js") }}'></script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
@@ -18,19 +18,18 @@ $(function() {
 </script>
 </head>
 <body>
-<div id="radioset" class="ui-buttonset">
-  <input id="radio1" class="ui-helper-hidden-accessible" type="radio" name="radio"></input>
-  <label class="ui-button ui-widget ui-state-default ui-button-text-only ui-corner-left ui-state-active" for="radio1" role="button" aria-disabled="false" aria-pressed="true">
-  <span class="ui-button-text">Submit a new release</span>
+<div class="topmenu">
+<div class="ui-buttonset" id="viewtabs">
+    <input class="ui-helper-hidden-accessible" id="menu-slaves" name="viewmenu" type="radio"> 
+    <label role="button" class="ui-button ui-widget ui-state-default ui-button-text-only ui-corner-left" aria-pressed="false" value='{{ url_for('submit_release') }}'>
+      <a href='{{ url_for('submit_release') }}'>  <span class="ui-button-text">Submit a new release</span></a>
+    </label>
+    <input class="ui-helper-hidden-accessible" id="menu-masters" name="viewmenu" type="radio" >
+    <label role="button" class="ui-button ui-widget ui-state-default ui-button-text-only ui-corner-right" aria-pressed="false" value='{{ url_for('releases') }}'>
+        <a href='{{ url_for('releases') }}'>  <span class="ui-button-text">View releases</span></a>
    </label>
-  <label class="ui-button ui-widget ui-state-default ui-button-text-only ui-corner-left ui-state-active" for="radio2" role="button" aria-disabled="false" aria-pressed="true">
-  <span class="ui-button-text">View releases</span>
-   </label>
-<ul id='nav'>
-    <li><a href='{{ url_for('submit_release') }}'>Submit a new release</a></li>
-    <li><a href='{{ url_for('releases') }}'>View releases</a></li>
-</ul>
-<br />
+</div>
+</div><!-- topmenu -->
 {% block content %}{% endblock %}
 </body>
 </html>
