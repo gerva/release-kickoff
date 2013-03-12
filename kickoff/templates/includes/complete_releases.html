@@ -13,9 +13,6 @@
     <th>L10n Changesets</th>
     <th>Partial Versions</th>
     <th>Update Prompt Wait Time</th>
-    <th>Ready?</th>
-    <th>Status</th>
-    <th>Delete?</th>
 </tr>
 </thead>
 {% for rel in releases if rel.ready and rel.complete %}
@@ -63,29 +60,5 @@
       <td>{{ rel.promptWaitTime }}</td>
     {% endif %}
   {% endif %}
-  <td>
-    <input id='readyReleases_{{ rel.name }}' type='checkbox' name='readyReleases' value='{{ rel.name }}' checked='checked' disabled='disabled' />
-  </td>
-  <td>{{ rel.status }}</td>
-  <td>
-  <input type='checkbox' name='deleteReleases' value='{{ rel.name }}' disabled='disabled' />
-  </td>
 {% endfor %}
-</table>
-<input type='submit' value='Do eet!' />
-</form>
-
-<script type='text/javascript'>
-function disableReady(release) {
-    readyCheckbox = document.getElementById('readyReleases_' + release);
-    deleteCheckbox = document.getElementById('deleteReleases_' + release);
-    if (deleteCheckbox.checked) {
-        readyCheckbox.checked = false;
-        readyCheckbox.disabled = true;
-    }
-    else {
-        readyCheckbox.disabled = false;
-    }
-}
-</script>
 </table>
