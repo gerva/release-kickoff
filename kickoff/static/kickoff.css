@@ -12,7 +12,7 @@ body {
 
 /* submit release form */
 .submit_release {
-   padding-bottom: 1em;
+   padding-bottom: 0.5em;
 }
 
 /* submit release form labels*/
@@ -50,6 +50,10 @@ tr:last-child
     font-family: Verdana,Arial,sans-serif;
     font-size: 1.1em;
     width: 70%;
+}
+
+#radio {
+    text-align: center;
 }
 
 h1 {
