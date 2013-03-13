@@ -5,58 +5,30 @@ body {
     color: rgb(51, 51, 51);
 }
 
-
-input[type=text] {
-    width: 30%;
-}
-
-.topmenu {
-    text-align: center;
-    display: inline-block;
-    padding: 10px;
-    border-bottom: 1px solid rgb(222, 222, 222);
-    width: 100%;
-    margin: 0px auto;
-}
-
-div#viewtabs {
-    width: 50%;
-    margin: 0px auto;
-    display: inline-block;
-    text-align: center;
-    background: black;
-}
-
-.advanced {
-    border-top:2px solid LightGray;
-    margin-top:20px;
-    padding-top: 20px
-}
-
-#radio {
-    width: 50%;
-    margin: 0px auto;
-    padding-bottom: 40px;
-}
-
-#radio .ui-button:hover {
-    color: #f00;
-}
-
-#radio .ui-state-actiove {
-    font-weight: bold;
-}
+/* release table */
 #releases {
     font-size: 0.8em;
 }
 
+/* submit release form */
 .submit_release {
    padding-bottom: 1em;
 }
 
+/* submit release form labels*/
 .submit_release label {
     float: left;
     width: 300px;
+}
+
+.submit_release input[type=text] {
+    width: 30%;
+}
+/* submit release form advanced fileds*/
+.advanced {
+    border-top:2px solid LightGray;
+    margin-top:20px;
+    padding-top: 20px
 }
 
 table
