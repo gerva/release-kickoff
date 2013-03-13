@@ -17,6 +17,7 @@
 <script>
 $(function() {
   $( "#tabs" ).tabs();
+  $( "#radio" ).buttonset();
 });
 </script>
 </head>
@@ -28,10 +29,6 @@ $(function() {
   <input type="radio" id="viewreleases" name="radio" onclick='document.location="{{ url_for('releases') }}";'/>
   <label for="viewreleases">View Releases</label>
 </div> <!--radio -->
-<script>
-$( "#radio" ).buttonset();
-</script>
-
 {% block content %}{% endblock %}
 </body>
 </html>
