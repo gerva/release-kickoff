@@ -5,16 +5,21 @@
     <li class='error'>{{ e }}</li>
     {% endfor %}
 </ul>
-<div id='tabs'>
-  <ul>
-      {% for release_type in ('notready','incomplete', 'complete') %}
-      <li><a href="#{{ release_type }}">{{ release_type|capitalize }}</a></li>
-      {% endfor %}
-   </ul>
-{% for release_type in ('notready','incomplete', 'complete') %}
-<div id="{{ release_type }}">
-    {% set release_type_template = 'includes/' + release_type + '_releases.html' %}
-    {% include release_type_template %}
-</div> <!-- div id={{ release_type }} -->
-{% endfor %}
+  <h3>Not ready</h3>
+  <div id='notready'>
+  {% include 'includes/notready_releases.html' %}
+  </div>
+  <h3>Ready</h3>
+  <div id='tabs'>
+    <ul>
+      <li><a href="#incomplete">Incomplete</a></li>
+      <li><a href="#complete">Complete</a></li>
+    </ul>
+    <div id="incomplete">
+      {% include 'includes/incomplete_releases.html' %}
+     </div> <!-- div id=incomplete -->
+    <div id="complete">
+      {% include 'includes/complete_releases.html' %}
+     </div> <!-- div id=complete -->
+  </div> <!-- tabs -->
 {% endblock %}
