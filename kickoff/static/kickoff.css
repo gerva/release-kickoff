@@ -15,6 +15,13 @@ body {
    padding-bottom: 0.5em;
 }
 
+tr:nth-child(even) {
+    background: #CCC
+}
+tr:nth-child(odd) {
+    background: #FFF
+}
+
 /* submit release form labels*/
 .submit_release label {
     float: left;
