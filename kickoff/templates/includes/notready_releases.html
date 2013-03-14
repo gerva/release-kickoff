@@ -12,13 +12,14 @@
   </div> <!-- release_buttons -->
    <div class='release_data'>
     <ul>
-     <li>Submitted by: {{ rel.submitter }} on {{ rel.submittedAt }}</li>
+     <li>Submitted by: {{ rel.submitter }}</li>
+     <li id="{{ rel.name }}_submittedAt">{{ rel.submittedAt }}</li>
      <script type='text/javascript'>
       document.addEventListener('readystatechange', function() {
        if (document.readyState == 'complete') {
         localdate = new Date('{{ rel.submittedAt }}');
         var e = document.getElementById('{{ rel.name }}_submittedAt');
-        e.textContent = localdate.toLocaleString();
+        e.textContent = "Submitted at: " + localdate.toLocaleString();
        }
       })
      </script>
