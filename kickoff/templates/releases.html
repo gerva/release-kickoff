@@ -5,21 +5,23 @@
     <li class='error'>{{ e }}</li>
     {% endfor %}
 </ul>
-  <h3>Not ready</h3>
+  <div id='accordion'>
+  <h3>not ready</h3>
   <div id='notready'>
-  {% include 'includes/notready_releases.html' %}
-  </div>
-  <h3>Ready</h3>
+   {% include 'includes/notready_releases.html' %}
+  </div> <!-- notready -->
+  <h3>complete/incomplete</h3>
   <div id='tabs'>
     <ul>
       <li><a href="#incomplete">Incomplete</a></li>
       <li><a href="#complete">Complete</a></li>
     </ul>
     <div id="incomplete">
-      {% include 'includes/incomplete_releases.html' %}
-     </div> <!-- div id=incomplete -->
+     {% include 'includes/incomplete_releases.html' %}
+    </div> <!-- div id=incomplete -->
     <div id="complete">
-      {% include 'includes/complete_releases.html' %}
-     </div> <!-- div id=complete -->
+     {% include 'includes/complete_releases.html' %}
+    </div> <!-- div id=complete -->
   </div> <!-- tabs -->
+  </div><!-- accordion -->
 {% endblock %}

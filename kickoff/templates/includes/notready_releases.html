@@ -2,9 +2,14 @@
 {{ form.hidden_tag() }}
 {% for rel in releases if not rel.ready %}
 <div class="rel">
- <div class="release_title"> {{ rel.name }}</div>
  <div class="release_container" id="{{ rel.name }}">
-   <div class='release_buttons'><h3>fancy buttons here</h3></div>
+ <div class="release_title"><a href="/release.html?name={{ rel.name }}">{{ rel.name }}</a></div>
+   <div class='release_buttons'>
+     <input id='readyReleases_{{ rel.name }}' type='checkbox' name='readyReleases' value='{{ rel.name }}' onclick='readyToRelease("{{ rel.name }}")'/>
+    <label for="readyReleases_{{ rel.name }}">Ready</label>
+     <input id="deleteReleases_{{ rel.name }}" type='checkbox' name='deleteReleases' value='{{ rel.name }}' onclick='disableReady("{{ rel.name }}")'/>
+    <label for="deleteReleases_{{ rel.name }}">Delete</label>
+  </div> <!-- release_buttons -->
    <div class='release_data'>
     <ul>
      <li>Submitted by: {{ rel.submitter }} on {{ rel.submittedAt }}</li>
@@ -22,7 +27,7 @@
      <li>Mozilla Relbranch: {{ rel.mozillaRelbranch }}</li>
      {% if 'Thunderbird' in rel.name %}
      <li>Comm Revision: {{ rel.commRevision }}</li>
-     <li>Comm Relbranch{{ rel.commRelbranch }}</li>
+     <li>Comm Relbranch: {{ rel.commRelbranch }}</li>
      {% endif %}
      {% if rel.dashboardCheck %}
      <li>Check dashboard? Yes</li>
@@ -30,17 +35,14 @@
      <li>Check dasboard? No</li>
      {% endif %}
      <li><a href="/releases/{{ rel.name }}/l10n">L10n Changeset</a></li>
-    {% if not 'Fennec' in rel.name %}
+     {% if not 'Fennec' in rel.name %}
      <li>Partial versions: {{ rel.partials }}</li>
-    {% endif %}
-    {% if not 'Fennec' in rel.name %}
-      {% if not rel.promptWaitTime %}
+     {% if not rel.promptWaitTime %}
      <li>Update prompt wait time: Default</li>
-      {% else %}
+     {% else %}
      <li>Update prompt wait time:{{ rel.promptWaitTime }}</li>
-      {% endif %}
-  {% endif %}
-     <li>
+     {% endif %}
+     {% endif %}
     </ul>
    </div><!-- release_data -->
  </div><!-- release_container id={{ rel.name }}-->
@@ -50,4 +52,18 @@
 <input type="button" id="doeet" value="Do eet!">
 </form>
 
+<script type='text/javascript'>
+function disableReady(release) {
+    readyCheckbox = document.getElementById('readyReleases_' + release);
+    deleteCheckbox = document.getElementById('deleteReleases_' + release);
+    if (deleteCheckbox.checked) {
+        readyCheckbox.checked = false;
+        readyCheckbox.disabled = true;
+    }
+    else {
+        readyCheckbox.disabled = false;
+    }
+}
+
+</script>
 
