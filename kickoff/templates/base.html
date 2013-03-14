@@ -21,13 +21,25 @@ $(function() {
   $( "#accordion" ).accordion();
 });
 </script>
+<script>
+$(document).ready(function() {
+    $('#submitrelease').click(function() {
+       document.location = "{{ url_for('submit_release') }}";
+       $('#submitrelease').prop('checked', true);
+    });
+    $('#viewreleases').click(function() {
+       document.location = "{{ url_for('releases') }}";
+       $('#viewreleasea').prop('checked', true);
+    });
+});
+</script>
 </head>
 <body>
 <h1>Ship it</h1>
 <div id="radio">
-  <input type="radio" id="submitrelease" name="radio" onclick='document.location="{{ url_for('submit_release') }}";'/>
+  <input type="radio" id="submitrelease" name="radio"/>
   <label for="submitrelease">Submit a new release</label>
-  <input type="radio" id="viewreleases" name="radio" onclick='document.location="{{ url_for('releases') }}";'/>
+  <input type="radio" id="viewreleases" name="radio"/>
   <label for="viewreleases">View Releases</label>
 </div> <!--radio -->
 {% block content %}{% endblock %}
