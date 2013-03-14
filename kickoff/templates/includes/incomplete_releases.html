@@ -1,3 +1,5 @@
+{% for rel in releases if rel.ready and rel.complete %}
+{% if loop.first %}
 <table id="releases">
 <thead>
 <tr>
@@ -17,7 +19,7 @@
   <th>Status</th>
 </tr>
 </thead>
-{% for rel in releases if rel.ready and not rel.complete %}
+{% endif %}
 <tr class='incomplete'>
   <td>{{ rel.name }}</td>
   <td>{{ rel.submitter }}</td>
@@ -66,8 +68,13 @@
       <input id='readyReleases_{{ rel.name }}' type='checkbox' name='readyReleases' value='{{ rel.name }}' checked='checked' disabled='disabled' />
     </td>
     <td>{{ rel.status }}</td>
-{% endfor %}
+{% if loop.last %}
 </table>
+{% endif %}
+{% else %}
+<h1>No pending releases!</h1>
+{% endfor %}
+
 
 <script type='text/javascript'>
 function disableReady(release) {

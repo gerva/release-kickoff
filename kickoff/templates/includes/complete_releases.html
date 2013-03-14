@@ -1,3 +1,5 @@
+{% for rel in releases if rel.ready and rel.complete %}
+{% if loop.first %}
 <table id="releases">
 <thead>
 <tr>
@@ -15,7 +17,7 @@
     <th>Update Prompt Wait Time</th>
 </tr>
 </thead>
-{% for rel in releases if rel.ready and rel.complete %}
+{% endif %}
 <tr class='complete'>
   <td>{{ rel.name }}</td>
   <td>{{ rel.submitter }}</td>
@@ -60,5 +62,9 @@
       <td>{{ rel.promptWaitTime }}</td>
     {% endif %}
   {% endif %}
-{% endfor %}
+{% if loop.last %}
 </table>
+{% endif %}
+{% else %}
+<h1>No completed releases!</h1>
+{% endfor %}
