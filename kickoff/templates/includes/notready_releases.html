@@ -5,18 +5,24 @@
  <div class="release_container" id="{{ rel.name }}">
  <div class="release_title"><a href="/release.html?name={{ rel.name }}">{{ rel.name }}</a></div>
    <div class='release_buttons'>
-    <div id="{{ rel.name }}" class="green-button">
+    <div id="{{ rel.name }}-ready" class="green-button">
      <label>
-     <input id='readyReleases_{{ rel.name }}' type='checkbox' name='readyReleases' value='{{ rel.name }}' onclick='readyToRelease("{{ rel.name }}")'/>
-   <!--  <label for="readyReleases_{{ rel.name }}"> -->
-     <span>Ready</span></label>
-    </div>
-    <div id="{{ rel.name }}" class="red-button">
+      <input id="readyReleases_{{ rel.name }}" type="checkbox" name="readyReleases" value="{{ rel.name }}" onclick='readyToRelease("{{ rel.name }}")'/>
+      <span>Ready</span>
+     </label>
+    </div> <!-- green-button -->
+    <div id="{{ rel.name }}-delete" class="red-button">
     <label>
-     <input id="deleteReleases_{{ rel.name }}" type='checkbox' name='deleteReleases' value='{{ rel.name }}' onclick='disableReady("{{ rel.name }}")'/>
-    <!--  <label for="deleteReleases_{{ rel.name }}"> -->
-    <span>Delete</span></label>
+     <input id="deleteReleases_{{ rel.name }}" type="checkbox" name="deleteReleases" value="{{ rel.name }}" onclick='disableReady("{{ rel.name }}")'/>
+     <span>Delete</span>
+     </label>
     </div>
+    <div id="{{ rel.name }}-edit" class="green-button">
+     <label>
+      <input id="editReleases_{{ rel.name }}" type="checkbox" name="editReleases" value="{{ rel.name }}" onclick='editRelease("{{ rel.name }}")'/>
+      <span>Edit</span>
+     </label>
+    </div> <!-- blue-button -->
   </div> <!-- release_buttons -->
    <div class='release_data'>
     <ul>
@@ -67,16 +73,33 @@
 
 <script type='text/javascript'>
 function disableReady(release) {
-    readyCheckbox = document.getElementById('readyReleases_' + release);
-    deleteCheckbox = document.getElementById('deleteReleases_' + release);
+    editCheckbox = document.getElementById( 'editReleases_' + release );
+    document.write(editCheckbox);
+    readyCheckbox = document.getElementById( 'readyReleases_'  + release);
+    deleteCheckbox = document.getElementById( 'deleteReleases_' + release);
     if (deleteCheckbox.checked) {
         readyCheckbox.checked = false;
+        editCheckbox.checked = false;
         readyCheckbox.disabled = true;
+        editCheckbox.disabled = true;
     }
     else {
+        editCheckbox.disabled = false;
         readyCheckbox.disabled = false;
     }
 }
 
+function editRelease(release) {
+    readyCheckbox = document.getElementById('readyReleases_' + release);
+    deleteCheckbox = document.getElementById('deleteReleases_' + release);
+    editCheckbox = document.getElementById('editReleases_' + release);
+    readyCheckbox.checked = false;
+    readyCheckbox.disabled = false;
+    deleteCheckbox.checked = false;
+    deleteCheckbox.disabled = false;
+    editCheckbox.checked = false;
+    editCheckbox.disabled = false;
+    document.location = "{{ url_for('release') }}?name=" + release;
+}
 </script>
 
