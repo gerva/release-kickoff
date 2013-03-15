@@ -93,7 +93,6 @@ h1 {
     width: 20%;
     padding: 0 2%;
     float: left;
-    border-top: solid 5px;
     padding-top: 20px;
 }
 
@@ -106,4 +105,86 @@ body,
 html {
     margin:0;
     padding:0;
+}
+
+
+/* ready and delte buttons on releases page*/
+div label input {
+   margin-right:100px;
+}
+body {
+    font-family:sans-serif;
+}
+
+.red-button {
+    margin:4px;
+    background-color:#EFEFEF;
+    border-radius:4px;
+    border:1px solid #D0D0D0;
+    overflow:auto;
+    float:left;
+}
+/*
+.red-button:hover {
+    background:red;
+}
+*/
+.red-button label {
+    float:left;
+    width:4.0em;
+}
+
+.red-button label span {
+    text-align:center;
+    padding:3px 0px;
+    display:block;
+}
+
+.red-button label input {
+    position:absolute;
+    top:-20px;
+}
+
+.red-button input:checked + span {
+    background-color:#911;
+    color:#fff;
+}
+
+.green-button {
+    margin:4px;
+    background-color:#EFEFEF;
+    border-radius:4px;
+    border:1px solid #D0D0D0;
+    overflow:auto;
+    float:left;
+}
+/*
+.green-button:hover {
+    background:green;
+}
+*/
+.green-button label {
+    float:left;
+    width:4.0em;
+}
+
+.green-button label span {
+    text-align:center;
+    padding:3px 0px;
+    display:block;
+}
+
+.green-button label input {
+    position:absolute;
+    top:-20px;
+}
+
+.green-button input:checked + span {
+    background-color:#339933;
+    color:#fff;
+}
+
+.green-button input:disabled + span {
+    background-color:#EFEFEF;
+    color:#D0D0D0;
 }

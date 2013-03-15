@@ -5,10 +5,18 @@
  <div class="release_container" id="{{ rel.name }}">
  <div class="release_title"><a href="/release.html?name={{ rel.name }}">{{ rel.name }}</a></div>
    <div class='release_buttons'>
+    <div id="{{ rel.name }}" class="green-button">
+     <label>
      <input id='readyReleases_{{ rel.name }}' type='checkbox' name='readyReleases' value='{{ rel.name }}' onclick='readyToRelease("{{ rel.name }}")'/>
-    <label for="readyReleases_{{ rel.name }}">Ready</label>
+   <!--  <label for="readyReleases_{{ rel.name }}"> -->
+     <span>Ready</span></label>
+    </div>
+    <div id="{{ rel.name }}" class="red-button">
+    <label>
      <input id="deleteReleases_{{ rel.name }}" type='checkbox' name='deleteReleases' value='{{ rel.name }}' onclick='disableReady("{{ rel.name }}")'/>
-    <label for="deleteReleases_{{ rel.name }}">Delete</label>
+    <!--  <label for="deleteReleases_{{ rel.name }}"> -->
+    <span>Delete</span></label>
+    </div>
   </div> <!-- release_buttons -->
    <div class='release_data'>
     <ul>
