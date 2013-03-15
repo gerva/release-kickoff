@@ -57,9 +57,9 @@ tr:last-child
 }
 
 #edit_container {
-    font-family: Verdana,Arial,sans-serif;
     font-size: 1.1em;
     width: 70%;
+    margin-left: 20px;
 }
 
 #radio {
@@ -129,27 +129,18 @@ body {
     background:red;
 }
 */
-.red-button label {
+
+.blue-button {
+    margin:4px;
+    background-color:#2989d8;
+    border-radius:4px;
+    border:1px solid #D0D0D0;
+    overflow:auto;
     float:left;
-    width:4.0em;
+    color:white;
 }
 
-.red-button label span {
-    text-align:center;
-    padding:3px 0px;
-    display:block;
-}
-
-.red-button label input {
-    position:absolute;
-    top:-20px;
-}
-
-.red-button input:checked + span {
-    background-color:#911;
-    color:#fff;
-}
-
+.red-button,
 .green-button {
     margin:4px;
     background-color:#EFEFEF;
@@ -158,22 +149,24 @@ body {
     overflow:auto;
     float:left;
 }
-/*
-.green-button:hover {
-    background:green;
-}
-*/
+
+.red-button label,
+.blue-button label,
 .green-button label {
     float:left;
     width:4.0em;
 }
 
+.red-button label span,
+.blue-button label span,
 .green-button label span {
     text-align:center;
     padding:3px 0px;
     display:block;
 }
 
+.red-button label input,
+.blue-button label input,
 .green-button label input {
     position:absolute;
     top:-20px;
@@ -184,7 +177,15 @@ body {
     color:#fff;
 }
 
+.red-button input:checked + span {
+    background-color:#911;
+    color:#fff;
+}
+
+.blue-button input:disabled + span,
 .green-button input:disabled + span {
     background-color:#EFEFEF;
     color:#D0D0D0;
 }
+
+
