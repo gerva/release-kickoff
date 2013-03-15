@@ -28,9 +28,12 @@ tr:nth-child(odd) {
     width: 300px;
 }
 
+.submit_release textarea,
 .submit_release input[type=text] {
     width: 30%;
 }
+
+
 /* submit release form advanced fileds*/
 .advanced {
     border-top:2px solid LightGray;
