@@ -116,7 +116,7 @@ body {
     font-family:sans-serif;
 }
 
-.red-button {
+.delete-button {
     margin:4px;
     background-color:#EFEFEF;
     border-radius:4px;
@@ -125,12 +125,12 @@ body {
     float:left;
 }
 /*
-.red-button:hover {
+.delete-button:hover {
     background:red;
 }
 */
 
-.blue-button {
+.edit-button {
     margin:4px;
     background-color:#2989d8;
     border-radius:4px;
@@ -140,8 +140,8 @@ body {
     color:white;
 }
 
-.red-button,
-.green-button {
+.delete-button,
+.ready-button {
     margin:4px;
     background-color:#EFEFEF;
     border-radius:4px;
@@ -150,40 +150,40 @@ body {
     float:left;
 }
 
-.red-button label,
-.blue-button label,
-.green-button label {
+.delete-button label,
+.edit-button label,
+.ready-button label {
     float:left;
     width:4.0em;
 }
 
-.red-button label span,
-.blue-button label span,
-.green-button label span {
+.delete-button label span,
+.edit-button label span,
+.ready-button label span {
     text-align:center;
     padding:3px 0px;
     display:block;
 }
 
-.red-button label input,
-.blue-button label input,
-.green-button label input {
+.delete-button label input,
+.edit-button label input,
+.ready-button label input {
     position:absolute;
     top:-20px;
 }
 
-.green-button input:checked + span {
+.ready-button input:checked + span {
     background-color:#339933;
     color:#fff;
 }
 
-.red-button input:checked + span {
+.delete-button input:checked + span {
     background-color:#911;
     color:#fff;
 }
 
-.blue-button input:disabled + span,
-.green-button input:disabled + span {
+.edit-button input:disabled + span,
+.ready-button input:disabled + span {
     background-color:#EFEFEF;
     color:#D0D0D0;
 }
