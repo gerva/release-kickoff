@@ -5,24 +5,14 @@
  <div class="release_container" id="{{ rel.name }}">
  <div class="release_title"><a href="/release.html?name={{ rel.name }}">{{ rel.name }}</a></div>
    <div class='release_buttons'>
-    <div id="{{ rel.name }}-ready" class="green-button">
+    {% for actions in ('ready', 'delete', 'edit') %}
+    <div id="{{ rel.name }}" class="{{ rel.name }}-button--">
      <label>
-      <input id="readyReleases_{{ rel.name }}" type="checkbox" name="readyReleases" value="{{ rel.name }}" onclick='readyToRelease("{{ rel.name }}")'/>
-      <span>Ready</span>
+      <input id="{{ actions }}Releases_{{ rel.name }}" type="checkbox" name="{{ actions }}Releases" value="{{ rel.name }}" onclick='{{ actions }}Release("{{ rel.name }}")'/>
+      <span>{{ actions|capitalize }}</span>
      </label>
-    </div> <!-- green-button -->
-    <div id="{{ rel.name }}-delete" class="red-button">
-    <label>
-     <input id="deleteReleases_{{ rel.name }}" type="checkbox" name="deleteReleases" value="{{ rel.name }}" onclick='disableReady("{{ rel.name }}")'/>
-     <span>Delete</span>
-     </label>
-    </div>
-    <div id="{{ rel.name }}-edit" class="green-button">
-     <label>
-      <input id="editReleases_{{ rel.name }}" type="checkbox" name="editReleases" value="{{ rel.name }}" onclick='editRelease("{{ rel.name }}")'/>
-      <span>Edit</span>
-     </label>
-    </div> <!-- blue-button -->
+    </div> <!-- {{ actions }}-button -->
+    {% endfor %}
   </div> <!-- release_buttons -->
    <div class='release_data'>
     <ul>
@@ -72,9 +62,8 @@
 {% endfor %}
 
 <script type='text/javascript'>
-function disableReady(release) {
+function deleteRelease(release) {
     editCheckbox = document.getElementById( 'editReleases_' + release );
-    document.write(editCheckbox);
     readyCheckbox = document.getElementById( 'readyReleases_'  + release);
     deleteCheckbox = document.getElementById( 'deleteReleases_' + release);
     if (deleteCheckbox.checked) {
