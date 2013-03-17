@@ -6,7 +6,7 @@
  <div class="release_title"><a href="/release.html?name={{ rel.name }}">{{ rel.name }}</a></div>
    <div class='release_buttons'>
     {% for actions in ('ready', 'delete', 'edit') %}
-    <div id="{{ rel.name }}" class="{{ rel.name }}-button--">
+    <div id="{{ rel.name }}" class="{{ actions }}-button">
      <label>
       <input id="{{ actions }}Releases_{{ rel.name }}" type="checkbox" name="{{ actions }}Releases" value="{{ rel.name }}" onclick='{{ actions }}Release("{{ rel.name }}")'/>
       <span>{{ actions|capitalize }}</span>
