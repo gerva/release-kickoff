@@ -179,4 +179,12 @@ body {
     color:#D0D0D0;
 }
 
+th.incomplete,
+th.complete {
+    font-size:12px;
+}
+tr.incomplete,
+tr.complete {
+    font-size:10px;
+}
 

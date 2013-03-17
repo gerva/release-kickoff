@@ -9,7 +9,9 @@
 <script type='text/javascript' src="{{ url_for("static", filename="jquery-ui-1.10.2.custom.min.js") }}"></script>
 <script type='text/javascript' src="{{ url_for("static", filename="jquery-1.9.1.js") }}"></script>
 <script type='text/javascript' src="{{ url_for("static", filename="jquery-ui.js") }}"></script>
+<script type='text/javascript' src="{{ url_for("static", filename="jquery.dataTables.js") }}"></script>
 <!-- css -->
+<link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="jquery.dataTables.css") }}' />
 <link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="jquery-ui-1.10.2.custom.min.css") }}' />
 <link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="jquery-ui.css") }}' />
 <link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="kickoff.css") }}' />
@@ -18,6 +20,10 @@ $(function() {
   $( "#tabs" ).tabs();
   $( "#radio" ).buttonset();
   $( "#accordion" ).accordion();
+  $( "#reviewed" ).dataTable( { "bJQueryUI": true, });
+  $( "#completed" ).dataTable( { "bJQueryUI": true, });
+
+
 });
 </script>
 <script>
