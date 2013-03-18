@@ -101,21 +101,7 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
-.delete-button {
-    margin:4px;
-    background-color:#EFEFEF;
-    border-radius:4px;
-    border:1px solid #D0D0D0;
-    overflow:auto;
-    float:left;
-}
-/*
-.delete-button:hover {
-    background:red;
-}
-*/
 
-.edit-button,
 .delete-button,
 .ready-button {
     margin:4px;
@@ -127,14 +113,12 @@ body {
 }
 
 .delete-button label,
-.edit-button label,
 .ready-button label {
     float:left;
     width:4.0em;
 }
 
 .delete-button label span,
-.edit-button label span,
 .ready-button label span {
     text-align:center;
     padding:3px 0px;
@@ -142,7 +126,6 @@ body {
 }
 
 .delete-button label input,
-.edit-button label input,
 .ready-button label input {
     position:absolute;
     top:-20px;
@@ -158,7 +141,7 @@ body {
     color:#fff;
 }
 
-.edit-button input:disabled + span,
+.delete-button input:disabled + span,
 .ready-button input:disabled + span {
     background-color:#EFEFEF;
     color:#D0D0D0;

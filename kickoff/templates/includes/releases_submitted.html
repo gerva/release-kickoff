@@ -5,7 +5,7 @@
  <div class="release_container" id="{{ rel.name }}">
  <div class="release_title"><a href="/release.html?name={{ rel.name }}">{{ rel.name }}</a></div>
    <div class='release_buttons'>
-    {% for actions in ('ready', 'delete', 'edit') %}
+    {% for actions in ('ready', 'delete') %}
     <div id="{{ rel.name }}" class="{{ actions }}-button">
      <label>
       <input id="{{ actions }}Releases_{{ rel.name }}" type="checkbox" name="{{ actions }}Releases" value="{{ rel.name }}" onclick='{{ actions }}Release("{{ rel.name }}")'/>
@@ -37,7 +37,7 @@
      {% if rel.dashboardCheck %}
      <li>Check dashboard? Yes</li>
      {% else %}
-     <li>Check dasboard? No</li>
+     <li>Check dashboard? No</li>
      {% endif %}
      <li><a href="/releases/{{ rel.name }}/l10n">L10n Changeset</a></li>
      {% if not 'Fennec' in rel.name %}
@@ -63,32 +63,27 @@
 
 <script type='text/javascript'>
 function deleteRelease(release) {
-    editCheckbox = document.getElementById( 'editReleases_' + release );
     readyCheckbox = document.getElementById( 'readyReleases_'  + release);
     deleteCheckbox = document.getElementById( 'deleteReleases_' + release);
     if (deleteCheckbox.checked) {
         readyCheckbox.checked = false;
-        editCheckbox.checked = false;
         readyCheckbox.disabled = true;
-        editCheckbox.disabled = true;
     }
     else {
-        editCheckbox.disabled = false;
         readyCheckbox.disabled = false;
     }
 }
 
-function editRelease(release) {
-    readyCheckbox = document.getElementById('readyReleases_' + release);
-    deleteCheckbox = document.getElementById('deleteReleases_' + release);
-    editCheckbox = document.getElementById('editReleases_' + release);
-    readyCheckbox.checked = false;
-    readyCheckbox.disabled = false;
-    deleteCheckbox.checked = false;
-    deleteCheckbox.disabled = false;
-    editCheckbox.checked = false;
-    editCheckbox.disabled = false;
-    document.location = "{{ url_for('release') }}?name=" + release;
+function readyRelease(release) {
+    readyCheckbox = document.getElementById( 'readyReleases_'  + release);
+    deleteCheckbox = document.getElementById( 'deleteReleases_' + release);
+    if (readyCheckbox.checked) {
+        deleteCheckbox.checked = false;
+        deleteCheckbox.disabled = true;
+    }
+    else {
+        deleteCheckbox.disabled = false;
+    }
 }
 </script>
 
