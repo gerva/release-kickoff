@@ -69,9 +69,7 @@ h1 {
     font-size: 200%;
     clear: left;
 }
-.release_footer {
-    clear: left;
-}
+
 .release_buttons {
     width: 20%;
     padding: 0 2%;
@@ -96,7 +94,7 @@ div label input {
    margin-right:100px;
 }
 body {
-    font-family:sans-serif;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .delete-button {
@@ -171,3 +169,54 @@ tr.complete {
     font-size:10px;
 }
 
+@font-face {
+    font-family: "OpenSans";
+    src: url(OpenSans-Light.ttf) format("truetype");
+}
+
+.huge, .large, h1, h2, h3, h4 {
+    font-family: 'OpenSans', "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", Verdana, sans-serif;
+    font-weight: normal;
+    text-shadow: 0px 1px 0px rgba(255,255,255,0.75);
+}
+
+.huge {
+    font-size: 108px;
+    letter-spacing: -4px;
+    line-height: 100%;
+}
+
+.large {
+    font-size: 72px;
+    letter-spacing: -3px;
+    line-height: 100%;
+}
+
+h1 {
+    font-size: 48px;
+    letter-spacing: -2px;
+    line-height: 100%;
+}
+
+h2 {
+    font-size: 32px;
+    letter-spacing: -1px;
+    line-height: 100%;
+}
+
+h3 {
+    font-size: 28px;
+    letter-spacing: -0.5px;
+    line-height: 100%;
+}
+
+h4 {
+    font-size: 24px;
+    letter-spacing: -0.25px;
+    line-height: 100%;
+}
+
+.small, small {
+    font-size: 12px;
+    line-height: 100%;
+}
