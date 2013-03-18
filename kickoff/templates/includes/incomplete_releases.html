@@ -15,7 +15,6 @@
   <th>L10n Changesets</th>
   <th>Partial Versions</th>
   <th>Update Prompt Wait Time</th>
-  <th>Ready?</th>
   <th>Status</th>
 </tr>
 </thead>
@@ -53,7 +52,7 @@
     {% if 'Fennec' in rel.name %}
         <td class="irrelevant">N/A</td>
     {% else %}
-        <td>{{ rel.partials }}</td>
+        <td>{{ rel.partials|replace(',', ' ') }}</td>
     {% endif %}
     {% if 'Fennec' in rel.name %}
         <td class="irrelevant">N/A</td>
@@ -64,9 +63,6 @@
             <td>{{ rel.promptWaitTime }}</td>
         {% endif %}
     {% endif %}
-    <td>
-      <input id='readyReleases_{{ rel.name }}' type='checkbox' name='readyReleases' value='{{ rel.name }}' checked='checked' disabled='disabled' />
-    </td>
     <td>{{ rel.status }}</td>
 {% if loop.last %}
 </table>
