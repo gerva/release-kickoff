@@ -8,19 +8,19 @@
   <div id='accordion'>
   <h3>Submitted</h3>
   <div id='notready'>
-   {% include 'includes/notready_releases.html' %}
+   {% include 'includes/releases_submitted.html' %}
   </div> <!-- notready -->
   <h3>Reviewed/Complete</h3>
   <div id='tabs'>
     <ul>
-      <li><a href="#incomplete">Reviewed</a></li>
+      <li><a href="#reviewed">Reviewed</a></li>
       <li><a href="#complete">Complete</a></li>
     </ul>
     <div id="incomplete">
-     {% include 'includes/incomplete_releases.html' %}
+     {% include 'includes/releases_reviewed.html' %}
     </div> <!-- div id=incomplete -->
     <div id="complete">
-     {% include 'includes/complete_releases.html' %}
+     {% include 'includes/releases_complete.html' %}
     </div> <!-- div id=complete -->
   </div> <!-- tabs -->
   </div><!-- accordion -->
