@@ -70,6 +70,10 @@ h1 {
     clear: left;
 }
 
+.release_footer {
+    clear: left;
+}
+
 .release_buttons {
     width: 20%;
     padding: 0 2%;

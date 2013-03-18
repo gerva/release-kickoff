@@ -9,17 +9,17 @@
   <h3>Submitted</h3>
   <div id='notready'>
    {% include 'includes/releases_submitted.html' %}
-  </div> <!-- notready -->
+  </div><!-- submitted -->
   <h3>Reviewed/Complete</h3>
   <div id='tabs'>
     <ul>
-      <li><a href="#reviewed">Reviewed</a></li>
-      <li><a href="#complete">Complete</a></li>
+      <li><a href="#reviewed-tab">Reviewed</a></li>
+      <li><a href="#complete-tab">Complete</a></li>
     </ul>
-    <div id="incomplete">
+    <div id="reviewed-tab">
      {% include 'includes/releases_reviewed.html' %}
     </div> <!-- div id=incomplete -->
-    <div id="complete">
+    <div id="complete-tab">
      {% include 'includes/releases_complete.html' %}
     </div> <!-- div id=complete -->
   </div> <!-- tabs -->
