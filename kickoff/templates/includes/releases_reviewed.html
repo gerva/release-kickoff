@@ -1,4 +1,4 @@
-{% for rel in releases if rel.ready and rel.complete %}
+{% for rel in releases if rel.ready and not rel.complete %}
 {% if loop.first %}
 <table id="reviewed">
 <thead>
@@ -32,38 +32,38 @@
         }
       })
     </script>
-    </td>
-    <td>{{ rel.branch }}</td>
-    <td>{{ rel.mozillaRevision }}</td>
-    <td>{{ rel.mozillaRelbranch }}</td>
-    {% if 'Thunderbird' in rel.name %}
-        <td>{{ rel.commRevision }}</td>
-        <td>{{ rel.commRelbranch }}</td>
-    {% else %}
-        <td class="irrelevant">N/A</td>
-        <td class="irrelevant">N/A</td>
-    {% endif %}
-    {% if rel.dashboardCheck %}
-        <td>Yes</td>
-    {% else %}
-        <td>No</td>
-    {% endif %}
-    <td><a href="/releases/{{ rel.name }}/l10n">Link</a></td>
-    {% if 'Fennec' in rel.name %}
-        <td class="irrelevant">N/A</td>
-    {% else %}
-        <td>{{ rel.partials|replace(',', ' ') }}</td>
-    {% endif %}
-    {% if 'Fennec' in rel.name %}
-        <td class="irrelevant">N/A</td>
-    {% else %}
-        {% if not rel.promptWaitTime %}
-            <td>Default</td>
-        {% else %}
-            <td>{{ rel.promptWaitTime }}</td>
-        {% endif %}
-    {% endif %}
-    <td>{{ rel.status }}</td>
+  </td>
+  <td>{{ rel.branch }}</td>
+  <td>{{ rel.mozillaRevision }}</td>
+  <td>{{ rel.mozillaRelbranch }}</td>
+   {% if 'Thunderbird' in rel.name %}
+      <td>{{ rel.commRevision }}</td>
+      <td>{{ rel.commRelbranch }}</td>
+  {% else %}
+      <td class="irrelevant">N/A</td>
+      <td class="irrelevant">N/A</td>
+  {% endif %}
+  {% if rel.dashboardCheck %}
+      <td>Yes</td>
+  {% else %}
+      <td>No</td>
+  {% endif %}
+  <td><a href="/releases/{{ rel.name }}/l10n">Link</a></td>
+  {% if 'Fennec' in rel.name %}
+      <td class="irrelevant">N/A</td>
+  {% else %}
+      <td>{{ rel.partials|replace(',', ' ') }}</td>
+  {% endif %}
+  {% if 'Fennec' in rel.name %}
+      <td class="irrelevant">N/A</td>
+  {% else %}
+      {% if not rel.promptWaitTime %}
+          <td>Default</td>
+      {% else %}
+          <td>{{ rel.promptWaitTime }}</td>
+      {% endif %}
+  {% endif %}
+  <td>{{ rel.status }}</td>
 {% if loop.last %}
 </table>
 {% endif %}
