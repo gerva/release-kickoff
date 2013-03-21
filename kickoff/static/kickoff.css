@@ -207,3 +207,40 @@ h4 {
     font-size: 12px;
     line-height: 100%;
 }
+
+/* menu */
+#menu ul
+{
+    padding: 0px;
+    margin: 0px;
+    list-style-type: none;
+    text-align: center;
+    width: 100%;
+}
+
+#menu a
+{
+    text-decoration: none;
+    text-align: center;
+}
+
+#menu a:hover
+{
+    border-bottom: 5px solid;
+}
+
+#menu li
+{
+    color: black;
+    margin-right: 3em;
+    font-size: 150%;
+    color: black;
+    display: inline;
+    padding: 10px;
+}
+
+#menu {
+    padding-bottom: 30px;
+    text-align: center;
+    margin: auto;
+}

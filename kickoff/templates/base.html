@@ -17,35 +17,20 @@
 <script>
 $(function() {
   $( "#tabs" ).tabs();
-  $( "#radio" ).buttonset();
   $( "#accordion" ).accordion({ heightStyle: "content" });
   $( "#reviewed" ).dataTable( { "bJQueryUI": true, });
   $( "#completed" ).dataTable( { "bJQueryUI": true, });
-
-
-});
-</script>
-<script>
-$(document).ready(function() {
-    $('#submitrelease').click(function() {
-       document.location = "{{ url_for('submit_release') }}";
-       $('#submitrelease').prop('checked', true);
-    });
-    $('#viewreleases').click(function() {
-       document.location = "{{ url_for('releases') }}";
-       $('#viewreleases').prop('checked', true);
-    });
 });
 </script>
 </head>
 <body>
 <h1>Ship it</h1>
-<div id="radio">
-  <input type="radio" id="submitrelease" name="radio"/>
-  <label for="submitrelease">Submit a new release</label>
-  <input type="radio" id="viewreleases" name="radio"/>
-  <label for="viewreleases">View Releases</label>
-</div> <!--radio -->
+<div id="menu">
+<ul>
+<li><a href="{{ url_for('submit_release') }}">Submit a new release</a></li>
+<li><a href="{{ url_for('releases') }}">View releases</a></li>
+</ul>
+</div><!-- topbar -->
 {% block content %}{% endblock %}
 </body>
 </html>
