@@ -28,10 +28,12 @@ class SubmitRelease(MethodView):
             'firefoxForm': FirefoxReleaseForm(formdata=None),
             'thunderbirdForm': ThunderbirdReleaseForm(formdata=None)
         }
+
         for field, value in request.form.items():
             if field.endswith('product'):
                 product = value
                 break
+
         try:
             form = getReleaseForm(product)()
         except ValueError:
