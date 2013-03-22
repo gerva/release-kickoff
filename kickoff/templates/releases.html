@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
+{% if errors %}
 <ul id='errors'>
     {% for e in errors %}
     <li class='error'>{{ e }}</li>
     {% endfor %}
 </ul>
+{% endif %}
   <div id='accordion'>
   <h3>Submitted</h3>
   <div id='notready'>
@@ -24,9 +26,4 @@
     </div> <!-- div id=complete -->
   </div> <!-- tabs -->
   </div><!-- accordion -->
-<script>
- $(document).ready(function() {
-   $( "#viewreleases" ).prop('checked', true);
-});
-</script>
 {% endblock %}
