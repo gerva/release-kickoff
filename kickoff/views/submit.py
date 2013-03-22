@@ -46,6 +46,7 @@ class SubmitRelease(MethodView):
             for error in form.errors.values():
                 errors.extend(error)
         if errors:
+            errors.append(product)
             forms['%sForm' % product] = getReleaseForm(product)()
             return make_response(render_template('submit_release.html',
                                                  errors=errors, **forms), 400)
