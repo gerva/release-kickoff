@@ -4,18 +4,16 @@
 <div id='errors'>
 <ul>
     {% for e in errors %}
-    {% if loop.last %}
-        <script>
-        $(function(){
-            $('#tabs').tabs("select", "#{{ e }}")
-        });
-        </script>
-    {% else %}
-    <li class='error'>{{ e }}</li>
-    {% endif %}
+    <li>{{ e }}</li>
     {% endfor %}
 </ul>
-</div>
+</div> <!-- id=errors -->
+<script>
+  $(function(){
+     $('#tabs').tabs("select", "#{{ selectedProduct }}")
+});
+</script>
+    {% else %}
 {% endif %}
 <div id='tabs'>
   <ul>
