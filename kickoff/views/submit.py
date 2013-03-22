@@ -28,12 +28,10 @@ class SubmitRelease(MethodView):
             'firefoxForm': FirefoxReleaseForm(formdata=None),
             'thunderbirdForm': ThunderbirdReleaseForm(formdata=None)
         }
-
         for field, value in request.form.items():
             if field.endswith('product'):
                 product = value
                 break
-
         try:
             form = getReleaseForm(product)()
         except ValueError:
@@ -47,8 +45,9 @@ class SubmitRelease(MethodView):
                 errors.extend(error)
         if errors:
             forms['%sForm' % product] = getReleaseForm(product)()
-            return make_response(render_template('submit_release.html',
-                                                 errors=errors, **forms), 400)
+            return make_response(
+                    render_template('submit_release.html', errors=errors,
+                                    selectedProduct=product, **forms), 400)
 
         table = getReleaseTable(form.product.data)
         release = table.createFromForm(submitter, form)
