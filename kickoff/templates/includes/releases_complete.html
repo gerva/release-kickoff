@@ -21,17 +21,7 @@
 <tr class='complete'>
   <td>{{ rel.name }}</td>
   <td>{{ rel.submitter }}</td>
-  <td id='{{ rel.name }}_submittedAt_complete'>
-    <script type='text/javascript'>
-      document.addEventListener('readystatechange', function() {
-      if (document.readyState == 'complete') {
-        localdate = new Date('{{ rel.submittedAt }}');
-        var e = document.getElementById('{{ rel.name }}_submittedAt_complete');
-        e.textContent = localdate.toLocaleString();
-        }
-      })
-    </script>
-  </td>
+  <td class='submittedAt_complete'>{{ rel.submittedAt }}</td>
   <td>{{ rel.branch }}</td>
   <td>{{ rel.mozillaRevision }}</td>
   <td>{{ rel.mozillaRelbranch }}</td>
@@ -68,3 +58,12 @@
 {% else %}
 <h1>No completed releases!</h1>
 {% endfor %}
+ <script type='text/javascript'>
+$(document).ready(function(){
+    $( '.submittedAt_complete' ).each(function(){
+        var mytext = $(this).text();
+        var localdate = new Date($(this).html());
+        $(this).empty().append(localdate.toLocaleString());
+    });
+});
+</script>
