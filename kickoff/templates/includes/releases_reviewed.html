@@ -22,17 +22,7 @@
 <tr class='incomplete'>
   <td>{{ rel.name }}</td>
   <td>{{ rel.submitter }}</td>
-  <td id='{{ rel.name }}_submittedAt'>
-    <script type='text/javascript'>
-      document.addEventListener('readystatechange', function() {
-      if (document.readyState == 'complete') {
-        localdate = new Date('{{ rel.submittedAt }}');
-        var e = document.getElementById('{{ rel.name }}_submittedAt');
-        e.textContent = localdate.toLocaleString();
-        }
-      })
-    </script>
-  </td>
+  <td class='submittedAt'>{{ rel.submittedAt }}</td>
   <td>{{ rel.branch }}</td>
   <td>{{ rel.mozillaRevision }}</td>
   <td>{{ rel.mozillaRelbranch }}</td>
@@ -72,15 +62,18 @@
 {% endfor %}
 
 <script type='text/javascript'>
-function disableReady(release) {
-    readyCheckbox = document.getElementById('readyReleases_' + release);
-    deleteCheckbox = document.getElementById('deleteReleases_' + release);
-    if (deleteCheckbox.checked) {
-        readyCheckbox.checked = false;
-        readyCheckbox.disabled = true;
-    }
-    else {
-        readyCheckbox.disabled = false;
-    }
-}
+function toLocalDate() {
+    $( '.submittedAt' ).each(function() {
+        var localdate = new Date($(this).html());
+        $(this).empty().append(localdate.toLocaleString());
+    });
+};
+
+$(document).ready(function(){ toLocalDate() });
+$(document).ready(function(){
+    $( "#reviewed" ).dataTable({
+        "fnDrawCallback": toLocalDate(),
+        "bJQueryUI": true, });
+});
 </script>
+
