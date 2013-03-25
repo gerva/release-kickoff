@@ -58,10 +58,10 @@
 {% else %}
 <h1>No completed releases!</h1>
 {% endfor %}
- <script type='text/javascript'>
+<script type='text/javascript'>
+
 $(document).ready(function(){
-    $( '.submittedAt_complete' ).each(function(){
-        var mytext = $(this).text();
+    $( '.submittedAt_complete' ).each(function() {
         var localdate = new Date($(this).html());
         $(this).empty().append(localdate.toLocaleString());
     });
