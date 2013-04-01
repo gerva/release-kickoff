@@ -1,6 +1,6 @@
 {% for rel in releases if rel.ready and rel.complete %}
 {% if loop.first %}
-<table id="completed">
+<table id="complete">
 <thead>
 <tr>
     <th>Name</th>
@@ -21,7 +21,7 @@
 <tr class='complete'>
   <td>{{ rel.name }}</td>
   <td>{{ rel.submitter }}</td>
-  <td class='submittedAt'>{{ rel.submittedAt }}</td>
+  <td class='submittedAt_complete'>{{ rel.submittedAt }}</td>
   <td>{{ rel.branch }}</td>
   <td>{{ rel.mozillaRevision }}</td>
   <td>{{ rel.mozillaRelbranch }}</td>
@@ -59,18 +59,9 @@
 <h1>No completed releases!</h1>
 {% endfor %}
 <script type='text/javascript'>
-
-function toLocalDate() {
-    $( '.submittedAt' ).each(function() {
-        var localdate = new Date($(this).html());
-        $(this).empty().append(localdate.toLocaleString());
-    });
-};
-
-$(document).ready(function(){ toLocalDate() });
 $(document).ready(function(){
-    $( "#completed" ).dataTable({
-        "fnDrawCallback": toLocalDate(),
+    $( "#complete" ).dataTable({
+        "fnDrawCallback": onTableChange('complete'),
         "bJQueryUI": true, });
 });
 </script>

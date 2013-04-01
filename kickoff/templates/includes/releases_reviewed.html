@@ -22,7 +22,7 @@
 <tr class='incomplete'>
   <td>{{ rel.name }}</td>
   <td>{{ rel.submitter }}</td>
-  <td class='submittedAt'>{{ rel.submittedAt }}</td>
+  <td class='submittedAt_reviewed'>{{ rel.submittedAt }}</td>
   <td>{{ rel.branch }}</td>
   <td>{{ rel.mozillaRevision }}</td>
   <td>{{ rel.mozillaRelbranch }}</td>
@@ -62,17 +62,9 @@
 {% endfor %}
 
 <script type='text/javascript'>
-function toLocalDate() {
-    $( '.submittedAt' ).each(function() {
-        var localdate = new Date($(this).html());
-        $(this).empty().append(localdate.toLocaleString());
-    });
-};
-
-$(document).ready(function(){ toLocalDate() });
 $(document).ready(function(){
     $( "#reviewed" ).dataTable({
-        "fnDrawCallback": toLocalDate(),
+        "fnDrawCallback": onTableChange('reviewed'),
         "bJQueryUI": true, });
 });
 </script>
