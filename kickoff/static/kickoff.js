@@ -19,9 +19,7 @@ function toLocalDate(release_type) {
 };
 
 function escapeExpression(str) {
-    /* http://samuelsjoberg.com/archive/2009/09/escape-jquery-selectors */
     return str.replace(/([#;&,_\-\.\+\*\~':"\!\^$\[\]\(\)=>\|])/g, "\\$1");
-/*    return unescape(encodeURIComponent(str)) */
 }
 
 function submittedReleaseButtons(buttonId) {
@@ -30,7 +28,7 @@ function submittedReleaseButtons(buttonId) {
     if ( other_btnId == btnId ) {
         other_btnId = btnId.replace("delete", "ready");
     }
-    if ( $( btnId ).prop('checked') ) {
+    if ( $( btnId ).is(':checked') ) {
         $( other_btnId ).attr('checked', false);
         $( other_btnId ).attr('disabled', true);
     }
