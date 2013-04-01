@@ -25,17 +25,17 @@ function escapeExpression(str) {
 }
 
 function submittedReleaseButtons(buttonId) {
-    var btnId = escapeExpression( buttonId );
+    var btnId = '#' + escapeExpression( buttonId );
     var other_btnId = btnId.replace("ready", "delete");
     if ( other_btnId == btnId ) {
         other_btnId = btnId.replace("delete", "ready");
     }
-    if ( $( '#' + btnId ).prop('checked') ) {
-        $( '#' + other_btnId ).attr('checked', false);
-        $( '#' + other_btnId ).attr('disabled', true);
+    if ( $( btnId ).prop('checked') ) {
+        $( other_btnId ).attr('checked', false);
+        $( other_btnId ).attr('disabled', true);
     }
     else {
-        $( '#' + other_btnId ).attr('disabled', false);
+        $( other_btnId ).attr('disabled', false);
     }
 
 }
