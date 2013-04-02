@@ -32,10 +32,12 @@
     $(document).ready(function(){
         $( "#reviewed" ).dataTable({
             "bJQueryUI": true,
+            "aaSorting": [[ 2, "desc" ]], // sort by SubittedAt
             "fnDrawCallback": onTableChange('reviewed'),
         });
         $( "#complete" ).dataTable({
             "bJQueryUI": true,
+            "aaSorting": [[ 2, "desc" ]], // sort by SubittedAt
             "fnDrawCallback": onTableChange('complete'),
         });
     updateSubmitLocalDate();
