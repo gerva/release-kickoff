@@ -58,10 +58,3 @@
 {% else %}
 <h1>No completed releases!</h1>
 {% endfor %}
-<script type='text/javascript'>
-$(document).ready(function(){
-    $( "#complete" ).dataTable({
-        "fnDrawCallback": onTableChange('complete'),
-        "bJQueryUI": true, });
-});
-</script>

@@ -28,4 +28,17 @@
     </div> <!-- complete-tab -->
   </div> <!-- tabs -->
   </div><!-- accordion -->
+<script>
+    $(document).ready(function(){
+        $( "#reviewed" ).dataTable({
+            "bJQueryUI": true,
+            "fnDrawCallback": onTableChange('reviewed'),
+        });
+        $( "#complete" ).dataTable({
+            "bJQueryUI": true,
+            "fnDrawCallback": onTableChange('complete'),
+        });
+    updateSubmitLocalDate();
+});
+</script>
 {% endblock %}

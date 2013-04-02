@@ -60,12 +60,3 @@
 {% else %}
 <h1>No pending releases!</h1>
 {% endfor %}
-
-<script type='text/javascript'>
-$(document).ready(function(){
-    $( "#reviewed" ).dataTable({
-        "fnDrawCallback": onTableChange('reviewed'),
-        "bJQueryUI": true, });
-});
-</script>
-
