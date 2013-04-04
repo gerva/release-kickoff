@@ -4,27 +4,26 @@ function initialSetup(){
 }
 
 function viewReleases(){
-  toLocalDate('submitted');
-  toLocalDate('reviewed');
-  toLocalDate('complete');
-  // initilaize dataTables
+  toLocalDate();
+  // initilaize dataTables sort by SubmittedAt descending
   $( "#reviewed" ).dataTable({
     "bJQueryUI": true,
-    "aaSorting": [[ 2, "desc" ]], // sort by SubmittedAt
+    "aaSorting": [[ 2, "desc" ]],
   });
   $( "#complete" ).dataTable({
     "bJQueryUI": true,
-    "aaSorting": [[ 2, "desc" ]], // sort by SubmittedAt
+    "aaSorting": [[ 2, "desc" ]],
   });
 }
 
-function toLocalDate(release_type) {
-    $( '.submittedAt_' + release_type ).each(function() {
+function toLocalDate() {
+    $( '.submittedAt' ).each(function() {
         var localdate = new Date($(this).html());
-        if ( release_type === 'submitted' ) {
-            $(this).empty().append('Submitted at: ' + localdate.toLocaleString());
-        } else {
+        if ( $(this).prop('tagName') == 'TD' ) {
             $(this).empty().append(localdate.toLocaleString());
+        } else {
+            //this is not a table row: prepend 'Submitted at: '
+            $(this).empty().append('Submitted at: ' + localdate.toLocaleString());
         }
     });
 };
