@@ -3,22 +3,29 @@ function initialSetup(){
   $( "#accordion" ).accordion({ heightStyle: "content" });
 }
 
-function onTableChange(release_type) {
-    // entry point for dataTable events
-    toLocalDate(release_type);
+function viewReleases(){
+  toLocalDate('submitted');
+  toLocalDate('reviewed');
+  toLocalDate('complete');
+  // initilaize dataTables
+  $( "#reviewed" ).dataTable({
+    "bJQueryUI": true,
+    "aaSorting": [[ 2, "desc" ]], // sort by SubmittedAt
+  });
+  $( "#complete" ).dataTable({
+    "bJQueryUI": true,
+    "aaSorting": [[ 2, "desc" ]], // sort by SubmittedAt
+  });
 }
-
-function updateSubmitLocalDate() {
-    $( '.submittedAt_submitted' ).each(function() {
-        var localdate = new Date($(this).html());
-        $(this).empty().append('Submitted at: ' + localdate.toLocaleString());
-    });
-};
 
 function toLocalDate(release_type) {
     $( '.submittedAt_' + release_type ).each(function() {
         var localdate = new Date($(this).html());
+        if ( release_type === 'submitted' ) {
+            $(this).empty().append('Submitted at: ' + localdate.toLocaleString());
+        } else {
             $(this).empty().append(localdate.toLocaleString());
+        }
     });
 };
 
