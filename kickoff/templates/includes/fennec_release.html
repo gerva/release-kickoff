@@ -68,17 +68,3 @@ $(document).ready(function() {
     <div class="help">The relbranch to put version bumps/tags for this release on. If not specified, one will be generated automatically during tagging. When provided the release will be created from tip of this branch thus it cannot be used in conjunction with revision.</div>
 </div>
 </div><!-- advanced -->
-<script>
-$('#fennec-release-url').blur(function() {
-    var regex = /https:\/\/hg.mozilla.org\/(.*)\/rev\/(.*)/
-    var match = regex.exec( $( '#fennec-release-url' ).val() )
-    if ( match ) {
-        $( '#fennec-branch' ).val(match[1]);
-        $( '#fennec-mozillaRevision' ).val(match[2]);
-        alert('release branch:' + match[1]+ '\nrev: ' + match[2]);
-    }
-    else {
-        alert('Handler for .blur() called: ' +release_url );
-    }
-});
-</script>

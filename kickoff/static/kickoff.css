@@ -24,11 +24,11 @@ body {
 .submit_release textarea,
 .submit_release input {
     float: left;
-    width: 25em;
+    width: 40em;
 }
 
 .help {
-    margin-left: 45.5em;
+    margin-left: 25.5em;
     color: red;
 }
 

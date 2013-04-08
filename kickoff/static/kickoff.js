@@ -1,18 +1,28 @@
 function initialSetup(){
-  $( "#tabs" ).tabs();
-  $( "#accordion" ).accordion({ heightStyle: "content" });
+  $( '#tabs' ).tabs();
+  $( '#accordion' ).accordion({ heightStyle: 'content' });
+  // adding blur functions
+  $( '#fennec-release-url').blur(function() {
+    updateReleaseUrl('fennec')
+  });
+  $( '#firefox-release-url').blur(function()
+    {updateReleaseUrl('firefox')
+  });
+  $( '#thunderbird-release-url').blur(function() {
+    updateReleaseUrl('thunderbird')
+  });
 }
 
 function viewReleases(){
   toLocalDate();
   // initilaize dataTables sort by SubmittedAt descending
-  $( "#reviewed" ).dataTable({
-    "bJQueryUI": true,
-    "aaSorting": [[ 2, "desc" ]],
+  $( '#reviewed' ).dataTable({
+    'bJQueryUI': true,
+    'aaSorting': [[ 2, 'desc' ]],
   });
-  $( "#complete" ).dataTable({
-    "bJQueryUI": true,
-    "aaSorting": [[ 2, "desc" ]],
+  $( '#complete' ).dataTable({
+    'bJQueryUI': true,
+    'aaSorting': [[ 2, 'desc' ]],
   });
 }
 
@@ -29,14 +39,14 @@ function toLocalDate() {
 };
 
 function escapeExpression(str) {
-    return str.replace(/([#;&,_\-\.\+\*\~':"\!\^$\[\]\(\)=>\|])/g, "\\$1");
+    return str.replace(/([#;&,_\-\.\+\*\~':'\!\^$\[\]\(\)=>\|])/g, '\\$1');
 }
 
 function submittedReleaseButtons(buttonId) {
     var btnId = '#' + escapeExpression( buttonId );
-    var other_btnId = btnId.replace("ready", "delete");
+    var other_btnId = btnId.replace('ready', 'delete');
     if ( other_btnId == btnId ) {
-        other_btnId = btnId.replace("delete", "ready");
+        other_btnId = btnId.replace('delete', 'ready');
     }
     if ( $( btnId ).is(':checked') ) {
         $( other_btnId ).attr('checked', false);
@@ -44,5 +54,14 @@ function submittedReleaseButtons(buttonId) {
     }
     else {
         $( other_btnId ).attr('disabled', false);
+    }
+};
+
+function updateReleaseUrl(release_type) {
+    var regex = /https:\/\/hg.mozilla.org\/(.*)\/rev\/(.*)/;
+    var match = regex.exec( $( '#' + release_type + '-release-url' ).val() );
+    if ( match ) {
+        $( '#' + release_type + '-branch' ).val(match[1]);
+        $( '#' + release_type + '-mozillaRevision' ).val(match[2]);
     }
 }
