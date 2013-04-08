@@ -28,18 +28,9 @@ $(document).ready(function() {
     <div class="help">Build number must be set to 1 for the first release with this version. If a previous build has already been attempted and it has tagged the source repositories, build 2 or higher should be used. Generally, the autofilled value for this is correct.</div>
 </div>
 <div class="submit_release">
-    {{ fennecForm.branch.label()|safe }}
-    {{ fennecForm.branch(placeholder='releases/mozilla-beta')|safe }}
-    <div class="help">The branch to build the release from, relative to the root of the VCS.</div>
-</div>
-<div class="submit_release">
-    {{ fennecForm.mozillaRevision.label()|safe }}
-    {% if fennecForm.mozillaRelbranch.data %}
-        {{ fennecForm.mozillaRevision(disabled='disabled')|safe }}
-    {% else %}
-        {{ fennecForm.mozillaRevision(placeholder='abcdef123456')|safe }}
-    {% endif %}
-    <div class="help">If a relbranch is specified this field is disabled and ignored. The tip of the relbranch will be used instead.</div>
+    <label for="fennec-release-url">Release url:</label>
+    <input id="fennec-release-url" name="fennec-release-url" placeholder="https://hg.mozilla.org/<release_branch>/<revision>" type="text" value="">
+    <div class="help">Release url</div>
 </div>
 <div class="submit_release">
     {{ fennecForm.l10nChangesets.label()|safe }}
@@ -54,6 +45,20 @@ $(document).ready(function() {
 <h4>Advanced Options:</h4>
 <div class="advanced">
 <div class="submit_release">
+    {{ fennecForm.branch.label()|safe }}
+    {{ fennecForm.branch(placeholder='releases/mozilla-beta')|safe }}
+    <div class="help">The branch to build the release from, relative to the root of the VCS.</div>
+</div>
+<div class="submit_release">
+    {{ fennecForm.mozillaRevision.label()|safe }}
+    {% if fennecForm.mozillaRelbranch.data %}
+        {{ fennecForm.mozillaRevision(disabled='disabled')|safe }}
+    {% else %}
+        {{ fennecForm.mozillaRevision(placeholder='abcdef123456')|safe }}
+    {% endif %}
+    <div class="help">If a relbranch is specified this field is disabled and ignored. The tip of the relbranch will be used instead.</div>
+</div>
+<div class="submit_release">
     {{ fennecForm.mozillaRelbranch.label()|safe }}
     {% if fennecForm.mozillaRevision.data %}
         {{ fennecForm.mozillaRelbranch(disabled='disabled')|safe }}
@@ -63,3 +68,18 @@ $(document).ready(function() {
     <div class="help">The relbranch to put version bumps/tags for this release on. If not specified, one will be generated automatically during tagging. When provided the release will be created from tip of this branch thus it cannot be used in conjunction with revision.</div>
 </div>
 </div><!-- advanced -->
+<script>
+$('#fennec-release-url').blur(function() {
+    var release_url = $( '#fennec-release-url' ).val();
+    var regex = /https:\/\/hg.mozilla.org\/(.*)\/rev\/(.*)/
+    var match = regex.exec(release_url)
+    if ( match ) {
+        var release_branch = match[1];
+        var revision = match[2];
+        alert('release branch:' + release_branch + 'rev: ' + revision)
+    }
+    else {
+        alert('Handler for .blur() called: ' +release_url );
+    }
+});
+</script>
