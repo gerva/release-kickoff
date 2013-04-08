@@ -70,13 +70,12 @@ $(document).ready(function() {
 </div><!-- advanced -->
 <script>
 $('#fennec-release-url').blur(function() {
-    var release_url = $( '#fennec-release-url' ).val();
     var regex = /https:\/\/hg.mozilla.org\/(.*)\/rev\/(.*)/
-    var match = regex.exec(release_url)
+    var match = regex.exec( $( '#fennec-release-url' ).val() )
     if ( match ) {
-        var release_branch = match[1];
-        var revision = match[2];
-        alert('release branch:' + release_branch + 'rev: ' + revision)
+        $( '#fennec-branch' ).val(match[1]);
+        $( '#fennec-mozillaRevision' ).val(match[2]);
+        alert('release branch:' + match[1]+ '\nrev: ' + match[2]);
     }
     else {
         alert('Handler for .blur() called: ' +release_url );
