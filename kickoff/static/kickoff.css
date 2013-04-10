@@ -13,6 +13,15 @@ body {
 /* submit release form */
 .submit_release {
    padding-bottom: 1em;
+   overflow:auto;
+}
+
+.submit_release:after {
+   content: ".";
+   display: block;
+   height: 0;
+   clear: both;
+   visibility: hidden;
 }
 
 /* submit release form labels*/
@@ -272,4 +281,47 @@ h4 {
 /* disable column highlighting when selected */
 table.dataTable tr.odd td.sorting_1 { background-color: transparent; }
 table.dataTable tr.even td.sorting_1 { background-color: transparent; }
+
+/* pop */
+.pop {
+    position: absolute;
+    display: inline;
+}
+
+.pop .pop_menu {
+    display: none;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+.pop .pop_toggle {
+    background-image: url(/static/images/arrow-down.gif);
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 20px;
+    height: 20px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.active .pop_menu {
+  display: block;
+  background-color: grey;
+  color: black;
+  position: absolute;
+  padding: .6em;
+  width: 12em;
+}
+
+.active .pop_menu a {
+    color: #fff;
+}
+
+.active .pop_toggle {
+  z-index: 2000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: url(/static/images/arrow-up.gif);
+}
 

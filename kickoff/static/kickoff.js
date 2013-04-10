@@ -2,6 +2,7 @@ function initialSetup(){
   $( '#tabs' ).tabs();
   $( '#accordion' ).accordion({ heightStyle: 'content' });
   $(document).ready(function() { formAutoUpdate() });
+  $.pop();
   //$( '.help' ).hide();
 }
 
