@@ -23,13 +23,28 @@ function initialSetup(){
 function viewReleases(){
   toLocalDate();
   // initilaize dataTables sort by SubmittedAt descending
+  // and saving table state
   $( "#reviewed" ).dataTable({
     "bJQueryUI": true,
     "aaSorting": [[ 2, "desc" ]],
+    "bStateSave": true,
+    "fnStateSave": function (oSettings, oData) {
+        localStorage.setItem( 'DataTables_reviewed'+window.location.pathname, JSON.stringify(oData) );
+    },
+    "fnStateLoad": function (oSettings) {
+        return JSON.parse( localStorage.getItem('DataTables_reviewed'+window.location.pathname) );
+    }
   });
   $( "#complete" ).dataTable({
     "bJQueryUI": true,
     "aaSorting": [[ 2, "desc" ]],
+    "bStateSave": true,
+    "fnStateSave": function (oSettings, oData) {
+        localStorage.setItem( 'DataTables_complete'+window.location.pathname, JSON.stringify(oData) );
+    },
+    "fnStateLoad": function (oSettings) {
+        return JSON.parse( localStorage.getItem('DataTables_complete'+window.location.pathname) );
+    }
   });
 }
 
