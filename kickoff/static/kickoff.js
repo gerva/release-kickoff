@@ -1,17 +1,23 @@
 function initialSetup(){
-  $( "#tabs" ).tabs();
+  $( "#tabs" ).tabs({
+    activate: function (event, ui) {
+         $.cookie('active_tab', ui.newTab.index(), { path: '/' });
+     }
+  });
+  $('#tabs').tabs("option", "active", $.cookie('active_tab'));
+
   $( "#accordion" ).accordion({
     heightStyle: "content",
     navigation: true,
     // using cookies to save the current open tab
     change: function(event, ui) {
         //using cookies to save current open tab
-        $.cookie('saved_index', null);
-        $.cookie('saved_index', $( "#accordion" )
+        $.cookie('active_accordion', null);
+        $.cookie('active_accordion', $( "#accordion" )
             .accordion( "option", "active" ));
         },
-    active:parseInt($.cookie('saved_index'))}
-    );
+    active:parseInt($.cookie('active_accordion'))
+    });
 }
 
 function viewReleases(){
