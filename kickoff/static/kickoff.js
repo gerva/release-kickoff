@@ -1,10 +1,10 @@
 function initialSetup(){
   $( "#tabs" ).tabs({
     activate: function (event, ui) {
-         $.cookie('active_tab', ui.newTab.index(), { path: '/' });
-     }
+         $.cookie("active_tab", ui.newTab.index(), { path: '/' });
+     },
+    active: $.cookie("active_tab"),
   });
-  $('#tabs').tabs("option", "active", $.cookie('active_tab'));
 
   $( "#accordion" ).accordion({
     heightStyle: "content",
