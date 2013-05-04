@@ -1,6 +1,17 @@
 function initialSetup(){
   $( "#tabs" ).tabs();
-  $( "#accordion" ).accordion({ heightStyle: "content" });
+  $( "#accordion" ).accordion({
+    heightStyle: "content",
+    navigation: true,
+    // using cookies to save the current open tab
+    change: function(event, ui) {
+        //using cookies to save current open tab
+        $.cookie('saved_index', null);
+        $.cookie('saved_index', $( "#accordion" )
+            .accordion( "option", "active" ));
+        },
+    active:parseInt($.cookie('saved_index'))}
+    );
 }
 
 function viewReleases(){
