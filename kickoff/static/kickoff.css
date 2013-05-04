@@ -116,8 +116,7 @@ body {
 }
 
 
-.delete-button,
-.ready-button {
+.*-button {
     margin:4px;
     background-color:#EFEFEF;
     border-radius:4px;
@@ -126,21 +125,31 @@ body {
     float:left;
 }
 
-.delete-button label,
-.ready-button label {
+.help_b {
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+    color: white;
+    border: solid 1px #0076a3;
+    width: 2em;
+    background: #0095cd;
+    background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));
+    background: -moz-linear-gradient(top,  #00adee,  #0078a5);
+    margin-left: 1em;
+}
+
+.*-button label {
     float:left;
     width:4.0em;
 }
 
-.delete-button label span,
-.ready-button label span {
+.*-button label span {
     text-align:center;
     padding:3px 0px;
     display:block;
 }
 
-.delete-button label input,
-.ready-button label input {
+.*-button label input {
     position:absolute;
     top:-20px;
 }
@@ -155,8 +164,7 @@ body {
     color:#fff;
 }
 
-.delete-button input:disabled + span,
-.ready-button input:disabled + span {
+.*-button input:disabled + span {
     background-color:#EFEFEF;
     color:#D0D0D0;
 }
