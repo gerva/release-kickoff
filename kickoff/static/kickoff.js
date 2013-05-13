@@ -77,3 +77,45 @@ function submittedReleaseButtons(buttonId) {
         $( other_btnId ).attr('disabled', false);
     }
 }
+
+function validateReleaseUrl(release_url) {
+    return true
+}
+
+function updateReleaseUrl(release_type) {
+    var regex = /https:\/\/hg.mozilla.org\/(.*)\/rev\/(.*)/;
+    var match = regex.exec( $( '#' + release_type + '-release-url' ).val() );
+    if ( ! validateReleaseUrl ( $( '#' + release_type + '-release-url' ).val()) )  {
+       // wrong url/url does not exist
+       // make some noise
+       return
+    }
+    else {
+      // url is valid, update branch and revision
+      if ( match ) {
+        $( '#' + release_type + '-branch' ).val(match[1]);
+        $( '#' + release_type + '-mozillaRevision' ).val(match[2]);
+      };
+    }
+};
+
+function updateBranchRevision(release_type) {
+    var branch = $( '#' + release_type + '-branch' ).val().trim();
+    var mozillaRevision = $( '#' + release_type + '-mozillaRevision' ).val().trim();
+    if ( branch !== '' &&  mozillaRevision !== '' ) {
+        $( '#' + release_type + '-release-url' ).val('https://hg.mozilla.org/' + branch + '/rev/' + mozillaRevision )
+    };
+};
+
+function submitRelease(){
+    var products = ["fennec", "firefox", "thunderbird"]
+    products.forEach(function(product) {
+      $( "#" + product + "\-release\-url" )
+       .blur( function(){ updateReleaseUrl(product) });
+      $( "#" + product + "\-mozillaRevision" )
+       .blur( function(){updateBranchRevision(product) });
+      $( "#" + product + "\-branch" )
+       .blur( function() {updateBranchRevision(product) });
+    });
+}
+
