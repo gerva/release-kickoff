@@ -34,19 +34,10 @@ $(document).ready(function() {
     <div class="help">Build number must be set to 1 for the first release with this version. If a previous build has already been attempted and it has tagged the source repositories, build 2 or higher should be used. Generally, the autofilled value for this is correct.</div>
 </div>
 <div class="submit_release">
-    {{ thunderbirdForm.branch.label()|safe }}
-    {{ thunderbirdForm.branch(placeholder='releases/comm-beta')|safe }}
-    <div class="help">The branch to build the release from, relative to the root of the VCS.</div>
-</div>
-<div class="submit_release">
-    {{ thunderbirdForm.mozillaRevision.label()|safe }}
-    {% if thunderbirdForm.mozillaRelbranch.data %}
-        {{ thunderbirdForm.mozillaRevision(disabled='disabled')|safe }}
-    {% else %}
-        {{ thunderbirdForm.mozillaRevision(placeholder='abcdef123456')|safe }}
-    {% endif %}
-    <div class="help">If a relbranch is specified this field is disabled and ignored. The tip of the relbranch will be used instead.</div>
-</div>
+    <label for="thunderbird-release-url">Release url:</label>
+    <input id="thunderbird-release-url" name="thunderbird-release-url" placeholder="https://hg.mozilla.org/<release branch>/rev/<revision>" type="text" value="">
+    <div class="help">Release url</div>
+ </div>
 <div class="submit_release">
     {{ thunderbirdForm.commRevision.label()|safe }}
     {% if thunderbirdForm.commRelbranch.data %}
@@ -73,6 +64,20 @@ $(document).ready(function() {
 </div>
 <h4>Advanced Options:</h4>
 <div class="advanced">
+<div class="submit_release">
+    {{ thunderbirdForm.branch.label()|safe }}
+    {{ thunderbirdForm.branch(placeholder='releases/comm-beta')|safe }}
+    <div class="help">The branch to build the release from, relative to the root of the VCS.</div>
+</div>
+<div class="submit_release">
+    {{ thunderbirdForm.mozillaRevision.label()|safe }}
+    {% if thunderbirdForm.mozillaRelbranch.data %}
+        {{ thunderbirdForm.mozillaRevision(disabled='disabled')|safe }}
+    {% else %}
+        {{ thunderbirdForm.mozillaRevision(placeholder='abcdef123456')|safe }}
+    {% endif %}
+    <div class="help">If a relbranch is specified this field is disabled and ignored. The tip of the relbranch will be used instead.</div>
+</div>
 <div class="submit_release">
     {{ thunderbirdForm.mozillaRelbranch.label()|safe }}
     {{ thunderbirdForm.mozillaRelbranch()|safe }}

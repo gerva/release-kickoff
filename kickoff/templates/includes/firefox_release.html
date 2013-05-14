@@ -30,19 +30,10 @@ $(document).ready(function() {
     <div class="help">Build number must be set to 1 for the first release with this version. If a previous build has already been attempted and it has tagged the source repositories, build 2 or higher should be used. Generally, the autofilled value for this is correct.</div>
 </div>
 <div class="submit_release">
-    {{ firefoxForm.branch.label()|safe }}
-    {{ firefoxForm.branch(placeholder='releases/mozilla-beta')|safe }}
-    <div class="help">The branch to build the release from, relative to the root of the VCS.</div>
-</div>
-<div class="submit_release">
-    {{ firefoxForm.mozillaRevision.label()|safe }}
-    {% if firefoxForm.mozillaRelbranch.data %}
-        {{ firefoxForm.mozillaRevision(disabled='disabled')|safe }}
-    {% else %}
-        {{ firefoxForm.mozillaRevision(placeholder='abcdef123456')|safe }}
-    {% endif %}
-    <div class="help">If a relbranch is specified this field is disabled and ignored. The tip of the relbranch will be used instead.</div>
-</div>
+    <label for="firefox-release-url">Release url:</label>
+    <input id="firefox-release-url" name="firefox-release-url" placeholder="https://hg.mozilla.org/<release branch>/rev/<revision>" type="text" value="">
+    <div class="help">Release url</div>
+ </div>
 <div class="submit_release">
     {{ firefoxForm.partials.label()|safe }}
     {{ firefoxForm.partials(placeholder='15.0b5build1,15.0b4build2')|safe }}
@@ -60,6 +51,20 @@ $(document).ready(function() {
 </div>
 <h4>Advanced Options:</h4>
 <div class="advanced">
+<div class="submit_release">
+    {{ firefoxForm.branch.label()|safe }}
+    {{ firefoxForm.branch(placeholder='releases/mozilla-beta')|safe }}
+    <div class="help">The branch to build the release from, relative to the root of the VCS.</div>
+</div>
+<div class="submit_release">
+    {{ firefoxForm.mozillaRevision.label()|safe }}
+    {% if firefoxForm.mozillaRelbranch.data %}
+        {{ firefoxForm.mozillaRevision(disabled='disabled')|safe }}
+    {% else %}
+        {{ firefoxForm.mozillaRevision(placeholder='abcdef123456')|safe }}
+    {% endif %}
+    <div class="help">If a relbranch is specified this field is disabled and ignored. The tip of the relbranch will be used instead.</div>
+</div>
 <div class="submit_release">
     {{ firefoxForm.mozillaRelbranch.label()|safe }}
     {% if firefoxForm.mozillaRevision.data %}
