@@ -18,13 +18,13 @@ body {
 /* submit release form labels*/
 .submit_release label {
     float: left;
-    width: 20em;
+    width: 15em;
 }
 
 .submit_release textarea,
 .submit_release input {
     float: left;
-    width: 25em;
+    width: 35em;
 }
 
 .help {
