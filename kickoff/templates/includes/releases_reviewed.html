@@ -1,6 +1,6 @@
 {% for rel in releases if rel.ready and not rel.complete %}
 {% if loop.first %}
-<table id="reviewed">
+<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="reviewed">
 <thead>
 <tr>
   <th>Name</th>
@@ -60,3 +60,13 @@
 {% else %}
 <h1>No pending releases!</h1>
 {% endfor %}
+<script>
+$(document).ready(function() {
+    $('#reviewed').dataTable() //{
+//        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>"
+//    } );
+});
+$.extend( $.fn.dataTableExt.oStdClasses, {
+    "sWrapper": "dataTables_wrapper form-inline"
+} );
+</script>

@@ -1,57 +1,64 @@
 {% extends "base.html" %}
 {% block content %}
 {% if errors %}
-<div id="errors">
+<div class="alert alert-error">
+<button type="button" class="close" data-dismiss="alert">&times;</button>
 <ul>
     {% for e in errors %}
     <li>{{ e }}</li>
     {% endfor %}
 </ul>
-</div> <!-- id=errors -->
+</div> <!-- class="alert alert-error" -->
 <script>
   $(function(){
      $("#tabs").tabs("select", "#{{ selectedProduct }}")
 });
 </script>
 {% endif %}
-<div class="tabbable">
-<ul class="nav nav-tabs" data-tabs="tabs">
-    {% for prod in ("fennec", "firefox", "thunderbird") %}
-    <li><a href="#{{ prod }}Tab" data-toggle="tab">{{ prod|capitalize }}</a></li>
-    {% endfor %}
-</ul>
-<div class="tab-content">
-{% for prod in ("fennec", "firefox", "thunderbird") %}
-<div id="{{prod}}Tab" class="tab-pane">
-  <form class="form-horizontal" action="{{ url_for("submit_release") }}" method="post">
-  <fieldset>
-    {% set product_template = "includes/" + prod + "_release.html" %}
-    {% include product_template %}
-    <div>
-      <input class="btn btn-primary" type="submit" value="Gimme a {{ prod|capitalize }}"/>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span1">
+      <!--Sidebar content-->
     </div>
-  </fieldset>
-  </form>
-</div> <!-- id="{{ prod }}Tab" class="tab-pane"-->
-{% endfor %}
-</div> <!-- class="tab-content" -->
-</div> <!-- class="Tabbable" -->
+    <div class="span10">
+      <div class="tabbable">
+        <ul class="nav nav-tabs" data-tabs="tabs" id="submittedTab">
+        {% for prod in ("fennec", "firefox", "thunderbird") %}
+          <li><a href="#{{ prod }}Tab" data-toggle="tab">{{ prod|capitalize }}</a></li>
+        {% endfor %}
+        </ul>
+      <div class="tab-content">
+      {% for prod in ("fennec", "firefox", "thunderbird") %}
+        <div id="{{prod}}Tab" class="tab-pane">
+          <form class="form-horizontal" action="{{ url_for("submit_release") }}" method="post">
+            <fieldset>
+            {% set product_template = "includes/" + prod + "_release.html" %}
+            {% include product_template %}
+            <div>
+            <input class="btn btn-primary" type="submit" value="Gimme a {{ prod|capitalize }}"/>
+            </div>
+            </fieldset>
+          </form>
+        </div> <!-- id="{{ prod }}Tab" class="tab-pane"-->
+      {% endfor %}
+      </div> <!-- class="tab-content" -->
+    </div> <!-- class="Tabbable" -->
+  </div> <!-- "row-fluid" -->
+</div> <!-- class=container -->
 <script>
-  $(document).ready(function(){
-  $(".tabs").tabs()
-  $('a[data-toggle="tab"]').on('shown', function(e){
-    //save the latest tab using a cookie:
-    localStorage.setItem('last_tab', $(e.target).attr('href'));
-  });
+$(document).ready(function(){
 
-  //activate latest tab, if it exists:
-  var lastTab = localStorage.getItem('last_tab');
-  if (lastTab) {
-      $('ul.nav-tabs').children().removeClass('active');
-      $('a[href='+ lastTab +']').parents('li:first').addClass('active');
-      $('div.tab-content').children().removeClass('active');
-      $(lastTab).addClass('active');
+  var activeTab = localStorage.getItem( "activeSubmittedTab" );
+  if ( activeTab == "" ) {
+    activeTab = "#submittedTab a:first-child";
+    localStorage.setItem("activeSubmittedTab", $( activeTab ).attr('href') );
   }
+  $( activeTab ).tab( "show" );
+
+  $( "#submittedTab a" ).click(function(e) {
+    e.preventDefault();
+    localStorage.setItem("activeSubmittedTab", e.currentTarget.id);
+  });
 });
 
 </script>

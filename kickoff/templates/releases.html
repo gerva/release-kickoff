@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% if errors %}
-<div id='errors'>
+<div id="errors">
 <ul>
     {% for e in errors %}
     <li>{{ e }}</li>
@@ -9,26 +9,51 @@
 </ul>
 </div> <!-- id=errors -->
 {% endif %}
-  <div id='accordion'>
-  <h3><a href="#Submitted">Submitted</a></h3>
-  <div id='notready'>
-   {% include 'includes/releases_submitted.html' %}
-  </div><!-- notready -->
-  <h3><a href="#ReviewedComplete">Reviewed/Complete</a></h3>
-  <div id='tabs'>
-    <ul>
-      <li><a href="#reviewed-tab">Reviewed</a></li>
-      <li><a href="#complete-tab">Complete</a></li>
-    </ul>
-    <div id="reviewed-tab">
-     {% include 'includes/releases_reviewed.html' %}
-    </div> <!-- reviewed-tab -->
-    <div id="complete-tab">
-     {% include 'includes/releases_complete.html' %}
-    </div> <!-- complete-tab -->
-  </div> <!-- tabs -->
-  </div><!-- accordion -->
-<script>
-    $(document).ready(function(){ viewReleases(); });
-</script>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span1">
+       <!--Sidebar content-->
+    </div>
+    <div class="span11">
+      <div id="accordion2" class="accordion">
+        <div class="accordion-group">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+              Submitted
+            </a>
+          </div>
+          <div id="collapseOne" class="accordion-body collapse in">
+            <div class="accordion-inner">
+              {% include 'includes/releases_submitted.html' %}
+            </div>
+          </div>
+        </div>
+        <div class="accordion-group">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+              Reviewed
+            </a>
+          </div>
+          <div id="collapseTwo" class="accordion-body collapse">
+            <div class="accordion-inner">
+              {% include 'includes/releases_reviewed.html' %}
+            </div>
+          </div>
+        </div>
+        <div class="accordion-group">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+             Complete
+            </a>
+          </div>
+          <div id="collapseThree" class="accordion-body collapse">
+            <div class="accordion-inner">
+              {% include 'includes/releases_complete.html' %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- container -->
 {% endblock %}
