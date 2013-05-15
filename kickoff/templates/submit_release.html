@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% if errors %}
-<div id='errors'>
+<div id="errors">
 <ul>
     {% for e in errors %}
     <li>{{ e }}</li>
@@ -10,29 +10,49 @@
 </div> <!-- id=errors -->
 <script>
   $(function(){
-     $('#tabs').tabs("select", "#{{ selectedProduct }}")
+     $("#tabs").tabs("select", "#{{ selectedProduct }}")
 });
 </script>
 {% endif %}
-<div id='tabs'>
-  <ul>
-      {% for prod in ('fennec', 'firefox', 'thunderbird') %}
-      <li><a href="#{{ prod }}">{{ prod|capitalize }}</a></li>
-      {% endfor %}
-  </ul>
-  {% for prod in ('fennec', 'firefox', 'thunderbird') %}
-  <div id={{prod}} >
-    <form class='submit_release_form' action='{{ url_for('submit_release') }}' method='post'>
-    {% set product_template = 'includes/' + prod + '_release.html' %}
+<div class="tabbable">
+<ul class="nav nav-tabs" data-tabs="tabs">
+    {% for prod in ("fennec", "firefox", "thunderbird") %}
+    <li><a href="#{{ prod }}Tab" data-toggle="tab">{{ prod|capitalize }}</a></li>
+    {% endfor %}
+</ul>
+<div class="tab-content">
+{% for prod in ("fennec", "firefox", "thunderbird") %}
+<div id="{{prod}}Tab" class="tab-pane">
+  <form class="form-horizontal" action="{{ url_for("submit_release") }}" method="post">
+  <fieldset>
+    {% set product_template = "includes/" + prod + "_release.html" %}
     {% include product_template %}
     <div>
-        <input type='submit' value="Gimme a {{ prod|capitalize }}"/>
+      <input class="btn btn-primary" type="submit" value="Gimme a {{ prod|capitalize }}"/>
     </div>
-    </form>
-   </div>
-   {% endfor %}
-</div>
+  </fieldset>
+  </form>
+</div> <!-- id="{{ prod }}Tab" class="tab-pane"-->
+{% endfor %}
+</div> <!-- class="tab-content" -->
+</div> <!-- class="Tabbable" -->
 <script>
-  $(document).ready(function(){ submitRelease(); });
+  $(document).ready(function(){
+  $(".tabs").tabs()
+  $('a[data-toggle="tab"]').on('shown', function(e){
+    //save the latest tab using a cookie:
+    localStorage.setItem('last_tab', $(e.target).attr('href'));
+  });
+
+  //activate latest tab, if it exists:
+  var lastTab = localStorage.getItem('last_tab');
+  if (lastTab) {
+      $('ul.nav-tabs').children().removeClass('active');
+      $('a[href='+ lastTab +']').parents('li:first').addClass('active');
+      $('div.tab-content').children().removeClass('active');
+      $(lastTab).addClass('active');
+  }
+});
+
 </script>
 {% endblock %}

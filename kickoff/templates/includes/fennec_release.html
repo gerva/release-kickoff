@@ -1,3 +1,69 @@
+<div class="control-group controls-row">
+    {{ fennecForm.version.label(class="control-label")|safe }}
+    <div class="controls">
+    {{ fennecForm.version(class="input-large", placeholder='15.0b6')|safe }}
+    <a href="#" class="btn btn-mini btn-primary">?</a>
+    </div>
+</div>
+<div class="control-group controls-row">
+    {{ fennecForm.buildNumber.label(class="control-label")|safe }}
+    <div class="controls">
+    {{ fennecForm.buildNumber(placeholder='1')|safe }}
+    <span class="badge badge-info">?</span>
+    </div>
+</div>
+<div class="control-group controls-row">
+    <label class="control-label" for="fennec-release-url">Release url:</label>
+    <div class="controls">
+    <input id="fennec-release-url" name="fennec-release-url" placeholder="https://hg.mozilla.org/<release branch>/rev/<revision>" type="text" value="">
+    <span class="badge badge-info">?</span>
+    </div>
+</div>
+<div class="control-group controls-row">
+    {{ fennecForm.l10nChangesets.label(class="control-label")|safe }}
+    <div class="controls">
+    {{ fennecForm.l10nChangesets(placeholder='{"ca": {"revision": "abcdef123456", "platforms": ["android"]}')|safe }}
+    <span class="badge badge-info">?</span>
+    </div>
+</div>
+<div class="control-group controls-row">
+    {{ fennecForm.dashboardCheck.label(class="control-label")|safe }}
+    <div class="controls">
+    {{ fennecForm.dashboardCheck()|safe }}
+    <span class="badge badge-info">?</span>
+    </div>
+</div>
+<h4>Advanced options:</h4>
+<hr>
+<div class="control-group controls-row">
+    {{ fennecForm.branch.label(class="control-label")|safe }}
+    <div class="controls">
+    {{ fennecForm.branch(placeholder='releases/mozilla-beta')|safe }}
+    <span class="badge badge-info">?</span>
+    </div>
+</div>
+<div class="control-group controls-row">
+    {{ fennecForm.mozillaRevision.label(class="control-label")|safe }}
+    <div class="controls">
+    {% if fennecForm.mozillaRelbranch.data %}
+        {{ fennecForm.mozillaRevision(disabled='disabled')|safe }}
+    {% else %}
+        {{ fennecForm.mozillaRevision(placeholder='abcdef123456')|safe }}
+    {% endif %}
+    <span class="badge badge-info">?</span>
+    </div>
+</div>
+<div class="control-group controls-row">
+    {{ fennecForm.mozillaRelbranch.label(class="control-label")|safe }}
+    <div class="controls">
+    {% if fennecForm.mozillaRevision.data %}
+        {{ fennecForm.mozillaRelbranch(disabled='disabled')|safe }}
+    {% else %}
+        {{ fennecForm.mozillaRelbranch()|safe }}
+    {% endif %}
+    <span class="badge badge-info">?</span>
+    </div>
+</div>
 <script type='text/javascript'>
 $(document).ready(function() {
     setupVersionSuggestions(
@@ -14,57 +80,8 @@ $(document).ready(function() {
         $('#{{ fennecForm.mozillaRelbranch.id }}'),
         $('#{{ fennecForm.mozillaRevision.id }}')
     );
+    $( '.tooltip' ).tooltip();
+    $( '.popover' ).popover();
 })
 </script>
 {{ fennecForm.hidden_tag() }}
-<div class="submit_release">
-    {{ fennecForm.version.label()|safe }}
-    {{ fennecForm.version(placeholder='15.0b6')|safe }}
-    <div>&nbsp;</div>
-</div>
-<div class="submit_release">
-    {{ fennecForm.buildNumber.label()|safe }}
-    {{ fennecForm.buildNumber(placeholder='1')|safe }}
-    <div class="help">Build number must be set to 1 for the first release with this version. If a previous build has already been attempted and it has tagged the source repositories, build 2 or higher should be used. Generally, the autofilled value for this is correct.</div>
-</div>
-<div class="submit_release">
-    <label for="fennec-release-url">Release url:</label>
-    <input id="fennec-release-url" name="fennec-release-url" placeholder="https://hg.mozilla.org/<release branch>/rev/<revision>" type="text" value="">
-    <div class="help">Release url</div>
-</div>
-<div class="submit_release">
-    {{ fennecForm.l10nChangesets.label()|safe }}
-    {{ fennecForm.l10nChangesets(placeholder='{"ca": {"revision": "abcdef123456", "platforms": ["android"]}')|safe }}
-    <div class="help">The l10n changesets for this release, in JSON format. Betas and release-channel releases these are normally copied from the <a href="https://l10n.mozilla.org/shipping/milestones">L10n Dashboard</a>. ESR releases re-use the same changesets as the previous release on the same branch. For more information consult <a href="https://wiki.mozilla.org/Release:Release_Automation_on_Mercurial:Starting_a_Release#L10N_Changesets">the milestone creation documentation</a></div>
-</div>
-<div class="submit_release">
-    {{ fennecForm.dashboardCheck.label()|safe }}
-    {{ fennecForm.dashboardCheck()|safe }}
-    <div class="help">Whether or not to ensure that the changesets given match the ones on the <a href="https://l10n.mozilla.org/shipping/milestones">L10n Dashboard</a>. This is normally turned on for betas and turned off for all other releases.</div>
-</div>
-<h4>Advanced Options:</h4>
-<div class="advanced">
-<div class="submit_release">
-    {{ fennecForm.branch.label()|safe }}
-    {{ fennecForm.branch(placeholder='releases/mozilla-beta')|safe }}
-    <div class="help">The branch to build the release from, relative to the root of the VCS.</div>
-</div>
-<div class="submit_release">
-    {{ fennecForm.mozillaRevision.label()|safe }}
-    {% if fennecForm.mozillaRelbranch.data %}
-        {{ fennecForm.mozillaRevision(disabled='disabled')|safe }}
-    {% else %}
-        {{ fennecForm.mozillaRevision(placeholder='abcdef123456')|safe }}
-    {% endif %}
-    <div class="help">If a relbranch is specified this field is disabled and ignored. The tip of the relbranch will be used instead.</div>
-</div>
-<div class="submit_release">
-    {{ fennecForm.mozillaRelbranch.label()|safe }}
-    {% if fennecForm.mozillaRevision.data %}
-        {{ fennecForm.mozillaRelbranch(disabled='disabled')|safe }}
-    {% else %}
-        {{ fennecForm.mozillaRelbranch()|safe }}
-    {% endif %}
-    <div class="help">The relbranch to put version bumps/tags for this release on. If not specified, one will be generated automatically during tagging. When provided the release will be created from tip of this branch thus it cannot be used in conjunction with revision.</div>
-</div>
-</div><!-- advanced -->
