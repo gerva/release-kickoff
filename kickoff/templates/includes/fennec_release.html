@@ -10,7 +10,7 @@
     <div class="controls">
     {{ fennecForm.buildNumber(placeholder='1')|safe }}
       <span class="badge badge-info">
-    <a class="tooltip" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="build number">?</a>
+    <a class="help" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="build number">?</a>
     </span>
     </div>
 </div>
@@ -82,7 +82,7 @@ $(document).ready(function() {
         $('#{{ fennecForm.mozillaRelbranch.id }}'),
         $('#{{ fennecForm.mozillaRevision.id }}')
     );
-    $( '.tooltip' ).tooltip({trigger: 'hover'});
+    $( '.help' ).tooltip({trigger: 'hover'});
     $( '.popover' ).popover();
 })
 </script>

@@ -49,9 +49,9 @@
 $(document).ready(function(){
 
   var activeTab = localStorage.getItem( "activeSubmittedTab" );
-  if ( activeTab == "" ) {
-    activeTab = "#submittedTab a:first-child";
-    localStorage.setItem("activeSubmittedTab", $( activeTab ).attr('href') );
+  if ( activeTab == null ) {
+    activeTab = $("#submittedTab a:first");
+    localStorage.setItem("activeSubmittedTab", $( activeTab ).attr("href") );
   }
   $( activeTab ).tab( "show" );
 
