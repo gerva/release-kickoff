@@ -1,7 +1,7 @@
-<div class="control-group controls-row">
+<div class="control-group controls-rowspan5">
     {{ fennecForm.version.label(class="control-label")|safe }}
     <div class="controls">
-    {{ fennecForm.version(class="input-large", placeholder='15.0b6')|safe }}
+    {{ fennecForm.version(class="input-xxlarge", placeholder='15.0b6')|safe }}
       <span class="badge badge-info help" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="version number">?
       </span>
     </div>
@@ -9,7 +9,7 @@
 <div class="control-group controls-row">
     {{ fennecForm.buildNumber.label(class="control-label")|safe }}
     <div class="controls">
-    {{ fennecForm.buildNumber(placeholder='1')|safe }}
+    {{ fennecForm.buildNumber(class="input-xxlarge", placeholder='1')|safe }}
       <span class="badge badge-info help" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="Build number must be set to 1 for the first release with this version. If a previous build has already been attempted and it has tagged the source repositories, build 2 or higher should be used. Generally, the autofilled value for this is correct.">?
     </span>
     </div>
@@ -17,7 +17,7 @@
 <div class="control-group controls-row">
     <label class="control-label" for="fennec-release-url">Release url:</label>
     <div class="controls">
-      <input id="fennec-release-url" name="fennec-release-url" placeholder="https://hg.mozilla.org/<release branch>/rev/<revision>" type="text" value="">
+      <input id="fennec-release-url" name="fennec-release-url" class="input-xxlarge", placeholder="https://hg.mozilla.org/<release branch>/rev/<revision>" type="text" value="">
       <span class="badge badge-info help" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="release url">?
       </span>
     </div>
@@ -25,7 +25,7 @@
 <div class="control-group controls-row">
     {{ fennecForm.l10nChangesets.label(class="control-label")|safe }}
     <div class="controls">
-    {{ fennecForm.l10nChangesets(placeholder='{"ca": {"revision": "abcdef123456", "platforms": ["android"]}')|safe }}
+    {{ fennecForm.l10nChangesets(class="input-xxlarge", placeholder='{"ca": {"revision": "abcdef123456", "platforms": ["android"]}')|safe }}
      <span class="badge badge-info help" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="The l10n changesets for this release, in JSON format. Betas and release-channel releases these are normally copied from the <a href='https://l10n.mozilla.org/shipping/milestones'>L10n Dashboard</a>. ESR releases re-use the same changesets as the previous release on the same branch. For more information consult <a href='https://wiki.mozilla.org/Release:Release_Automation_on_Mercurial:Starting_a_Release#L10N_Changesets'>the milestone creation documentation</a>">?
     </span>
     </div>
@@ -42,7 +42,7 @@
 <div class="control-group controls-row">
     {{ fennecForm.branch.label(class="control-label")|safe }}
     <div class="controls">
-      {{ fennecForm.branch(placeholder='releases/mozilla-beta')|safe }}
+      {{ fennecForm.branch(class="input-xxlarge", placeholder='releases/mozilla-beta')|safe }}
       <span class="badge badge-info help" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="The branch to build the release from, relative to the root of the VCS.">?
       </span>
     </div>
@@ -53,7 +53,7 @@
     {% if fennecForm.mozillaRelbranch.data %}
         {{ fennecForm.mozillaRevision(disabled='disabled')|safe }}
     {% else %}
-        {{ fennecForm.mozillaRevision(placeholder='abcdef123456')|safe }}
+        {{ fennecForm.mozillaRevision(class="input-xxlarge", placeholder='abcdef123456')|safe }}
     {% endif %}
       <span class="badge badge-info help" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="If a relbranch is specified this field is disabled and ignored. The tip of the relbranch will be used instead.">?
       </span>

@@ -1,155 +1,8 @@
 body {
     font-size: 12px;
     line-height: 1.5;
-    font-family: 'Open Sans',sans-serif;
+    font-family: "Open Sans",sans-serif;
     color: rgb(51, 51, 51);
-}
-
-/* release table */
-#releases {
-    font-size: 0.8em;
-}
-
-/* submit release form */
-.submit_release {
-   padding-bottom: 1em;
-}
-
-/* submit release form labels*/
-.submit_release label {
-    float: left;
-    width: 15em;
-}
-
-.submit_release textarea,
-.submit_release input {
-    float: left;
-    width: 35em;
-}
-
-.help {
-    margin-left: 45.5em;
-    color: red;
-}
-
-/* submit release form advanced fileds*/
-.advanced {
-    border-top:2px solid LightGray;
-    margin-top:20px;
-    padding-top: 20px
-}
-
-table
-{
-   border-collapse:collapse;
-}
-
-#edit_container {
-    font-size: 1.1em;
-    width: 70%;
-    margin-left: 20px;
-}
-
-#radio {
-    text-align: center;
-}
-
-h1 {
-    margin: 0;
-    margin-bottom: 1ex;
-    text-align: center;
-}
-
-.rel {
-    margin: 0 auto;
-    border-style:solid;
-    border-color: #C8C8C8;
-    border-width:1px;
-    min-width: 500px;
-    margin-bottom: 20px;
-    width: 95%;
-}
-
-.release_title {
-    font-size: 200%;
-    clear: left;
-}
-
-.release_footer {
-    clear: left;
-}
-
-.release_buttons {
-    width: 20%;
-    padding: 0 2%;
-    float: left;
-    padding-top: 20px;
-}
-
-.release_data {
-    width: 70%;
-    margin: 0 0% 0 25%;
-}
-
-body,
-html {
-    margin:0;
-    padding:0;
-}
-
-
-/* ready and delte buttons on releases page*/
-div label input {
-   margin-right:100px;
-}
-body {
-    font-family: 'Open Sans', sans-serif;
-}
-
-
-.delete-button,
-.ready-button {
-    margin:4px;
-    background-color:#EFEFEF;
-    border-radius:4px;
-    border:1px solid #D0D0D0;
-    overflow:auto;
-    float:left;
-}
-
-.delete-button label,
-.ready-button label {
-    float:left;
-    width:4.0em;
-}
-
-.delete-button label span,
-.ready-button label span {
-    text-align:center;
-    padding:3px 0px;
-    display:block;
-}
-
-.delete-button label input,
-.ready-button label input {
-    position:absolute;
-    top:-20px;
-}
-
-.ready-button input:checked + span {
-    background-color:#339933;
-    color:#fff;
-}
-
-.delete-button input:checked + span {
-    background-color:#911;
-    color:#fff;
-}
-
-.delete-button input:disabled + span,
-.ready-button input:disabled + span {
-    background-color:#EFEFEF;
-    color:#D0D0D0;
 }
 
 th.incomplete,
@@ -167,7 +20,7 @@ tr.complete {
 }
 
 .huge, .large, h1, h2, h3, h4 {
-    font-family: 'OpenSans', "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", Verdana, sans-serif;
+    font-family: "OpenSans", "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", Verdana, sans-serif;
     font-weight: normal;
     text-shadow: 0px 1px 0px rgba(255,255,255,0.75);
 }
@@ -213,61 +66,188 @@ h4 {
     line-height: 100%;
 }
 
-/* menu */
-#menu ul
-{
-    padding: 0px;
-    margin: 0px;
-    list-style-type: none;
+/* datatable */
+/* http://www.datatables.net/media/blog/bootstrap_2/DT_bootstrap.css */
+
+
+div.dataTables_length label {
+    float: left;
+    text-align: left;
+}
+
+div.dataTables_length select {
+    width: 75px;
+}
+
+div.dataTables_filter label {
+    float: right;
+}
+
+div.dataTables_info {
+    padding-top: 8px;
+}
+
+div.dataTables_paginate {
+    float: right;
+    margin: 0;
+}
+
+table.table {
+    clear: both;
+    margin-bottom: 6px !important;
+    max-width: none !important;
+}
+
+table.table thead .sorting,
+table.table thead .sorting_asc,
+table.table thead .sorting_desc,
+table.table thead .sorting_asc_disabled,
+table.table thead .sorting_desc_disabled {
+    cursor: pointer;
+    *cursor: hand;
+}
+
+table.table thead .sorting { background: url("images/sort_both.png") no-repeat center right; }
+table.table thead .sorting_asc { background: url("images/sort_asc.png") no-repeat center right; }
+table.table thead .sorting_desc { background: url("images/sort_desc.png") no-repeat center right; }
+
+table.table thead .sorting_asc_disabled { background: url("images/sort_asc_disabled.png") no-repeat center right; }
+table.table thead .sorting_desc_disabled { background: url("images/sort_desc_disabled.png") no-repeat center right; }
+
+table.dataTable th:active {
+    outline: none;
+}
+
+/* Scrolling */
+div.dataTables_scrollHead table {
+    margin-bottom: 0 !important;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+div.dataTables_scrollHead table thead tr:last-child th:first-child,
+div.dataTables_scrollHead table thead tr:last-child td:first-child {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+div.dataTables_scrollBody table {
+    border-top: none;
+    margin-bottom: 0 !important;
+}
+
+div.dataTables_scrollBody tbody tr:first-child th,
+div.dataTables_scrollBody tbody tr:first-child td {
+    border-top: none;
+}
+
+div.dataTables_scrollFoot table {
+    border-top: none;
+}
+
+
+
+
+/*
+ * TableTools styles
+ */
+.table tbody tr.active td,
+.table tbody tr.active th {
+    background-color: #08C;
+    color: white;
+}
+
+.table tbody tr.active:hover td,
+.table tbody tr.active:hover th {
+    background-color: #0075b0 !important;
+}
+
+.table-striped tbody tr.active:nth-child(odd) td,
+.table-striped tbody tr.active:nth-child(odd) th {
+    background-color: #017ebc;
+}
+
+table.DTTT_selectable tbody tr {
+    cursor: pointer;
+    *cursor: hand;
+}
+
+div.DTTT .btn {
+    color: #333 !important;
+    font-size: 12px;
+}
+
+div.DTTT .btn:hover {
+    text-decoration: none !important;
+}
+
+
+ul.DTTT_dropdown.dropdown-menu a {
+    color: #333 !important; /* needed only when demo_page.css is included */
+}
+
+ul.DTTT_dropdown.dropdown-menu li:hover a {
+    background-color: #0088cc;
+    color: white !important;
+}
+
+/* TableTools information display */
+div.DTTT_print_info.modal {
+    height: 150px;
+    margin-top: -75px;
     text-align: center;
-    width: 100%;
 }
 
-#menu a
-{
-    text-decoration: none;
-    text-align: center;
+div.DTTT_print_info h6 {
+    font-weight: normal;
+    font-size: 28px;
+    line-height: 28px;
+    margin: 1em;
 }
 
-#menu a:hover
-{
-    border-bottom: 5px solid;
+div.DTTT_print_info p {
+    font-size: 14px;
+    line-height: 20px;
 }
 
-#menu li
-{
-    color: black;
-    margin-right: 3em;
-    font-size: 150%;
-    color: black;
-    display: inline;
-    padding: 10px;
+
+
+/*
+ * FixedColumns styles
+ */
+div.DTFC_LeftHeadWrapper table,
+div.DTFC_LeftFootWrapper table,
+table.DTFC_Cloned tr.even {
+    background-color: white;
 }
 
-#menu {
-    padding-bottom: 30px;
-    text-align: center;
-    margin: auto;
+div.DTFC_LeftHeadWrapper table {
+    margin-bottom: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
 }
 
-#errors {
-    color:#fff;
-    font-weight:bold;
-    text-shadow:0 1px #333;
-    line-height:16px;
-    background-color:#aa1401;
-    background-image:-moz-linear-gradient(top,rgba(218,81,50,0.9),#a91300);
-    background-image:-ms-linear-gradient(top,rgba(218,81,50,0.9),#a91300);
-    background-image:-o-linear-gradient(top,rgba(218,81,50,0.9),#a91300);
-    background-image:linear-gradient(top,rgba(218,81,50,0.9),#a91300);
-    border-radius:4px;
-    padding:10px 15px;
-    box-shadow:0 1px #666;
-    max-width:275px;
-    margin-left: 20px;
-    margin-bottom: 20px;
-    padding-bottom: 5px;
+div.DTFC_LeftHeadWrapper table thead tr:last-child th:first-child,
+div.DTFC_LeftHeadWrapper table thead tr:last-child td:first-child {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
 }
+
+div.DTFC_LeftBodyWrapper table {
+    border-top: none;
+    margin-bottom: 0 !important;
+}
+
+div.DTFC_LeftBodyWrapper tbody tr:first-child th,
+div.DTFC_LeftBodyWrapper tbody tr:first-child td {
+    border-top: none;
+}
+
+div.DTFC_LeftFootWrapper table {
+    border-top: none;
+}
+
 
 /* disable column highlighting when selected */
 table.dataTable tr.odd td.sorting_1 { background-color: transparent; }

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% if errors %}
-<div id='errors'>
+<div id="errors">
 <ul>
     {% for e in errors %}
     <li>{{ e }}</li>
@@ -9,22 +9,30 @@
 </ul>
 </div> <!-- id=errors -->
 {% endif %}
-<div id='edit_container'>
+<div id="edit_container">
 <h3>{{ release }}</h3>
-<form class='submit_release_form' action='{{ url_for('release', name=release) }}' method='post'>
-{% if form.product.data == 'fennec' %}
-    {% set fennecForm = form %}
-    {% include 'includes/fennec_release.html' %}
-{% elif form.product.data == 'firefox' %}
-    {% set firefoxForm = form %}
-    {% include 'includes/firefox_release.html' %}
-{% elif form.product.data == 'thunderbird' %}
-    {% set thunderbirdForm = form %}
-    {% include 'includes/thunderbird_release.html' %}
-{% endif %}
-<div>
-    <input type='submit' value='Update' />
-</div>
-</form>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span1">
+      <!--Sidebar content-->
+    </div>
+    <div class="span10">
+    <form class="form-horizontal" action="{{ url_for("release", name=release) }}" method="post">
+    {% if form.product.data == "fennec" %}
+      {% set fennecForm = form %}
+      {% include "includes/fennec_release.html" %}
+    {% elif form.product.data == "firefox" %}
+      {% set firefoxForm = form %}
+      {% include "includes/firefox_release.html" %}
+    {% elif form.product.data == "thunderbird" %}
+      {% set thunderbirdForm = form %}
+      {% include "includes/thunderbird_release.html" %}
+    {% endif %}
+    <div>
+      <input class="btn btn-primary" type="submit" value="Update">
+    </div>
+    </form>
+    </div>
+  </div>
 </div>
 {% endblock %}
