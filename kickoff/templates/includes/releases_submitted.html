@@ -5,14 +5,17 @@
  <div class="release_container" id="{{ rel.name }}">
  <div class="release_title"><a href="/release.html?name={{ rel.name }}">{{ rel.name }}</a></div>
    <div class='release_buttons'>
-    {% for actions in ( 'ready', 'delete' ) %}
-    <div id="{{ rel.name }}-{{ actions }}" class="{{ actions }}-button">
+    {%- for action, btn_class in [
+       ('ready', 'btn btn-success' ),
+       ('delete', 'btn btn-danger' ),
+      ]%}
+    <div id="{{ rel.name }}-{{ action }}" class="{{ btn_class }}">
      <label>
-      <input id="{{ actions }}Releases_{{ rel.name }}" type="checkbox" name="{{ actions }}Releases" value="{{ rel.name }}" onclick='submittedReleaseButtons(this.id)'>
-      <span>{{ actions|capitalize }}</span>
+      <input id="{{ action }}Releases_{{ rel.name }}" type="checkbox" name="{{ action }}Releases" value="{{ rel.name }}" onclick='submittedReleaseButtons(this.id)'>
+      <span>{{ action|capitalize }}</span>
      </label>
     </div> <!-- {{ actions }}-button -->
-    {% endfor %}
+    {%- endfor %}
   </div> <!-- release_buttons -->
    <div class='release_data'>
     <ul>
@@ -45,7 +48,7 @@
  <div class="release_footer"></div>
 </div><!-- rel -->
 {% if loop.last %}
-<input type="submit" id="doeet" value="Do eet!">
+<input class="btn" type="submit" id="doeet" value="Do eet!">
 {% endif %}
 {% else %}
 <h1>Hurray no releases waiting!</h1>

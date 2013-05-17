@@ -1,36 +1,49 @@
-<div class="control-group controls-row">
+<div class="control-group controls-rowspan5">
     {{ firefoxForm.version.label(class="control-label")|safe }}
     <div class="controls">
-    {{ firefoxForm.version(class="input-large", placeholder='15.0b6')|safe }}
-    <a href="#" class="btn btn-mini btn-primary">?</a>
+    {{ firefoxForm.version(class="input-xxlarge", placeholder='15.0b6')|safe }}
+      <span class="badge badge-info help" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="version number">?
+      </span>
     </div>
 </div>
 <div class="control-group controls-row">
     {{ firefoxForm.buildNumber.label(class="control-label")|safe }}
     <div class="controls">
-    {{ firefoxForm.buildNumber(placeholder='1')|safe }}
-    <span class="badge badge-info">?</span>
+    {{ firefoxForm.buildNumber(class="input-xxlarge", placeholder='1')|safe }}
+      <span class="badge badge-info help" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="Build number must be set to 1 for the first release with this version. If a previous build has already been attempted and it has tagged the source repositories, build 2 or higher should be used. Generally, the autofilled value for this is correct.">?
+    </span>
     </div>
 </div>
 <div class="control-group controls-row">
     <label class="control-label" for="firefox-release-url">Release url:</label>
     <div class="controls">
-    <input id="firefox-release-url" name="firefox-release-url" placeholder="https://hg.mozilla.org/<release branch>/rev/<revision>" type="text" value="">
-    <span class="badge badge-info">?</span>
+      <input id="firefox-release-url" name="fennec-release-url" class="input-xxlarge", placeholder="https://hg.mozilla.org/<release branch>/rev/<revision>" type="text" value="">
+      <span class="badge badge-info help" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="release url">?
+      </span>
     </div>
 </div>
 <div class="control-group controls-row">
+    {{ firefoxForm.partials.label(class="control-label")|safe }}
+    <div class="controls">
+    {{ firefoxForm.partials(class="input-xxlarge", placeholder='15.0b5build1,15.0b4build2')|safe }}
+      <span class="badge badge-info help" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="A comma separated list of previous releases to create partial updates for. You MUST list the previous release from the chosen branch as one of the partials. For release-channel releases the recommend number of partials is 3, for Betas it's 2, and for ESRs only 1. Each partial chosen adds roughly 1.5h to the end-to-end time of the release".>?
+      </span>
+    </div>
+</div>
+
+<div class="control-group controls-row">
     {{ firefoxForm.l10nChangesets.label(class="control-label")|safe }}
     <div class="controls">
-    {{ firefoxForm.l10nChangesets(placeholder='{"ca": {"revision": "abcdef123456", "platforms": ["android"]}')|safe }}
-    <span class="badge badge-info">?</span>
+    {{ firefoxForm.l10nChangesets(class="input-xxlarge", placeholder='de abcdef123456')|safe }}
+     <span class="badge badge-info help" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="The l10n changesets for this release, in JSON format. Betas and release-channel releases these are normally copied from the <a href='https://l10n.mozilla.org/shipping/milestones'>L10n Dashboard</a>. ESR releases re-use the same changesets as the previous release on the same branch. For more information consult <a href='https://wiki.mozilla.org/Release:Release_Automation_on_Mercurial:Starting_a_Release#L10N_Changesets'>the milestone creation documentation</a>">?
+    </span>
     </div>
 </div>
 <div class="control-group controls-row">
     {{ firefoxForm.dashboardCheck.label(class="control-label")|safe }}
     <div class="controls">
     {{ firefoxForm.dashboardCheck()|safe }}
-    <span class="badge badge-info">?</span>
+    <span class="badge badge-info help" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="Whether or not to ensure that the changesets given match the ones on the <a href='https://l10n.mozilla.org/shipping/milestones'>L10n Dashboard</a>. This is normally turned on for betas and turned off for all other releases.">?</span>
     </div>
 </div>
 <h4>Advanced options:</h4>
@@ -38,8 +51,9 @@
 <div class="control-group controls-row">
     {{ firefoxForm.branch.label(class="control-label")|safe }}
     <div class="controls">
-    {{ firefoxForm.branch(placeholder='releases/mozilla-beta')|safe }}
-    <span class="badge badge-info">?</span>
+      {{ firefoxForm.branch(class="input-xxlarge", placeholder='releases/mozilla-beta')|safe }}
+      <span class="badge badge-info help" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="The branch to build the release from, relative to the root of the VCS.">?
+      </span>
     </div>
 </div>
 <div class="control-group controls-row">
@@ -48,9 +62,10 @@
     {% if firefoxForm.mozillaRelbranch.data %}
         {{ firefoxForm.mozillaRevision(disabled='disabled')|safe }}
     {% else %}
-        {{ firefoxForm.mozillaRevision(placeholder='abcdef123456')|safe }}
+        {{ firefoxForm.mozillaRevision(class="input-xxlarge", placeholder='abcdef123456')|safe }}
     {% endif %}
-    <span class="badge badge-info">?</span>
+      <span class="badge badge-info help" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="If a relbranch is specified this field is disabled and ignored. The tip of the relbranch will be used instead.">?
+      </span>
     </div>
 </div>
 <div class="control-group controls-row">
@@ -61,7 +76,8 @@
     {% else %}
         {{ firefoxForm.mozillaRelbranch()|safe }}
     {% endif %}
-    <span class="badge badge-info">?</span>
+      <span class="badge badge-info help" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="The relbranch to put version bumps/tags for this release on. If not specified, one will be generated automatically during tagging. When provided the release will be created from tip of this branch thus it cannot be used in conjunction with revision.">?
+      </span>
     </div>
 </div>
 <script type='text/javascript'>
@@ -80,8 +96,11 @@ $(document).ready(function() {
         $('#{{ firefoxForm.mozillaRelbranch.id }}'),
         $('#{{ firefoxForm.mozillaRevision.id }}')
     );
-    $( '.tooltip' ).tooltip();
-    $( '.popover' ).popover();
+    $( '.help' ).tooltip({
+      html: true,
+      trigger: 'hover',
+      delay: { show: 70, hide: 1000 },
+    });
 })
 </script>
 {{ firefoxForm.hidden_tag() }}
