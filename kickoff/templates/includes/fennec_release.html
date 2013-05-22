@@ -42,7 +42,7 @@
 <div class="control-group controls-row">
     {{ fennecForm.branch.label(class="control-label")|safe }}
     <div class="controls">
-      {{ fennecForm.branch(class="input-xxlarge", placeholder='releases/mozilla-beta')|safe }}
+      {{ fennecForm.branch(placeholder='releases/mozilla-beta')|safe }}
       <span class="badge badge-info help" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="The branch to build the release from, relative to the root of the VCS.">?
       </span>
     </div>
@@ -53,7 +53,7 @@
     {% if fennecForm.mozillaRelbranch.data %}
         {{ fennecForm.mozillaRevision(disabled='disabled')|safe }}
     {% else %}
-        {{ fennecForm.mozillaRevision(class="input-xxlarge", placeholder='abcdef123456')|safe }}
+        {{ fennecForm.mozillaRevision(placeholder='abcdef123456')|safe }}
     {% endif %}
       <span class="badge badge-info help" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="If a relbranch is specified this field is disabled and ignored. The tip of the relbranch will be used instead.">?
       </span>
