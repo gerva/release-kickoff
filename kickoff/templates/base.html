@@ -19,12 +19,14 @@
 {% endfor %}
 <!-- css -->
 {% for css_file in [
-     "jquery.dataTables.css",
-     "jquery-ui-1.10.2.custom.min.css",
-     "bootstrap.min.css",
+    "jquery.dataTables.css",
+    "jquery-ui-1.10.2.custom.min.css",
+    "bootstrap.min.css",
+    "bootstrap-responsive.css",
 ] %}
 <link rel="stylesheet" type="text/css" href="{{ url_for("static", filename=css_file) }}" />
 {% endfor %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 <div class="navbar navbar-inverse">
