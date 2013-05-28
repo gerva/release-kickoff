@@ -53,5 +53,8 @@
 </div>
 {% block content %}
 {% endblock %}
+<script>
+   $SCRIPT_ROOT = {{ request.script_root|tojson|safe }}
+</script>
 </body>
 </html>

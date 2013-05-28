@@ -94,13 +94,35 @@ function getLastBlurredItem(release_type) {
 
 function updateReleaseUrl(release_type) {
   var regex = /https:\/\/hg.mozilla.org\/(.*)\/rev\/(.*)/;
-  var match = regex.exec( $( '#' + release_type + '-release-url' ).val() );
+  var release_url = $( '#' + release_type + '-release-url' ).val();
+  var match = regex.exec(release_url);
   if ( match ) {
     $( '#' + release_type + '-branch' ).val(match[1]);
     $( '#' + release_type + '-mozillaRevision' ).val(match[2]);
+    verify_release_url(release_url)
     setLastBlurredItem(release_type, 'url')
   };
 };
+
+function release_url_is_valid() {
+  $( '#' + release_type + '-release-url' ).css("color", "green")
+}
+
+function release_url_is_not_valid() {
+  $( '#' + release_type + '-release-url' ).css("color", "red")
+}
+
+function verify_release_url(release_url) {
+    $.getJSON($SCRIPT_ROOT + '/_verify_release_url', {
+       release_url : release_url,
+    }, function(data) {
+        if ( data.exists == 'True' ) {
+            release_url_is_valid()
+        } else {
+            release_url_is_not_valid()
+        }
+    })
+}
 
 function updateBranchRevision(release_type) {
     var branch = $( '#' + release_type + '-branch' ).val().trim();
