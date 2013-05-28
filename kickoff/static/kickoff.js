@@ -2,6 +2,7 @@ $(document).ready( function() {
     // initialize
     viewReleases();
     submitRelease();
+    activateTooltips();
 });
 
 function viewReleases(){
@@ -132,5 +133,13 @@ function updateBranchRevision(release_type) {
         setLastBlurredItem(release_type, 'branchRelease')
     };
 };
+
+function activateTooltips() {
+    $( '.help' ).tooltip({
+      html: true,
+      trigger: 'hover',
+      delay: { show: 70, hide: 1000 },
+    });
+}
 
 

@@ -3,7 +3,7 @@
     {{ element.label(class="control-label")|safe }}
     <div class="controls">
       {{ element(class=input_type, placeholder=placeholder)|safe  }}
-      <span class="badge badge-info help" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="{{ help|safe }}">?</span>
+      <span class="badge badge-info help" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="{{ help_text|safe }}">?</span>
     </div>
 </div>
 {%- endmacro %}
@@ -20,10 +20,12 @@
     placeholder = "1",
     help_text = "Build number must be set to 1 for the first release with this version. If a previous build has already been attempted and it has tagged the source repositories, build 2 or higher should be used. Generally, the autofilled value for this is correct.")
 }}
+
+<! -- release url exists only in this form , so it has to be added manually -->
 <div class="control-group controls-row">
     <label class="control-label" for="fennec-release-url">Release url:</label>
     <div class="controls">
-      <input id="fennec-release-url" name="fennec-release-url" class="input-xxlarge", placeholder="https://hg.mozilla.org/<release branch>/rev/<revision>" type="text" value="">
+      <input id="fennec-release-url" name="fennec-release-url" class="input-xxlarge", placeholder='https://hg.mozilla.org/<release branch>/rev/<revision>' type="text" value="">
       <span class="badge badge-info help" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="release url">?
       </span>
     </div>
@@ -72,11 +74,6 @@ $(document).ready(function() {
         $('#{{ fennecForm.mozillaRelbranch.id }}'),
         $('#{{ fennecForm.mozillaRevision.id }}')
     );
-    $( '.help' ).tooltip({
-      html: true,
-      trigger: 'hover',
-      delay: { show: 70, hide: 1000 },
-    });
 })
 </script>
 {{ fennecForm.hidden_tag() }}
