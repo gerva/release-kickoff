@@ -74,6 +74,12 @@ $(document).ready(function() {
         $('#{{ fennecForm.mozillaRelbranch.id }}'),
         $('#{{ fennecForm.mozillaRevision.id }}')
     );
+    {% if fennecForm.mozillaRevision.data %}
+    $('#{{ fennecForm.mozillaRevision.id }}').prop('disabled', true);
+    {% endif %}
+    {% if fennecForm.mozillaRelbranch.data %}
+    $('#{{ fennecForm.mozillaRelbranch.id }}').prop('disabled', true);
+    {% endif %}
 })
 </script>
 {{ fennecForm.hidden_tag() }}
