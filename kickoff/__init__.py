@@ -55,7 +55,10 @@ def _verify_release_url():
     from urllib2 import urlopen, Request
     from flask import jsonify
     try:
-       print request.args.get('release_url')
+       url =request.args.get('release_url')
+       print url
+       import urllib
+       print urllib.unquote(url)
        urlopen(Request(request.args.get('release_url')))
        return jsonify(exists=True)
     except Exception as e:

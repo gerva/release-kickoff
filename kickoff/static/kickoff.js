@@ -99,16 +99,19 @@ function updateReleaseUrl(release_type) {
   if ( match ) {
     $( '#' + release_type + '-branch' ).val(match[1]);
     $( '#' + release_type + '-mozillaRevision' ).val(match[2]);
-    verify_release_url(release_url)
+    if ( verify_release_url(release_url) ) {
+        release_url_is_valid(release_type)
+    }
     setLastBlurredItem(release_type, 'url')
+        release_url_is_not_valid(release_type)
   };
 };
 
-function release_url_is_valid() {
+function release_url_is_valid(release_type) {
   $( '#' + release_type + '-release-url' ).css("color", "green")
 }
 
-function release_url_is_not_valid() {
+function release_url_is_not_valid(release_type) {
   $( '#' + release_type + '-release-url' ).css("color", "red")
 }
 
@@ -116,11 +119,7 @@ function verify_release_url(release_url) {
     $.getJSON($SCRIPT_ROOT + '/_verify_release_url', {
        release_url : release_url,
     }, function(data) {
-        if ( data.exists == 'True' ) {
-            release_url_is_valid()
-        } else {
-            release_url_is_not_valid()
-        }
+        return data.exists
     })
 }
 
