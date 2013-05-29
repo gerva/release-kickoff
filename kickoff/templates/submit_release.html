@@ -22,7 +22,7 @@
     </div>
     <div class="span10">
       <div class="tabbable">
-        <ul class="nav nav-tabs" data-tabs="tabs" id="submittedTab">
+        <ul class="nav nav-pills" data-tabs="tabs" id="submittedTab">
         {% for prod in ("fennec", "firefox", "thunderbird") %}
           <li><a href="#{{ prod }}Tab" data-toggle="tab">{{ prod|capitalize }}</a></li>
         {% endfor %}
@@ -47,17 +47,15 @@
 </div> <!-- class=container -->
 <script>
 $(document).ready(function(){
-
-  var activeTab = localStorage.getItem( "activeSubmittedTab" );
-  if ( activeTab == null ) {
-    activeTab = $("#submittedTab a:first");
-    localStorage.setItem("activeSubmittedTab", $( activeTab ).attr("href") );
+  var activeTab = localStorage.getItem("activeTab");
+  if ( activeTab ) {
+      $( "a[href=" + activeTab + "]" ).tab("show");
+  } else {
+    // there are no active tabs, activate the first one
+    $( "#submittedTab a:first" ).tab("show")
   }
-  $( activeTab ).tab( "show" );
-
-  $( "#submittedTab a" ).click(function(e) {
-    e.preventDefault();
-    localStorage.setItem("activeSubmittedTab", e.currentTarget.id);
+  $( "a[data-toggle='tab']" ).on('shown', function(e){
+    localStorage.setItem("activeTab", $(e.target).attr("href"));
   });
 });
 </script>
