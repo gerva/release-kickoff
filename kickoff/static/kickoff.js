@@ -100,28 +100,25 @@ function updateReleaseUrl(release_type) {
   if ( match ) {
     $( '#' + release_type + '-branch' ).val(match[1]);
     $( '#' + release_type + '-mozillaRevision' ).val(match[2]);
-    if ( verify_release_url(release_url) ) {
-        release_url_is_valid(release_type)
-    }
+    verify_release_url(release_url, release_type)
     setLastBlurredItem(release_type, 'url')
-        release_url_is_not_valid(release_type)
   };
 };
 
-function release_url_is_valid(release_type) {
-  $( '#' + release_type + '-release-url' ).css("color", "green")
-}
-
-function release_url_is_not_valid(release_type) {
-  $( '#' + release_type + '-release-url' ).css("color", "red")
-}
-
-function verify_release_url(release_url) {
-    $.getJSON($SCRIPT_ROOT + '/_verify_release_url', {
-       release_url : release_url,
-    }, function(data) {
-        return data.exists
-    })
+function verify_release_url(release_url, release_type) {
+    $.getJSON(
+       $SCRIPT_ROOT + '/_verify_release_url',
+       {release_url : release_url,},
+       function(result) {
+          var release_url_input = $( '#' + release_type + '-release-url' )
+            .parent()
+            .parent()
+          if (result.isValid == 'yes') {
+            release_url_input.removeClass('error').addClass('success')
+          } else {
+            release_url_input.removeClass('success').addClass('error')
+          }
+    });
 }
 
 function updateBranchRevision(release_type) {
@@ -131,6 +128,7 @@ function updateBranchRevision(release_type) {
     if ( branch !== '' &&  mozillaRevision !== '' ) {
         $( '#' + release_type + '-release-url' ).val(release_url)
         setLastBlurredItem(release_type, 'branchRelease')
+        verify_release_url(release_url, release_type)
     };
 };
 

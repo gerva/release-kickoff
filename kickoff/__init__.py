@@ -60,7 +60,7 @@ def _verify_release_url():
        import urllib
        print urllib.unquote(url)
        urlopen(Request(request.args.get('release_url')))
-       return jsonify(exists=True)
+       return jsonify(url=url, isValid='yes')
     except Exception as e:
        print e
-       return jsonify(exists=False)
+       return jsonify(url=url, isValid='no')
