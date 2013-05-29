@@ -94,8 +94,14 @@ function getLastBlurredItem(release_type) {
 }
 
 function updateReleaseUrl(release_type) {
-  var regex = /https:\/\/hg.mozilla.org\/(.*)\/rev\/(.*)/;
   var release_url = $( '#' + release_type + '-release-url' ).val();
+  if ( release_url == '' ) {
+    $( '#' + release_type + '-release-url' ).parent().parent()
+    .removeClass('success')
+    .removeClass('error')
+    return
+  }
+  var regex = /https:\/\/hg.mozilla.org\/(.*)\/rev\/(.*)/;
   var match = regex.exec(release_url);
   if ( match ) {
     $( '#' + release_type + '-branch' ).val(match[1]);
