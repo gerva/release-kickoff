@@ -40,7 +40,10 @@ function viewReleases(){
         return JSON.parse( localStorage.getItem('DataTables_complete'+window.location.pathname) );
     }
   });
-  activateTooltips();
+  $( ".accordion-toggle" ).on('shown', function(event) {
+    localStorage.setItem("activeAccordion", $(event.target).attr("href"));
+  });
+  accordionPreferences();
 }
 
 function tabPreferences() {
@@ -62,11 +65,11 @@ function accordionPreferences() {
       $( "a[href=" + activeaccordion + "]" ).accordion("show");
   } else {
     // there are no active accordions, activate the first one
-    $( "#submittedaccordion a:first" ).accordion("show")
+    $( "#accordion2 a:first" ).collapse("show")
   }
-  $( "a[data-toggle='collapse']" ).on('shown', function(e){
-    localStorage.setItem("activeAccordion", $(e.target).attr("href"));
-  });
+//  $( ".accordion-toggle" ).on('shown', function(e){
+//    localStorage.setItem("activeAccordion", $(e.target).attr("href"));
+//  });
 }
 
 function toLocalDate() {
@@ -117,6 +120,7 @@ function submitRelease(){
       }
     });
     tabPreferences();
+    activateTooltips();
 }
 
 function setLastBlurredItem(release_type, name) {
