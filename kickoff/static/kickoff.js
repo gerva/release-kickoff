@@ -1,10 +1,18 @@
 $(document).ready( function() {
     // initialize
     viewReleases();
-    submitRelease();
-    tabPreferences();
-    activateTooltips();
 });
+
+function updateBranchRevision(release_type) {
+    var branch = $( '#' + release_type + '-branch' ).val().trim();
+    var mozillaRevision = $( '#' + release_type + '-mozillaRevision' ).val().trim();
+    var release_url = 'https://hg.mozilla.org/' + branch + '/rev/' + mozillaRevision
+    if ( branch !== '' &&  mozillaRevision !== '' ) {
+        $( '#' + release_type + '-release-url' ).val(release_url)
+        setLastBlurredItem(release_type, 'branchRelease')
+        verify_release_url(release_url, release_type)
+    };
+};
 
 function viewReleases(){
   toLocalDate();
@@ -32,6 +40,7 @@ function viewReleases(){
         return JSON.parse( localStorage.getItem('DataTables_complete'+window.location.pathname) );
     }
   });
+  activateTooltips();
 }
 
 function tabPreferences() {
@@ -44,6 +53,19 @@ function tabPreferences() {
   }
   $( "a[data-toggle='tab']" ).on('shown', function(e){
     localStorage.setItem("activeTab", $(e.target).attr("href"));
+  });
+}
+
+function accordionPreferences() {
+  var activeaccordion = localStorage.getItem("activeAccordion");
+  if ( activeaccordion ) {
+      $( "a[href=" + activeaccordion + "]" ).accordion("show");
+  } else {
+    // there are no active accordions, activate the first one
+    $( "#submittedaccordion a:first" ).accordion("show")
+  }
+  $( "a[data-toggle='collapse']" ).on('shown', function(e){
+    localStorage.setItem("activeAccordion", $(e.target).attr("href"));
   });
 }
 
@@ -82,12 +104,9 @@ function submittedReleaseButtons(buttonId) {
 function submitRelease(){
     var products = ["fennec", "firefox", "thunderbird"]
     products.forEach(function(product) {
-      $( "#" + product + "\-release\-url" )
-       .blur( function(){ updateReleaseUrl(product) });
-      $( "#" + product + "\-mozillaRevision" )
-       .blur( function(){updateBranchRevision(product) });
-      $( "#" + product + "\-branch" )
-       .blur( function() {updateBranchRevision(product) });
+      $( "#" + product + "\-release\-url" ).blur( function(){ updateReleaseUrl(product) });
+      $( "#" + product + "\-mozillaRevision" ).blur( function(){updateBranchRevision(product) });
+      $( "#" + product + "\-branch" ).blur( function() {updateBranchRevision(product) });
       // preserve the state after a refresh
       if ( getLastBlurredItem(product) == 'url' ) {
         updateReleaseUrl(product);
@@ -97,6 +116,7 @@ function submitRelease(){
         updateReleaseUrl(product);
       }
     });
+    tabPreferences();
 }
 
 function setLastBlurredItem(release_type, name) {
@@ -140,17 +160,6 @@ function verify_release_url(release_url, release_type) {
           }
     });
 }
-
-function updateBranchRevision(release_type) {
-    var branch = $( '#' + release_type + '-branch' ).val().trim();
-    var mozillaRevision = $( '#' + release_type + '-mozillaRevision' ).val().trim();
-    var release_url = 'https://hg.mozilla.org/' + branch + '/rev/' + mozillaRevision
-    if ( branch !== '' &&  mozillaRevision !== '' ) {
-        $( '#' + release_type + '-release-url' ).val(release_url)
-        setLastBlurredItem(release_type, 'branchRelease')
-        verify_release_url(release_url, release_type)
-    };
-};
 
 function activateTooltips() {
     $( '.help' ).tooltip({
