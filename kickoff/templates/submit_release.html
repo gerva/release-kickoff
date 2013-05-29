@@ -45,18 +45,4 @@
     </div> <!-- class="Tabbable" -->
   </div> <!-- "row-fluid" -->
 </div> <!-- class=container -->
-<script>
-$(document).ready(function(){
-  var activeTab = localStorage.getItem("activeTab");
-  if ( activeTab ) {
-      $( "a[href=" + activeTab + "]" ).tab("show");
-  } else {
-    // there are no active tabs, activate the first one
-    $( "#submittedTab a:first" ).tab("show")
-  }
-  $( "a[data-toggle='tab']" ).on('shown', function(e){
-    localStorage.setItem("activeTab", $(e.target).attr("href"));
-  });
-});
-</script>
 {% endblock %}

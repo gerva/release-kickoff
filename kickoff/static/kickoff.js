@@ -2,6 +2,7 @@ $(document).ready( function() {
     // initialize
     viewReleases();
     submitRelease();
+    tabPreferences();
     activateTooltips();
 });
 
@@ -30,6 +31,19 @@ function viewReleases(){
     "fnStateLoad": function (oSettings) {
         return JSON.parse( localStorage.getItem('DataTables_complete'+window.location.pathname) );
     }
+  });
+}
+
+function tabPreferences() {
+  var activeTab = localStorage.getItem("activeTab");
+  if ( activeTab ) {
+      $( "a[href=" + activeTab + "]" ).tab("show");
+  } else {
+    // there are no active tabs, activate the first one
+    $( "#submittedTab a:first" ).tab("show")
+  }
+  $( "a[data-toggle='tab']" ).on('shown', function(e){
+    localStorage.setItem("activeTab", $(e.target).attr("href"));
   });
 }
 
