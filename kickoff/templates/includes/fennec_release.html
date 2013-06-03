@@ -64,17 +64,19 @@ $(document).ready(function() {
     element = fennecForm.dashboardCheck,
     input_type = "checkbox",
     placeholder = None,
-    help_text = "Whether or not to ensure that the changesets given match the ones on the <a href='https://l10n.mozilla.org/shipping/milestones'>L10n Dashboard</a>. This is normally turned on for betas and turned off for all other releases.")
+    help_text = "Whether or not to ensure that the changesets given match the ones on the <a href='https://l10n.mozilla.org/shipping/milestones'>L10n Dashboard</a>. This is normally turned on for betas and turned off for all other releases.",
+    disable = False, )
 }}
 <h4>Advanced Options:</h4>
 <div class="advanced">
-<div class="submit_release">
-    {{ fennecForm.mozillaRelbranch.label()|safe }}
-    {% if fennecForm.mozillaRevision.data %}
-        {{ fennecForm.mozillaRelbranch(disabled='disabled')|safe }}
-    {% else %}
-        {{ fennecForm.mozillaRelbranch()|safe }}
-    {% endif %}
-    <div class="help">The relbranch to put version bumps/tags for this release on. If not specified, one will be generated automatically during tagging. When provided the release will be created from tip of this branch thus it cannot be used in conjunction with revision.</div>
-</div>
+{% set revision_disable = False %}
+{% if fennecForm.mozillaRevision.data %}
+{% set revision_disable = True %}
+{% endif %}
+{{ input_element(
+    element = fennecForm.mozillaRelbranch,
+    input_type = "input-xxlarge",
+    help_text = "The relbranch to put version bumps/tags for this release on. If not specified, one will be generated automatically during tagging. When provided the release will be created from tip of this branch thus it cannot be used in conjunction with revision.",
+    disable = revision_disable, )
+}}
 </div><!-- advanced -->
