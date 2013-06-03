@@ -17,40 +17,55 @@ $(document).ready(function() {
 })
 </script>
 {{ fennecForm.hidden_tag() }}
-<div class="submit_release">
-    {{ fennecForm.version.label()|safe }}
-    {{ fennecForm.version(placeholder='15.0b6')|safe }}
-    <div>&nbsp;</div>
-</div>
-<div class="submit_release">
-    {{ fennecForm.buildNumber.label()|safe }}
-    {{ fennecForm.buildNumber(placeholder='1')|safe }}
-    <div class="help">Build number must be set to 1 for the first release with this version. If a previous build has already been attempted and it has tagged the source repositories, build 2 or higher should be used. Generally, the autofilled value for this is correct.</div>
-</div>
-<div class="submit_release">
-    {{ fennecForm.branch.label()|safe }}
-    {{ fennecForm.branch(placeholder='releases/mozilla-beta')|safe }}
-    <div class="help">The branch to build the release from, relative to the root of the VCS.</div>
-</div>
-<div class="submit_release">
-    {{ fennecForm.mozillaRevision.label()|safe }}
-    {% if fennecForm.mozillaRelbranch.data %}
-        {{ fennecForm.mozillaRevision(disabled='disabled')|safe }}
-    {% else %}
-        {{ fennecForm.mozillaRevision(placeholder='abcdef123456')|safe }}
-    {% endif %}
-    <div class="help">If a relbranch is specified this field is disabled and ignored. The tip of the relbranch will be used instead.</div>
-</div>
-<div class="submit_release">
-    {{ fennecForm.l10nChangesets.label()|safe }}
-    {{ fennecForm.l10nChangesets(placeholder='{"ca": {"revision": "abcdef123456", "platforms": ["android"]}')|safe }}
-    <div class="help">The l10n changesets for this release, in JSON format. Betas and release-channel releases these are normally copied from the <a href="https://l10n.mozilla.org/shipping/milestones">L10n Dashboard</a>. ESR releases re-use the same changesets as the previous release on the same branch. For more information consult <a href="https://wiki.mozilla.org/Release:Release_Automation_on_Mercurial:Starting_a_Release#L10N_Changesets">the milestone creation documentation</a></div>
-</div>
-<div class="submit_release">
-    {{ fennecForm.dashboardCheck.label()|safe }}
-    {{ fennecForm.dashboardCheck()|safe }}
-    <div class="help">Whether or not to ensure that the changesets given match the ones on the <a href="https://l10n.mozilla.org/shipping/milestones">L10n Dashboard</a>. This is normally turned on for betas and turned off for all other releases.</div>
-</div>
+
+{% from 'common.html' import input_element %}
+
+{{ input_element(
+    element = fennecForm.version,
+    input_type = "input-xxlarge",
+    placeholder = "15.0b6",
+    help_text = 'version number',
+    disable = False, )
+}}
+{{ input_element(
+    element = fennecForm.buildNumber,
+    input_type = "input-xxlarge",
+    placeholder = "1",
+    help_text = "Build number must be set to 1 for the first release with this version. If a previous build has already been attempted and it has tagged the source repositories, build 2 or higher should be used. Generally, the autofilled value for this is correct.",
+    disable = False, )
+}}
+{{ input_element(
+    element = fennecForm.branch,
+    input_type = "input-medium",
+    placeholder = "releases/mozilla-beta",
+    help_text = "The branch to build the release from, relative to the root of the VCS.",
+    disable = False, )
+}}
+<!-- move logic into javascript ? -->
+{% set relbranch_disable = True %}
+{% if fennecForm.mozillaRelbranch.data %}
+{% set relbranch_disable = False %}
+{% endif %}
+{{ input_element(
+    element = fennecForm.mozillaRevision,
+    input_type = "input-xxlarge",
+    placeholder = "abcdef123456",
+    help_text = "If a relbranch is specified this field is disabled and ignored. The tip of the relbranch will be used instead",
+    disable = relbranch_disable, )
+}}
+{{ input_element(
+    element = fennecForm.l10nChangesets,
+    input_type = "input-xxlarge",
+    placeholder = '{"ca": {"revision": "abcdef123456", "platforms": ["android"]}}',
+    help_text = "The l10n changesets for this release, in JSON format. Betas and release-channel releases these are normally copied from the <a href='https://l10n.mozilla.org/shipping/milestones'>L10n Dashboard</a>. ESR releases re-use the same changesets as the previous release on the same branch. For more information consult <a href='https://wiki.mozilla.org/Release:Release_Automation_on_Mercurial:Starting_a_Release#L10N_Changesets'>the milestone creation documentation</a>",
+    disable = False, )
+}}
+{{ input_element(
+    element = fennecForm.dashboardCheck,
+    input_type = "checkbox",
+    placeholder = None,
+    help_text = "Whether or not to ensure that the changesets given match the ones on the <a href='https://l10n.mozilla.org/shipping/milestones'>L10n Dashboard</a>. This is normally turned on for betas and turned off for all other releases.")
+}}
 <h4>Advanced Options:</h4>
 <div class="advanced">
 <div class="submit_release">
