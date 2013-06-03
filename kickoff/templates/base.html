@@ -5,16 +5,26 @@
 <!-- favicon -->
 <link rel='icon' href="{{ url_for('static', filename='favicon.ico') }}" />
 <!-- js -->
-<script type='text/javascript' src="{{ url_for("static", filename="suggestions.js") }}"></script>
-<script type='text/javascript' src="{{ url_for("static", filename="jquery-ui-1.10.2.custom.min.js") }}"></script>
-<script type='text/javascript' src="{{ url_for("static", filename="jquery-1.9.1.min.js") }}"></script>
-<script type='text/javascript' src="{{ url_for("static", filename="jquery-ui.min.js") }}"></script>
-<script type='text/javascript' src="{{ url_for("static", filename="jquery.dataTables.min.js") }}"></script>
-<script type='text/javascript' src="{{ url_for("static", filename="kickoff.js") }}"></script>
+{%- for js_lib in [
+    "suggestions.js",
+    "jquery-1.9.1.min.js",
+    "jquery-ui.min.js",
+    "jquery-ui-1.10.2.custom.min.js",
+    "jquery.dataTables.min.js",
+    "dataTables.bootstrap.js",
+    "kickoff.js",
+] -%}
+<script type="text/javascript" src="{{ url_for("static", filename=js_lib) }}"></script>
+{% endfor %}
 <!-- css -->
-<link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="jquery.dataTables.css") }}' />
-<link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="jquery-ui-1.10.2.custom.min.css") }}' />
-<link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="kickoff.css") }}' />
+{%- for css_file in [
+    "jquery.dataTables.css",
+    "jquery-ui-1.10.2.custom.min.css",
+    "kickoff.css",
+] %}
+<link rel="stylesheet" type="text/css" href="{{ url_for("static", filename=css_file) }}" />
+{% endfor -%}
+<!-- css -->
 <script>$(function() { initialSetup(); });</script>
 </head>
 <body>
