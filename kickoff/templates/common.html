@@ -1,0 +1,7 @@
+{% macro input_element(element, help_text, input_type, placeholder, disable) -%}
+<div class="submit_release">
+    {{ element.label(class="control-label")|safe }}
+    {{ element(class=input_type, placeholder=placeholder, disable=disable)|safe }}
+    <div class="help">{{ help_text|safe }}</div>
+</div>
+{%- endmacro %}
