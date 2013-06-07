@@ -34,10 +34,10 @@ $(document).ready(function() {
     <div class="help">Build number must be set to 1 for the first release with this version. If a previous build has already been attempted and it has tagged the source repositories, build 2 or higher should be used. Generally, the autofilled value for this is correct.</div>
 </div>
 <div class="submit_release">
-    <label for="thunderbird-release-url">Release url:</label>
-    <input id="thunderbird-release-url" name="thunderbird-release-url" placeholder="https://hg.mozilla.org/<release branch>/rev/<revision>" type="text" value="">
-    <div class="help">Release url</div>
- </div>
+    <label for="thunderbird-revision-url">Mozilla Revision URL:</label>
+    <input id="thunderbird-revision-url" name="thunderbird-revision-url" placeholder="https://hg.mozilla.org/<release branch>/rev/<revision>" type="text" value="">
+    <div class="help">An URL to the revision you want to build this release from. Use this if you don't want to fill in branch/revision individually. At this time, the server portion is ignored and assumed to be "hg.mozilla.org"</div>
+</div>
 <div class="submit_release">
     {{ thunderbirdForm.commRevision.label()|safe }}
     {% if thunderbirdForm.commRelbranch.data %}
