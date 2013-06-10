@@ -172,7 +172,7 @@ function enableFormElement(elment_id) {
   $( "#" + element_id + ":disabled" ).removeAttr("disabled")
 }
 
-function disableFormElment(element_id) {
+function disableFormElement(element_id) {
   $( "#" + element_id + ":enabled" ).attr("disabled", "disabled")
 }
 
