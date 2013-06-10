@@ -82,12 +82,12 @@ function submittedReleaseButtons(buttonId) {
 function submitRelease(){
     var products = ["fennec", "firefox", "thunderbird"]
     products.forEach(function(product) {
-      $( "#" + product + "\-release\-url" )
+      $( "#" + product + "\-revision\-url" )
        .blur( function(){ updateReleaseUrl(product) });
       $( "#" + product + "\-mozillaRevision" )
-       .blur( function(){updateBranchRevision(product) });
+       .blur( function(){ updateBranchRevision(product) });
       $( "#" + product + "\-branch" )
-       .blur( function() {updateBranchRevision(product) });
+       .blur( function(){ updateBranchRevision(product) });
       // preserve the state after a refresh
       if ( getLastBlurredItem(product) == 'url' ) {
         updateReleaseUrl(product);
@@ -109,7 +109,7 @@ function getLastBlurredItem(release_type) {
 
 function updateReleaseUrl(release_type) {
   var regex = /https:\/\/hg.mozilla.org\/(.*)\/rev\/(.*)/;
-  var match = regex.exec( $( '#' + release_type + '-release-url' ).val() );
+  var match = regex.exec( $( '#' + release_type + '-revision-url' ).val() );
   if ( match ) {
     $( '#' + release_type + '-branch' ).val(match[1]);
     $( '#' + release_type + '-mozillaRevision' ).val(match[2]);
@@ -122,7 +122,7 @@ function updateBranchRevision(release_type) {
     var mozillaRevision = $( '#' + release_type + '-mozillaRevision' ).val().trim();
     var release_url = 'https://hg.mozilla.org/' + branch + '/rev/' + mozillaRevision
     if ( branch !== '' &&  mozillaRevision !== '' ) {
-        $( '#' + release_type + '-release-url' ).val(release_url)
+        $( '#' + release_type + '-revision-url' ).val(release_url)
         setLastBlurredItem(release_type, 'branchRelease')
     };
 };
