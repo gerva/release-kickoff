@@ -162,28 +162,21 @@ function branchBlur(product) {
     }
 }
 
-
-
 /* a bunch of gettes/setters to make code more readable */
 function isValidRevision(revisionId) {
   return /[a-fA-F][0-9]{12}/.exec(revisionId)
 }
 
-function getResource(urlstring) {
-  var regex = "^.*/rev/\(.*\)$"
-  if ( match ) {
-    return match[0]
-  }
-  return ""
+function getBranchName(urlstring) {
+  var parser = document.createElement('a');
+  parser.href = urlstring
+  return parser.pathname.split('/rev/')[0]
 }
 
-function getBranchName(urlstring) {
-  var regex = "^.*/\(.*\)/rev/.*$"
-  var match = regex.exec(urlstring)
-  if ( match ) {
-    return match[0]
-  }
-  return ""
+function getResource(urlstring) {
+  var parser = document.createElement('a');
+  parser.href = urlstring
+  return parser.pathname.split('/rev/')[1]
 }
 
 function enableFormElement(element_id) {
@@ -194,20 +187,20 @@ function disableFormElement(element_id) {
   $( "#" + element_id + ":enabled" ).attr("disabled", "disabled")
 }
 
-function disableRelBranch(release_type) {
-   disableFormElement( release_type + "-mozillaRelbranch" )
+function disableRelBranch(product) {
+   disableFormElement( product + "-mozillaRelbranch" )
 }
 
-function disableRevision(release_type) {
-   disableFormElement( release_type + "-mozillaRevision" )
+function disableRevision(product) {
+   disableFormElement( product + "-mozillaRevision" )
 }
 
-function enableRelBranch(release_type) {
-  enableFormElement( release_type + "-mozillaRelbranch" )
+function enableRelBranch(product) {
+  enableFormElement( product + "-mozillaRelbranch" )
 }
 
-function enableRevision(release_type) {
-  enableFormElement( release_type + "-mozillaRevision" )
+function enableRevision(product) {
+  enableFormElement( product + "-mozillaRevision" )
 }
 
 function setFormInputElement(element_id, value) {
@@ -218,43 +211,43 @@ function getFormInputElement(element_id) {
   return $( "#" + element_id ).val().trim()
 }
 
-function getRevision(release_type) {
-  return getFormInputElement( release_type + "-mozillaRevision" )
+function getRevision(product) {
+  return getFormInputElement( product + "-mozillaRevision" )
 }
 
-function setRevision(release_type, value) {
-  setFormInputElement( release_type + "-mozillaRevision", value )
+function setRevision(product, value) {
+  setFormInputElement( product + "-mozillaRevision", value )
 }
 
-function getRevisionUrl(release_type) {
-  return getFormInputElement( release_type + "-revision-url" )
+function getRevisionUrl(product) {
+  return getFormInputElement( product + "-revision-url" )
 }
 
-function setRevisionUrl(release_type, value) {
-  setFormInputElement( release_type + "-revision-url" , value )
+function setRevisionUrl(product, value) {
+  setFormInputElement( product + "-revision-url" , value )
 }
 
-function getReleaseBranch(release_type) {
-  return getFormInputElement( release_type + "-mozillaRelbranch" )
+function getReleaseBranch(product) {
+  return getFormInputElement( product + "-mozillaRelbranch" )
 }
 
-function setReleaseBranch(release_type, value) {
-  setFormInputElement( release_type + "-mozillaRelbranch", value )
+function setReleaseBranch(product, value) {
+  setFormInputElement( product + "-mozillaRelbranch", value )
 }
 
-function getBranch(release_type) {
-  return getFormInputElement( release_type + "-branch" )
+function getBranch(product) {
+  return getFormInputElement( product + "-branch" )
 }
 
-function setBranch(release_type, value) {
-  setFormInputElement( release_type + "-branch", value )
+function setBranch(product, value) {
+  setFormInputElement( product + "-branch", value )
 }
 
-function setLastBlurredItem(release_type, name) {
-    localStorage.setItem("last_blurred_item_" + release_type, name)
+function setLastBlurredItem(product, name) {
+    localStorage.setItem("last_blurred_item_" + product, name)
 }
 
-function getLastBlurredItem(release_type) {
-    localStorage.getItem("last_blurred_item_" + release_type)
+function getLastBlurredItem(product) {
+    localStorage.getItem("last_blurred_item_" + product)
 }
 
