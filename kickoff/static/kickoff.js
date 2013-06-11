@@ -164,7 +164,10 @@ function createRevisionURL(branch, resource) {
   // resource can be a revision or a releaseBranch
   return releaseHost() + branch + releaseSeparator() + resource
 }
+
 function isValidRevision(revisionId) {
+  // sadly this regex makes ZZZZabcd123 a valid revisionId
+  // fix it :)
   return revisionId.match(/[0-9A-F]{6,}/i)
 }
 
@@ -175,7 +178,7 @@ function releaseHost() {
 }
 
 function releaseSeparator() {
-  // this value must be removed
+  // this value must be removed as the one above
   return "/rev/"
 }
 
@@ -183,8 +186,7 @@ function releaseSeparator() {
 function getBranchName(urlstring) {
   var parser = document.createElement('a');
   parser.href = urlstring
-  var pathname = parser.pathname
-  pathname = pathname.replace("^/*", "")
+  var pathname = parser.pathname.replace("/", "")
   return pathname.split( releaseSeparator() )[0]
 }
 
