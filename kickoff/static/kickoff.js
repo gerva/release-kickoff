@@ -165,7 +165,7 @@ function createRevisionURL(branch, resource) {
   return releaseHost() + branch + releaseSeparator() + resource
 }
 function isValidRevision(revisionId) {
-  return /[a-fA-F][0-9]{12}/.exec(revisionId)
+  return revisionId.match(/[0-9A-F]{6,}/i)
 }
 
 function releaseHost() {
