@@ -95,7 +95,7 @@ function submit_form_manager(){
       if ( lb == "branch" ) { revisionUrlBlur(product) }
       if ( lb == "revision-url" ) { revisionUrlBlur(product) }
       if ( lb == "mozillaRevision" ) { revisionBlur(product) }
-      if ( lb == "mozillaReleaseBranch" ) { revisionUrlBlur(product) }
+      if ( lb == "mozillaRelbranch" ) { relBranchBlur(product) }
     });
 }
 
@@ -122,13 +122,12 @@ function revisionUrlBlur(product) {
 function relBranchBlur(product) {
     var branch = getBranch(product)
     var relBranch = getReleaseBranch(product)
-    var url = "https//hg.mozilla.org/" + branch + "/rev/" + relBranch
     disableRevision(product)
     if ( relBranch == "" ) {
       enableRevision(product)
     } else {
       if ( branch != "" ) {
-        setRevisionUrl(product, url)
+        setRevisionUrl(product, createRevisionURL(branch, relBranch))
       }
     }
     setLastBlurredItem(product, "mozillaRevision")
@@ -137,46 +136,62 @@ function relBranchBlur(product) {
 function revisionBlur(product) {
     var branch = getBranch(product)
     var revision = getRevision(product)
-    var url = "https//hg.mozilla.org/" + branch + "/rev/" + revision
     disableRelBranch(product)
     if ( revision == "" ) {
       enableRelBranch(product)
     } else {
       if ( branch != "" ) {
-        setRevisionUrl(product, url)
+        setRevisionUrl(product, createRevisionURL(branch, revision))
       }
     }
     setLastBlurredItem(product, "mozillaRelbranch")
 }
 
 function branchBlur(product) {
-    var branch = getBranch(product)
-    /* if both revision and relBranch are enabled
-       they must be empty */
-    var relBranch = getReleaseBranch(product)
-    var revision = getRevision(product)
-    if ( relBranch != "" || revision != "" ) {
-      var release_url = "https://hg.mozilla.org/" + branch + "/rev/" + relBranch + revision
-      setRevisionUrl(product, release_url)
-      setLastBlurredItem(product, "mozillaReleaseBranch")
-    }
+  var branch = getBranch(product)
+  /* if both revision and relBranch are enabled
+     they must be empty */
+  var relBranch = getReleaseBranch(product)
+  var revision = getRevision(product)
+  if ( relBranch != "" || revision != "" ) {
+    var release_url = createRevisionURL(branch, relBranch + revision)
+    setRevisionUrl(product, release_url)
+    setLastBlurredItem(product, "branch")
+  }
 }
 
-/* a bunch of gettes/setters to make code more readable */
+function createRevisionURL(branch, resource) {
+  // resource can be a revision or a releaseBranch
+  return releaseHost() + branch + releaseSeparator() + resource
+}
 function isValidRevision(revisionId) {
   return /[a-fA-F][0-9]{12}/.exec(revisionId)
 }
 
+function releaseHost() {
+  // moving all the references to hg.mozilla.org
+  // here so it should be easier to refactor
+  return "https://hg.mozilla.org/"
+}
+
+function releaseSeparator() {
+  // this value must be removed
+  return "/rev/"
+}
+
+/* a bunch of gettes/setters to make code more readable */
 function getBranchName(urlstring) {
   var parser = document.createElement('a');
   parser.href = urlstring
-  return parser.pathname.split('/rev/')[0]
+  var pathname = parser.pathname
+  pathname = pathname.replace("^/*", "")
+  return pathname.split( releaseSeparator() )[0]
 }
 
 function getResource(urlstring) {
   var parser = document.createElement('a');
   parser.href = urlstring
-  return parser.pathname.split('/rev/')[1]
+  return parser.pathname.split( releaseSeparator() )[1]
 }
 
 function enableFormElement(element_id) {
