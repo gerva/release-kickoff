@@ -168,7 +168,7 @@ function createRevisionURL(branch, resource) {
 function isValidRevision(revisionId) {
   // sadly this regex makes ZZZZabcd123 a valid revisionId
   // fix it :)
-  return revisionId.match(/[0-9A-F]{6,}/i)
+  return revisionId.match(/^[0-9A-F]*$/i)
 }
 
 function releaseHost() {
