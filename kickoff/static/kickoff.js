@@ -1,3 +1,11 @@
+//
+BRANCH_TAG = "-branch"
+REVISION_TAG = "-mozillaRevision"
+RELBRANCH_TAG = "-mozillaRelbranch"
+REVISION_URL_TAG = "-revision-url"
+RELEASE_SEPARATOR = "rev"
+RELEASE_HOST = "https://hg.mozilla.org"
+
 function initialSetup(){
   // initialize tabs and accordion.
   // Saving last active element using localStorage
@@ -82,20 +90,20 @@ function submittedReleaseButtons(buttonId) {
 function submit_form_manager(){
     var products = ["fennec", "firefox", "thunderbird"]
     products.forEach(function(product) {
-      $( "#" + product + "\-branch" )
+      $( "#" + product + BRANCH_TAG )
        .blur( function(){ branchBlur(product) });
-      $( "#" + product + "\-revision\-url" )
+      $( "#" + product + REVISION_URL_TAG )
        .blur( function(){ revisionUrlBlur(product) });
-      $( "#" + product + "\-mozillaRevision" )
+      $( "#" + product + REVISION_URL_TAG )
        .blur( function(){ revisionBlur(product) });
-      $( "#" + product + "\-mozillaRelbranch")
+      $( "#" + product + RELBRANCH_TAG)
        .blur( function(){ relBranchBlur(product) });
       // preserve the state after a refresh
       var lb = getLastBlurredItem(product)
-      if ( lb == "branch" ) { revisionUrlBlur(product) }
-      if ( lb == "revision-url" ) { revisionUrlBlur(product) }
-      if ( lb == "mozillaRevision" ) { revisionBlur(product) }
-      if ( lb == "mozillaRelbranch" ) { relBranchBlur(product) }
+      if ( lb == BRANCH_TAG ) { revisionUrlBlur(product) }
+      if ( lb == REVISION_TAG ) { revisionBlur(product) }
+      if ( lb == RELBRANCH_TAG ) { relBranchBlur(product) }
+      if ( lb == REVISION_URL_TAG ) { revisionUrlBlur(product) }
     });
 }
 
@@ -103,7 +111,7 @@ function revisionUrlBlur(product) {
   var url = getRevisionUrl(product)
   var branch = getBranchName(url)
   var revision = getResource(url)
-  if ( isValidRevision(revision) ) {
+  if ( isReleaseFromRevisionURL(url) ) {
     setBranch(product, branch)
     enableRevision(product)
     disableRelBranch(product)
@@ -116,7 +124,7 @@ function revisionUrlBlur(product) {
     setReleaseBranch(product, revision)
     setRevision(product, "")
   }
-  setLastBlurredItem(product, "revision-url")
+  setLastBlurredItem(product, REVISION_URL_TAG)
 }
 
 function relBranchBlur(product) {
@@ -127,10 +135,10 @@ function relBranchBlur(product) {
       enableRevision(product)
     } else {
       if ( branch != "" ) {
-        setRevisionUrl(product, createRevisionURL(branch, relBranch))
+        setRevisionUrl(product, createRevisionURL(branch, relBranch ))
       }
     }
-    setLastBlurredItem(product, "mozillaRevision")
+    setLastBlurredItem(product, REVISION_TAG)
 }
 
 function revisionBlur(product) {
@@ -141,10 +149,10 @@ function revisionBlur(product) {
       enableRelBranch(product)
     } else {
       if ( branch != "" ) {
-        setRevisionUrl(product, createRevisionURL(branch, revision))
+        setRevisionUrl(product, createRevisionURL(branch, revision ))
       }
     }
-    setLastBlurredItem(product, "mozillaRelbranch")
+    setLastBlurredItem(product, RELBRANCH_TAG)
 }
 
 function branchBlur(product) {
@@ -154,46 +162,47 @@ function branchBlur(product) {
   var relBranch = getReleaseBranch(product)
   var revision = getRevision(product)
   if ( relBranch != "" || revision != "" ) {
-    var release_url = createRevisionURL(branch, relBranch + revision)
+    var release_url = createRevisionURL(branch, relBranch + revision )
     setRevisionUrl(product, release_url)
-    setLastBlurredItem(product, "branch")
+    setLastBlurredItem(product, BRANCH_TAG)
   }
 }
 
 function createRevisionURL(branch, resource) {
   // resource can be a revision or a releaseBranch
-  return releaseHost() + branch + releaseSeparator() + resource
+  url = [ RELEASE_HOST(), branch ]
+  if ( isValidRevision(resource) ) {
+    url.push( RELEASE_SEPARATOR )
+  }
+  url.push(resource)
+  return url.join("/")
+}
+
+function isReleaseFromRevisionURL(urlstring) {
+  var pattern = new RegExp("^.*/" + RELEASE_SEPARATOR + "/.*$")
+  return pattern.exec(urlstring)
 }
 
 function isValidRevision(revisionId) {
-  // sadly this regex makes ZZZZabcd123 a valid revisionId
-  // fix it :)
   return revisionId.match(/^[0-9A-F]*$/i)
-}
-
-function releaseHost() {
-  // moving all the references to hg.mozilla.org
-  // here so it should be easier to refactor
-  return "https://hg.mozilla.org/"
-}
-
-function releaseSeparator() {
-  // this value must be removed as the one above
-  return "/rev/"
 }
 
 /* a bunch of gettes/setters to make code more readable */
 function getBranchName(urlstring) {
   var parser = document.createElement('a');
   parser.href = urlstring
-  var pathname = parser.pathname.replace("/", "")
-  return pathname.split( releaseSeparator() )[0]
+  var arr = parser.pathname.split("/")
+  var pathname = arr.filter(function(val) {
+                    return !(val === "" || val === RELEASE_SEPARATOR)
+  });
+  pathname.pop()
+  return pathname.join("/")
 }
 
 function getResource(urlstring) {
   var parser = document.createElement('a');
   parser.href = urlstring
-  return parser.pathname.split( releaseSeparator() )[1]
+  return parser.pathname.split("/").pop()
 }
 
 function enableFormElement(element_id) {
@@ -205,19 +214,19 @@ function disableFormElement(element_id) {
 }
 
 function disableRelBranch(product) {
-   disableFormElement( product + "-mozillaRelbranch" )
+   disableFormElement( product + RELBRANCH_TAG )
 }
 
 function disableRevision(product) {
-   disableFormElement( product + "-mozillaRevision" )
+   disableFormElement( product + REVISION_TAG )
 }
 
 function enableRelBranch(product) {
-  enableFormElement( product + "-mozillaRelbranch" )
+  enableFormElement( product + RELBRANCH_TAG )
 }
 
 function enableRevision(product) {
-  enableFormElement( product + "-mozillaRevision" )
+  enableFormElement( product + REVISION_TAG )
 }
 
 function setFormInputElement(element_id, value) {
@@ -229,35 +238,35 @@ function getFormInputElement(element_id) {
 }
 
 function getRevision(product) {
-  return getFormInputElement( product + "-mozillaRevision" )
+  return getFormInputElement( product + REVISION_TAG )
 }
 
 function setRevision(product, value) {
-  setFormInputElement( product + "-mozillaRevision", value )
+  setFormInputElement( product + REVISION_TAG, value )
 }
 
 function getRevisionUrl(product) {
-  return getFormInputElement( product + "-revision-url" )
+  return getFormInputElement( product + REVISION_URL_TAG )
 }
 
 function setRevisionUrl(product, value) {
-  setFormInputElement( product + "-revision-url" , value )
+  setFormInputElement( product + REVISION_URL_TAG , value )
 }
 
 function getReleaseBranch(product) {
-  return getFormInputElement( product + "-mozillaRelbranch" )
+  return getFormInputElement( product + RELBRANCH_TAG )
 }
 
 function setReleaseBranch(product, value) {
-  setFormInputElement( product + "-mozillaRelbranch", value )
+  setFormInputElement( product + RELBRANCH_TAG, value )
 }
 
 function getBranch(product) {
-  return getFormInputElement( product + "-branch" )
+  return getFormInputElement( product + BRANCH_TAG )
 }
 
 function setBranch(product, value) {
-  setFormInputElement( product + "-branch", value )
+  setFormInputElement( product + BRANCH_TAG, value )
 }
 
 function setLastBlurredItem(product, name) {
@@ -267,4 +276,3 @@ function setLastBlurredItem(product, name) {
 function getLastBlurredItem(product) {
     localStorage.getItem("last_blurred_item_" + product)
 }
-
