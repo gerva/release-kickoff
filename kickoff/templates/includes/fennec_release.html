@@ -2,7 +2,7 @@
 <div class="submit_release">
     {{ fennecForm.version.label()|safe }}
     {{ fennecForm.version(placeholder='15.0b6')|safe }}
-    <div>&nbsp;</div>
+    <div class="help">&nbsp;</div>
 </div>
 <div class="submit_release">
     {{ fennecForm.buildNumber.label()|safe }}
@@ -33,20 +33,12 @@
 </div>
 <div class="submit_release">
     {{ fennecForm.mozillaRevision.label()|safe }}
-    {% if fennecForm.mozillaRelbranch.data %}
-        {{ fennecForm.mozillaRevision(disabled='disabled')|safe }}
-    {% else %}
-        {{ fennecForm.mozillaRevision(placeholder='abcdef123456')|safe }}
-    {% endif %}
+    {{ fennecForm.mozillaRevision(placeholder='abcdef123456')|safe }}
     <div class="help">If a relbranch is specified this field is disabled and ignored. The tip of the relbranch will be used instead.</div>
 </div>
 <div class="submit_release">
     {{ fennecForm.mozillaRelbranch.label()|safe }}
-    {% if fennecForm.mozillaRevision.data %}
-        {{ fennecForm.mozillaRelbranch(disabled='disabled')|safe }}
-    {% else %}
-        {{ fennecForm.mozillaRelbranch()|safe }}
-    {% endif %}
+    {{ fennecForm.mozillaRelbranch()|safe }}
     <div class="help">The relbranch to put version bumps/tags for this release on. If not specified, one will be generated automatically during tagging. When provided the release will be created from tip of this branch thus it cannot be used in conjunction with revision.</div>
 </div>
 </div><!-- advanced -->
