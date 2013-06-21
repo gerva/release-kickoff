@@ -3,6 +3,8 @@ BRANCH_TAG = "-branch"
 REVISION_TAG = "-mozillaRevision"
 RELBRANCH_TAG = "-mozillaRelbranch"
 REVISION_URL_TAG = "-revision-url"
+COMM_RELBRANCH = "-commRelbranch"
+COMM_REVISION = "-commRevision"
 RELEASE_SEPARATOR = "rev"
 RELEASE_HOST = "https://hg.mozilla.org"
 
@@ -97,6 +99,10 @@ function submit_form_manager(){
      .keyup( function(){ revisionChange(product) });
     $( "#" + product + RELBRANCH_TAG)
      .keyup( function(){ relBranchChange(product) });
+    $( "#" + product + COMM_REVISION)
+     .keyup( function(){ commRevisionChange(product) });
+    $( "#" + product + COMM_RELBRANCH)
+     .keyup( function(){ commRelbranchChange(product) });
     // preserve the state after a refresh
     var lb = getLastBlurredItem(product)
     if ( lb == BRANCH_TAG ) { revisionUrlChange(product) }
@@ -164,6 +170,24 @@ function branchChange(product) {
     var release_url = createRevisionURL(product, branch, relBranch + revision)
     setRevisionUrl(product, release_url)
     setLastBlurredItem(product, BRANCH_TAG)
+  }
+}
+// thunderbird only
+function commRelbranchChange(product) {
+  if ( getCommRelbranch(product) != "" ) {
+    disableCommRevision(product)
+    setCommRevision(product, "")
+  } else {
+    enableCommRevision(product)
+  }
+}
+
+function commRevisionChange(product) {
+  if ( getCommRevision(product) != "" ) {
+    disableCommRelbranch(product)
+    setCommRelbranch(product, "")
+  } else {
+    enableCommRelbranch(product)
   }
 }
 
@@ -246,9 +270,26 @@ function enableRevision(product) {
   enableFormElement( product + REVISION_TAG )
 }
 
+function enableCommRevision(product) {
+  enableFormElement( product + COMM_REVISION )
+}
+
+function disableCommRevision(product) {
+  disableFormElement( product + COMM_REVISION )
+}
+
+function enableCommRelbranch(product) {
+  enableFormElement( product + COMM_RELBRANCH )
+}
+
+function disableCommRelbranch(product) {
+  disableFormElement( product + COMM_RELBRANCH )
+}
+
 function getRevision(product) {
   return getFormInputElement( product + REVISION_TAG )
 }
+
 
 function setRevision(product, value) {
   setFormInputElement( product + REVISION_TAG, value )
@@ -276,6 +317,22 @@ function getBranch(product) {
 
 function setBranch(product, value) {
   setFormInputElement( product + BRANCH_TAG, value )
+}
+
+function getCommRevision(product) {
+  return getFormInputElement( product + COMM_REVISION )
+}
+
+function setCommRevision(product, value) {
+  setFormInputElement( product + COMM_REVISION, value )
+}
+
+function getCommRelbranch(product) {
+  return getFormInputElement( product + COMM_RELBRANCH )
+}
+
+function setCommRelbranch(product, value) {
+  setFormInputElement( product + COMM_RELBRANCH, value )
 }
 
 function setLastBlurredItem(product, name) {
