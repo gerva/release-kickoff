@@ -56,34 +56,33 @@ function viewReleases(){
 }
 
 function toLocalDate() {
-    $( ".submittedAt" ).each(function() {
-        var localdate = new Date($(this).html());
-        if ( $(this).prop("tagName") == "TD" ) {
-            $(this).empty().append(localdate.toLocaleString());
-        } else {
-            //this is not a table row: prepend "Submitted at: "
-            $(this).empty().append("Submitted at: " + localdate.toLocaleString());
-        }
-    });
+  $( ".submittedAt" ).each(function() {
+    var localdate = new Date($(this).html());
+    if ( $(this).prop("tagName") == "TD" ) {
+      $(this).empty().append(localdate.toLocaleString());
+    } else {
+      //this is not a table row: prepend "Submitted at: "
+      $(this).empty().append("Submitted at: " + localdate.toLocaleString());
+    }
+  });
 };
 
 function escapeExpression(str) {
-    return str.replace(/([#;&,_\-\.\+\*\~":"\!\^$\[\]\(\)=>\|])/g, "\\$1");
+  return str.replace(/([#;&,_\-\.\+\*\~":"\!\^$\[\]\(\)=>\|])/g, "\\$1");
 }
 
 function submittedReleaseButtons(buttonId) {
-    var btnId = "#" + escapeExpression( buttonId );
-    var other_btnId = btnId.replace("ready", "delete");
-    if ( other_btnId == btnId ) {
-        other_btnId = btnId.replace("delete", "ready");
-    }
-    if ( $( btnId ).is(":checked") ) {
-        $( other_btnId ).attr("checked", false);
-        $( other_btnId ).attr("disabled", true);
-    }
-    else {
-        $( other_btnId ).attr("disabled", false);
-    }
+  var btnId = "#" + escapeExpression( buttonId );
+  var other_btnId = btnId.replace("ready", "delete");
+  if ( other_btnId == btnId ) {
+    other_btnId = btnId.replace("delete", "ready");
+  }
+  if ( $( btnId ).is(":checked") ) {
+    $( other_btnId ).attr("checked", false);
+    $( other_btnId ).attr("disabled", true);
+  } else {
+    $( other_btnId ).attr("disabled", false);
+  }
 }
 
 // update release branch/revision/release url
@@ -91,23 +90,23 @@ function submit_form_manager(){
   var products = ["fennec", "firefox", "thunderbird"]
   products.forEach(function(product) {
     $( "#" + product + BRANCH_TAG )
-     .blur( function(){ branchBlur(product) });
+     .keyup( function(){ branchChange(product) });
     $( "#" + product + REVISION_URL_TAG )
-     .blur( function(){ revisionUrlBlur(product) });
+     .keyup( function(){ revisionUrlChange(product) });
     $( "#" + product + REVISION_TAG )
-     .blur( function(){ revisionBlur(product) });
+     .keyup( function(){ revisionChange(product) });
     $( "#" + product + RELBRANCH_TAG)
-     .blur( function(){ relBranchBlur(product) });
+     .keyup( function(){ relBranchChange(product) });
     // preserve the state after a refresh
     var lb = getLastBlurredItem(product)
-    if ( lb == BRANCH_TAG ) { revisionUrlBlur(product) }
-    if ( lb == REVISION_TAG ) { revisionBlur(product) }
-    if ( lb == RELBRANCH_TAG ) { relBranchBlur(product) }
-    if ( lb == REVISION_URL_TAG ) { revisionUrlBlur(product) }
+    if ( lb == BRANCH_TAG ) { revisionUrlChange(product) }
+    if ( lb == REVISION_TAG ) { revisionChange(product) }
+    if ( lb == RELBRANCH_TAG ) { relBranchChange(product) }
+    if ( lb == REVISION_URL_TAG ) { revisionUrlChange(product) }
   });
 }
 
-function revisionUrlBlur(product) {
+function revisionUrlChange(product) {
   var url = getRevisionUrl(product)
   var resource = getResource(url)
   var revision_from_url = ""
@@ -127,7 +126,7 @@ function revisionUrlBlur(product) {
   setLastBlurredItem(product, REVISION_URL_TAG)
 }
 
-function relBranchBlur(product) {
+function relBranchChange(product) {
   var branch = getBranch(product)
   var relBranch = getReleaseBranch(product)
   disableRevision(product)
@@ -141,7 +140,7 @@ function relBranchBlur(product) {
   setLastBlurredItem(product, RELBRANCH_TAG)
 }
 
-function revisionBlur(product) {
+function revisionChange(product) {
   var branch = getBranch(product)
   var revision = getRevision(product)
   disableRelBranch(product)
@@ -155,7 +154,7 @@ function revisionBlur(product) {
   setLastBlurredItem(product, REVISION_TAG)
 }
 
-function branchBlur(product) {
+function branchChange(product) {
   var branch = getBranch(product)
   /* if both revision and relBranch are enabled
      they must be empty */
