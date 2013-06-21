@@ -1,16 +1,8 @@
-<script type='text/javascript'>
-$(document).ready(function() {
-    setupRevisionDisabling(
-        $('#{{ firefoxForm.mozillaRelbranch.id }}'),
-        $('#{{ firefoxForm.mozillaRevision.id }}')
-    );
-})
-</script>
 {{ firefoxForm.hidden_tag() }}
 <div class="submit_release">
     {{ firefoxForm.version.label()|safe }}
     {{ firefoxForm.version(placeholder='15.0b6')|safe }}
-    <div>&nbsp;</div>
+    <div class="help">&nbsp;</div>
 </div>
 <div class="submit_release">
     {{ firefoxForm.buildNumber.label()|safe }}
@@ -46,20 +38,12 @@ $(document).ready(function() {
 </div>
 <div class="submit_release">
     {{ firefoxForm.mozillaRevision.label()|safe }}
-    {% if firefoxForm.mozillaRelbranch.data %}
-        {{ firefoxForm.mozillaRevision(disabled='disabled')|safe }}
-    {% else %}
-        {{ firefoxForm.mozillaRevision(placeholder='abcdef123456')|safe }}
-    {% endif %}
+    {{ firefoxForm.mozillaRevision(placeholder='abcdef123456')|safe }}
     <div class="help">If a relbranch is specified this field is disabled and ignored. The tip of the relbranch will be used instead.</div>
 </div>
 <div class="submit_release">
     {{ firefoxForm.mozillaRelbranch.label()|safe }}
-    {% if firefoxForm.mozillaRevision.data %}
-        {{ firefoxForm.mozillaRelbranch(disabled='disabled')|safe }}
-    {% else %}
-        {{ firefoxForm.mozillaRelbranch()|safe }}
-    {% endif %}
+    {{ firefoxForm.mozillaRelbranch()|safe }}
     <div class="help">The relbranch to put version bumps/tags for this release on. If not specified, one will be generated automatically during tagging. When provided the release will be created from tip of this branch thus it cannot be used in conjunction with revision.</div>
 </div>
 <div class="submit_release">
