@@ -88,71 +88,71 @@ function submittedReleaseButtons(buttonId) {
 
 // update release branch/revision/release url
 function submit_form_manager(){
-    var products = ["fennec", "firefox", "thunderbird"]
-    products.forEach(function(product) {
-      $( "#" + product + BRANCH_TAG )
-       .blur( function(){ branchBlur(product) });
-      $( "#" + product + REVISION_URL_TAG )
-       .blur( function(){ revisionUrlBlur(product) });
-      $( "#" + product + REVISION_URL_TAG )
-       .blur( function(){ revisionBlur(product) });
-      $( "#" + product + RELBRANCH_TAG)
-       .blur( function(){ relBranchBlur(product) });
-      // preserve the state after a refresh
-      var lb = getLastBlurredItem(product)
-      if ( lb == BRANCH_TAG ) { revisionUrlBlur(product) }
-      if ( lb == REVISION_TAG ) { revisionBlur(product) }
-      if ( lb == RELBRANCH_TAG ) { relBranchBlur(product) }
-      if ( lb == REVISION_URL_TAG ) { revisionUrlBlur(product) }
-    });
+  var products = ["fennec", "firefox", "thunderbird"]
+  products.forEach(function(product) {
+    $( "#" + product + BRANCH_TAG )
+     .blur( function(){ branchBlur(product) });
+    $( "#" + product + REVISION_URL_TAG )
+     .blur( function(){ revisionUrlBlur(product) });
+    $( "#" + product + REVISION_TAG )
+     .blur( function(){ revisionBlur(product) });
+    $( "#" + product + RELBRANCH_TAG)
+     .blur( function(){ relBranchBlur(product) });
+    // preserve the state after a refresh
+    var lb = getLastBlurredItem(product)
+    if ( lb == BRANCH_TAG ) { revisionUrlBlur(product) }
+    if ( lb == REVISION_TAG ) { revisionBlur(product) }
+    if ( lb == RELBRANCH_TAG ) { relBranchBlur(product) }
+    if ( lb == REVISION_URL_TAG ) { revisionUrlBlur(product) }
+  });
 }
 
 function revisionUrlBlur(product) {
   var url = getRevisionUrl(product)
-  var branch = getBranchName(url)
-  var revision = getResource(url)
+  var resource = getResource(url)
+  var revision_from_url = ""
+  var relbranch_from_url = ""
   if ( isReleaseFromRevisionURL(url) ) {
-    setBranch(product, branch)
+    revision_from_url = resource
     enableRevision(product)
     disableRelBranch(product)
-    setRevision(product, revision)
-    setReleaseBranch(product, "")
   } else {
-    setBranch(product, branch)
+    relbranch_from_url = resource
     enableRelBranch(product)
     disableRevision(product)
-    setReleaseBranch(product, revision)
-    setRevision(product, "")
   }
+  setBranch(product, getBranchName(url))
+  setRevision(product, revision_from_url)
+  setReleaseBranch(product, relbranch_from_url)
   setLastBlurredItem(product, REVISION_URL_TAG)
 }
 
 function relBranchBlur(product) {
-    var branch = getBranch(product)
-    var relBranch = getReleaseBranch(product)
-    disableRevision(product)
-    if ( relBranch == "" ) {
-      enableRevision(product)
-    } else {
-      if ( branch != "" ) {
-        setRevisionUrl(product, createRevisionURL(branch, relBranch ))
-      }
+  var branch = getBranch(product)
+  var relBranch = getReleaseBranch(product)
+  disableRevision(product)
+  if ( relBranch == "" ) {
+    enableRevision(product)
+  } else {
+    if ( branch != "" ) {
+      setRevisionUrl(product, createRevisionURL(product, branch, relBranch))
     }
-    setLastBlurredItem(product, REVISION_TAG)
+  }
+  setLastBlurredItem(product, RELBRANCH_TAG)
 }
 
 function revisionBlur(product) {
-    var branch = getBranch(product)
-    var revision = getRevision(product)
-    disableRelBranch(product)
-    if ( revision == "" ) {
-      enableRelBranch(product)
-    } else {
-      if ( branch != "" ) {
-        setRevisionUrl(product, createRevisionURL(branch, revision ))
-      }
+  var branch = getBranch(product)
+  var revision = getRevision(product)
+  disableRelBranch(product)
+  if ( revision == "" ) {
+    enableRelBranch(product)
+  } else {
+    if ( branch != "" ) {
+      setRevisionUrl(product, createRevisionURL(product, branch, revision))
     }
-    setLastBlurredItem(product, RELBRANCH_TAG)
+  }
+  setLastBlurredItem(product, REVISION_TAG)
 }
 
 function branchBlur(product) {
@@ -162,16 +162,16 @@ function branchBlur(product) {
   var relBranch = getReleaseBranch(product)
   var revision = getRevision(product)
   if ( relBranch != "" || revision != "" ) {
-    var release_url = createRevisionURL(branch, relBranch + revision )
+    var release_url = createRevisionURL(product, branch, relBranch + revision)
     setRevisionUrl(product, release_url)
     setLastBlurredItem(product, BRANCH_TAG)
   }
 }
 
-function createRevisionURL(branch, resource) {
+function createRevisionURL(product, branch, resource) {
   // resource can be a revision or a releaseBranch
-  url = [ RELEASE_HOST(), branch ]
-  if ( isValidRevision(resource) ) {
+  var url = [ RELEASE_HOST, branch ]
+  if ( isEnabled(product + REVISION_TAG) ) {
     url.push( RELEASE_SEPARATOR )
   }
   url.push(resource)
@@ -205,6 +205,7 @@ function getResource(urlstring) {
   return parser.pathname.split("/").pop()
 }
 
+/* generic functions on element_id*/
 function enableFormElement(element_id) {
   $( "#" + element_id + ":disabled" ).removeAttr("disabled")
 }
@@ -213,12 +214,29 @@ function disableFormElement(element_id) {
   $( "#" + element_id + ":enabled" ).attr("disabled", "disabled")
 }
 
+function isEnabled(element_id) {
+  return $( "#" + element_id ).is(":enabled")
+}
+
+function isDisabled(element_id) {
+  return $( "#" + element_id).is(":disabled")
+}
+
+function getFormInputElement(element_id) {
+  return $( "#" + element_id ).val().trim()
+}
+
+function setFormInputElement(element_id, value) {
+  $( "#" + element_id ).val( value )
+}
+
+/* functions for release submit form */
 function disableRelBranch(product) {
-   disableFormElement( product + RELBRANCH_TAG )
+  disableFormElement( product + RELBRANCH_TAG )
 }
 
 function disableRevision(product) {
-   disableFormElement( product + REVISION_TAG )
+  disableFormElement( product + REVISION_TAG )
 }
 
 function enableRelBranch(product) {
@@ -227,14 +245,6 @@ function enableRelBranch(product) {
 
 function enableRevision(product) {
   enableFormElement( product + REVISION_TAG )
-}
-
-function setFormInputElement(element_id, value) {
-  $( "#" + element_id ).val( value )
-}
-
-function getFormInputElement(element_id) {
-  return $( "#" + element_id ).val().trim()
 }
 
 function getRevision(product) {
