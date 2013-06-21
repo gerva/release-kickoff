@@ -33,6 +33,25 @@
    {% endfor %}
 </div>
 <script>
-  $(document).ready(function(){ submit_form_manager(); });
+  $(document).ready( function() {
+  submit_form_manager();
+  // initialize suggestions
+  {% for prod in (fennecForm, firefoxForm, thunderbirdForm) %}
+  setupVersionSuggestions(
+    $('#{{ prod.version.id }}'),
+    {{ prod.version.suggestions|safe }},
+    $('#{{ prod.buildNumber.id }}'),
+    {{ prod.buildNumber.suggestions|safe }}
+  );
+  setupBranchSuggestions(
+    $('#{{ prod.branch.id }}'),
+    {{ prod.branch.suggestions|safe }}
+  );
+  setupRevisionDisabling(
+    $('#{{ prod.mozillaRelbranch.id }}'),
+    $('#{{ prod.mozillaRevision.id }}')
+  );
+  {% endfor %}
+});
 </script>
 {% endblock %}

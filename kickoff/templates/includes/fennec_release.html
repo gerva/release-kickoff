@@ -1,21 +1,3 @@
-<script type='text/javascript'>
-$(document).ready(function() {
-    setupVersionSuggestions(
-        $('#{{ fennecForm.version.id }}'),
-        {{ fennecForm.version.suggestions|safe }},
-        $('#{{ fennecForm.buildNumber.id }}'),
-        {{ fennecForm.buildNumber.suggestions|safe }}
-    );
-    setupBranchSuggestions(
-        $('#{{ fennecForm.branch.id }}'),
-        {{ fennecForm.branch.suggestions|safe }}
-    );
-    setupRevisionDisabling(
-        $('#{{ fennecForm.mozillaRelbranch.id }}'),
-        $('#{{ fennecForm.mozillaRevision.id }}')
-    );
-})
-</script>
 {{ fennecForm.hidden_tag() }}
 <div class="submit_release">
     {{ fennecForm.version.label()|safe }}

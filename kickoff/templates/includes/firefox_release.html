@@ -1,17 +1,5 @@
 <script type='text/javascript'>
 $(document).ready(function() {
-    setupVersionSuggestions(
-        $('#{{ firefoxForm.version.id }}'),
-        {{ firefoxForm.version.suggestions|safe }},
-        $('#{{ firefoxForm.buildNumber.id }}'),
-        {{ firefoxForm.buildNumber.suggestions|safe }}
-    );
-    setupBranchSuggestions(
-        $('#{{ firefoxForm.branch.id }}'),
-        {{ firefoxForm.branch.suggestions|safe }},
-        $('#{{ firefoxForm.partials.id }}'),
-        {{ firefoxForm.partials.suggestions|safe }}
-    );
     setupRevisionDisabling(
         $('#{{ firefoxForm.mozillaRelbranch.id }}'),
         $('#{{ firefoxForm.mozillaRevision.id }}')
