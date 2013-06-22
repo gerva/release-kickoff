@@ -15,6 +15,11 @@
     <div class="help">An URL to the revision you want to build this release from. Use this if you don't want to fill in branch/revision individually. At this time, the server portion is ignored and assumed to be "hg.mozilla.org"</div>
 </div>
 <div class="submit_release">
+    {{ thunderbirdForm.commRevision.label()|safe }}
+    {{ thunderbirdForm.commRevision(placeholder='abcdef123456')|safe }}
+    <div class="help">If relbranch is specified this field is disabled and the tip of it will be used as the revision</div>
+</div>
+<div class="submit_release">
     {{ thunderbirdForm.partials.label()|safe }}
     {{ thunderbirdForm.partials(placeholder='15.0b5build1')|safe }}
     <div class="help">A comma separated list of previous releases to create partial updates for. You MUST list the previous release from the chosen branch as one of the partials. For release-channel releases the recommend number of partials is 3, for Betas it's 2, and for ESRs only 1. Each partial chosen adds roughly 1.5h to the end-to-end time of the release.</div>
@@ -50,11 +55,6 @@
     {{ thunderbirdForm.commRelbranch.label()|safe }}
     {{ thunderbirdForm.commRelbranch()|safe }}
     <div class="help">&nbsp;</div>
-</div>
-<div class="submit_release">
-    {{ thunderbirdForm.commRevision.label()|safe }}
-    {{ thunderbirdForm.commRevision(placeholder='abcdef123456')|safe }}
-    <div class="help">If relbranch is specified this field is disabled and the tip of it will be used as the revision</div>
 </div>
 <div class="submit_release">
     {{ thunderbirdForm.promptWaitTime.label()|safe }}
