@@ -90,25 +90,32 @@ function submittedReleaseButtons(buttonId) {
 // update release branch/revision/release url
 function submit_form_manager(){
   var products = ["fennec", "firefox", "thunderbird"]
-  products.forEach(function(product) {
-    $( "#" + product + BRANCH_TAG )
-     .keyup( function(){ branchChange(product) });
-    $( "#" + product + REVISION_URL_TAG )
-     .keyup( function(){ revisionUrlChange(product) });
-    $( "#" + product + REVISION_TAG )
-     .keyup( function(){ revisionChange(product) });
-    $( "#" + product + RELBRANCH_TAG)
-     .keyup( function(){ relBranchChange(product) });
-    $( "#" + product + COMM_REVISION)
-     .keyup( function(){ commRevisionChange(product) });
-    $( "#" + product + COMM_RELBRANCH)
-     .keyup( function(){ commRelbranchChange(product) });
+  products.forEach(function(p){
+      $( "#" + p + BRANCH_TAG)
+        .keyup( function() { branchChange(p) })
+      $( "#" + p + REVISION_TAG)
+        .keyup( function() { revisionChange(p) })
+      $( "#" + p + RELBRANCH_TAG)
+        .keyup( function() { relBranchChange(p) })
+      $( "#" + p + REVISION_URL_TAG)
+        .keyup( function() { revisionUrlChange(p) })
+      $( "#" + p + COMM_REVISION)
+        .keyup( function() { commRevisionChange(p) })
+      $( "#" + p + COMM_RELBRANCH)
+        .keyup( function() { commRelbranchChange(p) })
     // preserve the state after a refresh
-    var lb = getLastBlurredItem(product)
-    if ( lb == BRANCH_TAG ) { revisionUrlChange(product) }
-    if ( lb == REVISION_TAG ) { revisionChange(product) }
-    if ( lb == RELBRANCH_TAG ) { relBranchChange(product) }
-    if ( lb == REVISION_URL_TAG ) { revisionUrlChange(product) }
+    if ( isEnabled( p + REVISION_TAG) ) {
+      revisionChange(p)
+    }
+    if ( isEnabled(p + RELBRANCH_TAG) ) {
+      relBranchChange(p)
+    }
+    if ( isEnabled(p + COMM_REVISION) ) {
+      commRelbranchChange(p)
+    }
+    if ( isEnabled(p + COMM_RELBRANCH) ) {
+      commRevisionChange(p)
+    }
   });
 }
 
@@ -129,7 +136,6 @@ function revisionUrlChange(product) {
   setBranch(product, getBranchName(url))
   setRevision(product, revision_from_url)
   setReleaseBranch(product, relbranch_from_url)
-  setLastBlurredItem(product, REVISION_URL_TAG)
 }
 
 function relBranchChange(product) {
@@ -143,7 +149,6 @@ function relBranchChange(product) {
       setRevisionUrl(product, createRevisionURL(product, branch, relBranch))
     }
   }
-  setLastBlurredItem(product, RELBRANCH_TAG)
 }
 
 function revisionChange(product) {
@@ -157,7 +162,6 @@ function revisionChange(product) {
       setRevisionUrl(product, createRevisionURL(product, branch, revision))
     }
   }
-  setLastBlurredItem(product, REVISION_TAG)
 }
 
 function branchChange(product) {
@@ -169,7 +173,6 @@ function branchChange(product) {
   if ( relBranch != "" || revision != "" ) {
     var release_url = createRevisionURL(product, branch, relBranch + revision)
     setRevisionUrl(product, release_url)
-    setLastBlurredItem(product, BRANCH_TAG)
   }
 }
 // thunderbird only
@@ -335,10 +338,3 @@ function setCommRelbranch(product, value) {
   setFormInputElement( product + COMM_RELBRANCH, value )
 }
 
-function setLastBlurredItem(product, name) {
-    localStorage.setItem("last_blurred_item_" + product, name)
-}
-
-function getLastBlurredItem(product) {
-    localStorage.getItem("last_blurred_item_" + product)
-}
