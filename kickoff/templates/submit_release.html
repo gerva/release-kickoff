@@ -8,21 +8,26 @@
     {% endfor %}
 </ul>
 </div> <!-- id=errors -->
-<script>
-  $(function(){
-     $('#tabs').tabs("select", "#{{ selectedProduct }}")
-});
-</script>
 {% endif %}
-<div id='tabs'>
-  <ul>
-      {% for prod in ('fennec', 'firefox', 'thunderbird') %}
-      <li><a href="#{{ prod }}">{{ prod|capitalize }}</a></li>
-      {% endfor %}
-  </ul>
-  {% for prod in ('fennec', 'firefox', 'thunderbird') %}
-    {% set product_template = 'includes/' + prod + '_release.html' %}
-    {% include product_template %}
-   {% endfor %}
-</div>
+<ul class="nav nav-pills">
+  {%- for prod in ('fennec', 'firefox', 'thunderbird') %}
+  {%- if loop.first %}
+  <li class="active"><a href="#{{ prod }}" data-toggle="tab">{{ prod|capitalize }}</a></li>
+  {%- else %}
+  <li><a href="#{{ prod }}" data-toggle="tab">{{ prod|capitalize }}</a></li>
+  {%- endif %}
+  {%- endfor %}
+</ul>
+<div class="tab-content">
+{%- for prod in ('fennec', 'firefox', 'thunderbird') %}
+{%- set product_template = 'includes/' + prod + '_release.html' %}
+  {%- if loop.first %}
+  <div class="tab-pane active" id="{{ prod }}">
+  {%- else %}
+  <div class="tab-pane" id="{{ prod }}">
+  {%- endif %}
+  {% include product_template %}
+  </div> <!-- tab-pane {{ prod }} -->
+{%- endfor %}
+</div> <!-- tab-content -->
 {% endblock %}
