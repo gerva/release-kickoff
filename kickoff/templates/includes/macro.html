@@ -34,7 +34,66 @@
 </div> <!-- form-group gimme_button({{ product }}) -->
 {%- endmacro %}
 
+
+{%- set name_size = 3 %}
 {%- macro advanced_options() %}
 <div class="col-sm-offset-{{ label_size }}"><h4>Advanced options:</h4></div>
 {%- endmacro %}
 
+{%- macro _option_value(name, value) %}
+{%- if name == 'l10n' %}
+    <div class='col-sm-{{ name_size }}'><a href="/releases/{{ value }}/l10n">L10n Changeset</a></div>
+{%- else %}
+    <div class='col-sm-{{ name_size }}'><strong>{{ name }}</strong></div>
+    <div class='col-sm-offset-{{ name_size }}'>{{ value }}</div>
+{%- endif %}
+{%- endmacro %}
+
+{%- macro _status_error(status) %}
+    <div class='col-sm-{{ name_size }}'><strong>Status: </strong></div>
+    <div class='col-sm-offset-{{ name_size }} text-danger'><strong>{{ status }}</strong></div>
+{%- endmacro %}
+
+{%- macro _submittedAt(submittedAt) %}
+    <div class='col-sm-{{ name_size }}'><strong>Submitted At:</strong></div>
+    <div class='col-sm-offset-{{ name_size }} submittedAt'><strong>{{ submittedAt }}</strong></div>
+{% endmacro %}
+
+{%- macro _l10n(name) %}
+    <div class='col-sm-12'><a href="/releases/{{ value }}/l10n">L10n Changeset</a><div>
+{% endmacro %}
+{%- macro submit_release(release) %}
+    {%- if release.status != '' %}
+     {{ _status_error(release.status) }}
+    {% endif -%}
+    {{ _option_value('Submitted by: ', release.submitter) }}
+    {{ _submittedAt(release.submittedAt) }}
+    {{ _option_value('Branch:', release.branch) }}
+    {{ _option_value('Mozilla Revision: ',  release.mozillaRevision) }}
+    {{ _option_value('Mozilla Relbranch: ', release.mozillaRelbranch) }}
+    {%- if 'Thunderbird' in release.name %}
+    {{ _option_value('Comm Revision: ', release.commRevision) }}
+    {{ _option_value('Comm Relbranch: ', release.commRelbranch) }}
+    {%- endif %}
+    {%- if release.dashboardCheck %}
+    {{ _option_value('Check dashboard? ', 'Yes') }}
+    {%- else %}
+    {{ _option_value('Check dashboard? ', 'No') }}
+    {%- endif %}
+    {%- if not 'Fennec' in release.name %}
+    {{ _option_value('Partial versions: ', release.partials) }}
+    {%- if not release.promptWaitTime %}
+    {{ _option_value('Update prompt wait time: ','Default') }}
+    {%- else %}
+    {{ _option_value('Update prompt wait time: ', release.promptWaitTime) }}
+    {%- endif %}
+    {%- endif %}
+    {{ _option_value('l10n', release.name ) }}
+    <div class="form-group col-sm-12">
+    <button type="button" class="btn btn-success">Ready</button>
+    <button type="button" class="btn btn-danger">Delete</button>
+    </div><!-- form-group -->
+{%- endmacro %}
+
+{%- macro ready_delte_buttons(release) %}
+{%- endmacro %}

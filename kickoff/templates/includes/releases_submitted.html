@@ -1,54 +1,20 @@
+{%- from 'includes/macro.html' import submit_release %}
+
 <form id='release_readyness' action='{{ url_for('releases') }}' method='post'>
 {{ form.hidden_tag() }}
 {% for rel in releases if not rel.ready %}
-<div class="rel">
- <div class="release_container" id="{{ rel.name }}">
- <div class="release_title"><a href="/release.html?name={{ rel.name }}">{{ rel.name }}</a></div>
-   <div class='release_buttons'>
-    {% for actions in ( 'ready', 'delete' ) %}
-    <div id="{{ rel.name }}-{{ actions }}" class="{{ actions }}-button">
-     <label>
-      <input id="{{ actions }}Releases_{{ rel.name }}" type="checkbox" name="{{ actions }}Releases" value="{{ rel.name }}" onclick='submittedReleaseButtons(this.id)'>
-      <span>{{ actions|capitalize }}</span>
-     </label>
-    </div> <!-- {{ actions }}-button -->
-    {% endfor %}
-  </div> <!-- release_buttons -->
-   <div class='release_data'>
-    <ul>
-     {%- if rel.status != '' %}
-     <li>Status: <span class="errorText">{{ rel.status }}</span></li>
-    {% endif -%}
-     <li>Submitted by: {{ rel.submitter }}</li>
-     <li class="submittedAt">{{ rel.submittedAt }}</li>
-     <li>Branch: {{ rel.branch }}</li>
-     <li>Mozilla Revision: {{ rel.mozillaRevision }}</li>
-     <li>Mozilla Relbranch: {{ rel.mozillaRelbranch }}</li>
-     {% if 'Thunderbird' in rel.name %}
-     <li>Comm Revision: {{ rel.commRevision }}</li>
-     <li>Comm Relbranch: {{ rel.commRelbranch }}</li>
-     {% endif %}
-     {% if rel.dashboardCheck %}
-     <li>Check dashboard? Yes</li>
-     {% else %}
-     <li>Check dashboard? No</li>
-     {% endif %}
-     <li><a href="/releases/{{ rel.name }}/l10n">L10n Changeset</a></li>
-     {% if not 'Fennec' in rel.name %}
-     <li>Partial versions: {{ rel.partials }}</li>
-     {% if not rel.promptWaitTime %}
-     <li>Update prompt wait time: Default</li>
-     {% else %}
-     <li>Update prompt wait time:{{ rel.promptWaitTime }}</li>
-     {% endif %}
-     {% endif %}
-    </ul>
-   </div><!-- release_data -->
- </div><!-- release_container id={{ rel.name }}-->
- <div class="release_footer"></div>
-</div><!-- rel -->
+<div class="panel panel-default">
+ <div class="panel-heading">
+  <h3 class="panel-title"><a href="/release.html?name={{ rel.name }}">{{ rel.name }}</a></h3>
+ </div>
+ <div class="panel-body">
+    {{  submit_release(rel) }}
+ <div><!-- panel body -->
+ </div>
+ </div>
+ </div>
 {% if loop.last %}
-<input type="submit" id="doeet" value="Do eet!">
+<input class="btn btn-default" type="submit" id="doeet" value="Do eet!">
 </form>
 {% endif %}
 {% else %}
