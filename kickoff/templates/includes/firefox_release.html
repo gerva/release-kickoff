@@ -20,6 +20,7 @@ $(document).ready(function() {
 </script>
 {%- from 'includes/macro.html' import input, gimme_button %}
 {%- from 'includes/macro.html' import new_release_form_open, new_release_form_close %}
+{%- from 'includes/macro.html' import advanced_options %}
 {{ new_release_form_open() }}
 {{ firefoxForm.hidden_tag() }}
 
@@ -65,7 +66,7 @@ $(document).ready(function() {
     disable=False,
     help='Whether or not to ensure that the changesets given match the ones on the <a href="https://l10n.mozilla.org/shipping/milestones">L10n Dashboard</a>. This is normally turned on for betas and turned off for all other releases.') }}
 
-<h4>Advanced Options:</h4>
+{{ advanced_options() }}
 {%- set disable_mozillaRelBranch = False %}
 {%- if firefoxForm.mozillaRevision.data %}
 {%- set disable_mozillaRelBranch = True %}

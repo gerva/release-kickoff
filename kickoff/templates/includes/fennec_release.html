@@ -17,8 +17,9 @@ $(document).ready(function() {
 })
 </script>
 {%- from 'includes/macro.html' import input, gimme_button %}
-
- <form class='form-horizontal submit_release_form' action='{{ url_for('submit_release') }}' method='post' role='form'>
+{%- from 'includes/macro.html' import new_release_form_open, new_release_form_close %}
+{%- from 'includes/macro.html' import advanced_options %}
+{{ new_release_form_open() }}
 {{ fennecForm.hidden_tag() }}
 
 {{ input(element=fennecForm.version,
@@ -53,7 +54,7 @@ $(document).ready(function() {
          disable=False,
          help='Whether or not to ensure that the changesets given match the ones on the <a href="https://l10n.mozilla.org/shipping/milestones">L10n Dashboard</a>. This is normally turned on for betas and turned off for all other releases.') }}
 
-<h4>Advanced Options:</h4>
+{{ advanced_options() }}
 {%- set disable_mozillaRelbranch = False %}
 {%- if fennecForm.mozillaRevision.data %}
 {%- set disable_mozillaRelbranch = True %}
@@ -63,4 +64,4 @@ $(document).ready(function() {
          disable=disable_mozillaRelbranch,
          help="The relbranch to put version bumps/tags for this release on. If not specified, one will be generated automatically during tagging. When provided the release will be created from tip of this branch thus it cannot be used in conjunction with revision." )}}
 {{ gimme_button('fennec') }}
-</form>
+{{ new_release_form_close() }}
