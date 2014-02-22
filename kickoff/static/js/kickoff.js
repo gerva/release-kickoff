@@ -1,24 +1,3 @@
-function initialSetup(){
-  // initialize tabs and accordion.
-  // Saving last active element using localStorage
-  $( "#tabs" ).tabs({
-    activate: function (event, ui) {
-         localStorage.setItem("active_tab", $( "#tabs" )
-            .tabs("option", "active"));
-     },
-    active: parseInt(localStorage.getItem("active_tab")),
-  });
-
-  $( "#accordion" ).accordion({
-    heightStyle: "content",
-    change: function(event, ui) {
-        localStorage.setItem('active_accordion', $( "#accordion" )
-            .accordion("option", "active"));
-        },
-    active: parseInt(localStorage.getItem('active_accordion'))
-    });
-}
-
 function viewReleases(){
   toLocalDate();
   // initial sorting by SubmittedAt (descending)

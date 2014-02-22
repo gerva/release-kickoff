@@ -1,7 +1,5 @@
 import logging
 
-import pytz
-
 from flask import request, jsonify, render_template, Response, redirect, make_response, abort
 from flask.views import MethodView
 
@@ -11,6 +9,7 @@ from kickoff.model import getReleaseTable, getReleases
 from kickoff.views.forms import ReleasesForm, ReleaseAPIForm, getReleaseForm
 
 log = logging.getLogger(__name__)
+
 
 def sortedReleases():
     def cmpReleases(x, y):
@@ -91,6 +90,9 @@ class ReleaseL10nAPI(MethodView):
 
 
 class Releases(MethodView):
+    def _my_template(self):
+        return 'releases.html'
+
     def get(self):
         # We should really be creating a Form here and letting it render
         # rather than rendering by hand in the template, but it seems that's
@@ -99,7 +101,7 @@ class Releases(MethodView):
         # http://stackoverflow.com/questions/8463421/how-to-render-my-select-field-with-wtforms
         #form.readyReleases.choices = [(r.name, r.name) for r in getReleases(ready=False)]
         form = ReleasesForm()
-        return render_template('releases.html', releases=sortedReleases(), form=form)
+        return render_template(self._my_template(), releases=sortedReleases(), form=form)
 
     def post(self):
         form = ReleasesForm()
@@ -123,7 +125,7 @@ class Releases(MethodView):
             r.status = 'Pending'
             db.session.add(r)
         db.session.commit()
-        return render_template('releases.html', releases=sortedReleases(), form=form)
+        return render_template(self._my_template(), releases=sortedReleases(), form=form)
 
 
 class Release(MethodView):
@@ -166,3 +168,18 @@ class Release(MethodView):
         db.session.commit()
         log.debug('%s has been edited' % name)
         return redirect('releases.html')
+
+
+class ReleasesComplete(Releases):
+    def _my_template(self):
+        return 'releases_complete.html'
+
+
+class ReleasesSubmitted(Releases):
+    def _my_template(self):
+        return 'releases_submitted.html'
+
+
+class ReleasesReviewed(Releases):
+    def _my_template(self):
+        return 'releases_reviewed.html'
