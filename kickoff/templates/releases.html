@@ -9,24 +9,39 @@
 </ul>
 </div> <!-- id=errors -->
 {% endif %}
-  <div id='accordion'>
-  <h3><a href="#Submitted">Submitted</a></h3>
-  <div id='notready'>
-   {% include 'includes/releases_submitted.html' %}
-  </div><!-- notready -->
-  <h3><a href="#ReviewedComplete">Reviewed/Complete</a></h3>
-  <div id='tabs'>
-    <ul>
-      <li><a href="#reviewed-tab">Reviewed</a></li>
-      <li><a href="#complete-tab">Complete</a></li>
-    </ul>
-    <div id="reviewed-tab">
-     {% include 'includes/releases_reviewed.html' %}
-    </div> <!-- reviewed-tab -->
-    <div id="complete-tab">
-     {% include 'includes/releases_complete.html' %}
-    </div> <!-- complete-tab -->
-  </div> <!-- tabs -->
+  <div class="panel-group" id='accordion'>
+   <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#Submitted">Submitted</a>
+      </h4>
+    </div>
+    <div id="Submitted" class="panel-collapse collapse in">
+     <div class="panel-body">
+      <div id='notready'>
+       {% include 'includes/releases_submitted.html' %}
+      </div><!-- notready -->
+     </div><!-- panel-body -->
+    </div><!-- collapse in -->
+   </div><!-- panel default -->
+
+   <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#ReviewedComplete">Reviewed/Complete</a>
+      </h4>
+    </div>
+    <div id="Submitted" class="panel-collapse collapse in">
+     <div class="panel-body">
+      <div id="reviewed-tab">
+      {% include 'includes/releases_reviewed.html' %}
+     </div> <!-- reviewed-tab -->
+      <div id="complete-tab">
+      {% include 'includes/releases_complete.html' %}
+      </div> <!-- complete-tab -->
+     </div><!-- panel-body -->
+    </div><!-- collapse in -->
+   </div><!-- panel default -->
   </div><!-- accordion -->
 <script>
     $(document).ready(function(){ viewReleases(); });
