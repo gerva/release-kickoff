@@ -19,11 +19,29 @@
       {{ element(class='form-control', placeholder=placeholder, title=title)|safe }}
     {%- endif %}
     </div>
-<!--    <div class="col-sm-1">
-       <p class="text-muted">{{ help }}</p>
+    {{ help_text(help) }}
+</div> <!-- form-group {{ element.id }} -->
+{%- endmacro %}
+
+{%- macro input_checkbox(element, disable, help="", title="") %}
+<div class="form-group">
+    {{ element.label(class="col-sm-2 control-label")|safe }}
+    <div class="col-sm-{{ input_size }}">
+    {%- if disabled %}
+      {{ element(placeholder=placeholder, disable='disabled', title=title)|safe }}
+    {%- else %}
+      {{ element(placeholder=placeholder, title=title)|safe }}
+    {%- endif %}
+    </div>
+    {{ help_text(help) }}
+</div> <!-- form-group {{ element.id }} -->
+{% endmacro %}
+
+{%- macro help_text(text) %}
+<!-- <div class="col-sm-1">
+       <p class="text-muted">{{ text }}</p>
      </div>
 -->
-</div> <!-- form-group {{ element.id }} -->
 {%- endmacro %}
 
 {%- macro gimme_button(product) -%}
