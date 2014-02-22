@@ -9,7 +9,7 @@
 </form>
 {%- endmacro %}
 
-{% macro input(element, placeholder, disable, help, title="") -%}
+{%- macro input(element, placeholder, disable, help, title="") -%}
 <div class="form-group">
     {{ element.label(class="col-sm-2 control-label")|safe }}
     <div class="col-sm-{{ input_size }}">
@@ -23,7 +23,7 @@
        <p class="text-muted">{{ help }}</p>
      </div>
 -->
-</div>
+</div> <!-- form-group {{ element.id }} -->
 {%- endmacro %}
 
 {%- macro gimme_button(product) -%}
@@ -31,7 +31,10 @@
   <div class="col-sm-offset-{{ label_size }} col-sm-{{ input_size }}">
     <button type="submit" class="btn btn-default">Gimme a {{ product|capitalize}}</button>
    </div>
-<div>
+</div> <!-- form-group gimme_button({{ product }}) -->
 {%- endmacro %}
 
+{%- macro advanced_options() %}
+<div class="col-sm-offset-{{ label_size }}"><h4>Advanced options:</h4></div>
+{%- endmacro %}
 
