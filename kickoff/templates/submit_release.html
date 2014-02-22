@@ -22,7 +22,7 @@
   </ul>
   {% for prod in ('fennec', 'firefox', 'thunderbird') %}
   <div id={{prod}} >
-    <form class='submit_release_form' action='{{ url_for('submit_release') }}' method='post'>
+    <form class='class='submit_release_form' action='{{ url_for('submit_release') }}' method='post' role='form'>
     {% set product_template = 'includes/' + prod + '_release.html' %}
     {% include product_template %}
     <div>
