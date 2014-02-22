@@ -1,0 +1,24 @@
+{% macro input(element, placeholder, disable, help, title="") -%}
+<div class="form-group">
+    {{ element.label(class="col-sm-2 control-label")|safe }}
+    <div class="col-sm-6">
+    {%- if disabled %}
+      {{ element(class='form-control', placeholder=placeholder, disable='disabled', title=title)|safe }}
+    {%- else %}
+      {{ element(class='form-control', placeholder=placeholder, title=title)|safe }}
+    {%- endif %}
+    </div>
+<!--    <div class="col-sm-1">
+       <p class="text-muted">{{ help }}</p>
+     </div>
+-->
+</div>
+{%- endmacro %}
+
+{%- macro gimme_button(product) -%}
+<div class="form-group">
+  <div class="col-sm-offset-2 col-sm-6">
+    <button type="submit" class="btn btn-default">Gimme a {{ product|capitalize}}</button>
+   </div>
+<div>
+{%- endmacro %}
