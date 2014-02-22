@@ -16,56 +16,71 @@ $(document).ready(function() {
     );
 })
 </script>
-{% macro input(element, placeholder, help) -%}
-<div class="submit_release form-group">
-    {{ element.label(class="col-sm2 control-label")|safe }}
-    {{ element(placeholder=placeholder, class="form-control")|safe }}
-    <p class="text-muted">{{ help }}</p>
+{% macro input(element, placeholder, disable, help) -%}
+<div class="form-group">
+    {{ element.label(class="col-sm-2 control-label")|safe }}
+    <div class="col-sm-6">
+    {%- if disabled %}
+      {{ element(class='form-control', placeholder=placeholder, disable='disabled')|safe }}
+    {%- else %}
+      {{ element(class='form-control', placeholder=placeholder)|safe }}
+    {%- endif %}
+    </div>
+<!--    <div class="col-sm-1">
+       <p class="text-muted">{{ help }}</p>
+     </div>
+-->
 </div>
 {%- endmacro %}
 
+ <form class='form-horizontal submit_release_form' action='{{ url_for('submit_release') }}' method='post' role='form'>
 {{ fennecForm.hidden_tag() }}
 
 {{ input(element=fennecForm.version,
          placeholder="15.0b6",
+         disable=False,
          help="") }}
-
 {{ input(element=fennecForm.buildNumber,
          placeholder="1",
+         disable=False,
          help="Build number must be set to 1 for the first release with this version. If a previous build has already been attempted and it has tagged the source repositories, build 2 or higher should be used. Generally, the autofilled value for this is correct.") }}
-
 {{ input(element=fennecForm.branch,
          placeholder='releases/mozilla-beta',
          help="The branch to build the release from, relative to the root of the VCS.") }}
-</div>
-<div class="submit_release form-group">
-    {{ fennecForm.mozillaRevision.label(class="col-sm2 control-label")|safe }}
-    {% if fennecForm.mozillaRelbranch.data %}
-        {{ fennecForm.mozillaRevision(disabled='disabled')|safe }}
-    {% else %}
-        {{ fennecForm.mozillaRevision(class="form-control", placeholder='abcdef123456')|safe }}
-    {% endif %}
-    <p class="text-muted">If a relbranch is specified this field is disabled and ignored. The tip of the relbranch will be used instead.</p>
-</div>
-<div class="submit_release form-group">
-    {{ fennecForm.l10nChangesets.label(class="col-sm2 control-label")|safe }}
-    {{ fennecForm.l10nChangesets(class="form-control", placeholder='{"ca": {"revision": "abcdef123456", "platforms": ["android"]}')|safe }}
-    <p class="text-muted">The l10n changesets for this release, in JSON format. Betas and release-channel releases these are normally copied from the <a href="https://l10n.mozilla.org/shipping/milestones">L10n Dashboard</a>. ESR releases re-use the same changesets as the previous release on the same branch. For more information consult <a href="https://wiki.mozilla.org/Release:Release_Automation_on_Mercurial:Starting_a_Release#L10N_Changesets">the milestone creation documentation</a></p>
-</div>
-<div class="submit_release form-group">
-    {{ fennecForm.dashboardCheck.label(class="col-sm2 control-label")|safe }}
-    {{ fennecForm.dashboardCheck(class="form-control")|safe }}
-    <p class="text-muted">Whether or not to ensure that the changesets given match the ones on the <a href="https://l10n.mozilla.org/shipping/milestones">L10n Dashboard</a>. This is normally turned on for betas and turned off for all other releases.</p>
-</div>
+
+{%- set disable_mozillaRevision = False %}
+{%- if fennecForm.mozillaRelbranch.data %}
+{%- set disable_mozillaRevision = True %}
+{%- endif %}
+{{ input(element=fennecForm.mozillaRevision,
+    placeholder='abcdef123456',
+    disable=disable_mozillaRevision,
+    help='If a relbranch is specified this field is disabled and ignored. The tip of the relbranch will be used instead.') }}
+
+
+{{ input(element=fennecForm.l10nChangesets,
+         placeholder='{"ca": {"revision": "abcdef123456", "platforms": ["android"]}',
+         disable=False,
+         help='The l10n changesets for this release, in JSON format. Betas and release-channel releases these are normally copied from the <a href="https://l10n.mozilla.org/shipping/milestones">L10n Dashboard</a>. ESR releases re-use the same changesets as the previous release on the same branch. For more information consult <a href="https://wiki.mozilla.org/Release:Release_Automation_on_Mercurial:Starting_a_Release#L10N_Changesets">the milestone creation documentation</a>') }}
+
+{{ input(element=fennecForm.dashboardCheck,
+         placeholder="",
+         disable=False,
+         help='Whether or not to ensure that the changesets given match the ones on the <a href="https://l10n.mozilla.org/shipping/milestones">L10n Dashboard</a>. This is normally turned on for betas and turned off for all other releases.') }}
+
 <h4>Advanced Options:</h4>
-<div class="advanced">
-<div class="submit_release form-group">
-    {{ fennecForm.mozillaRelbranch.label(class="col-sm2 control-label")|safe }}
-    {% if fennecForm.mozillaRevision.data %}
-        {{ fennecForm.mozillaRelbranch(disabled='disabled')|safe }}
-    {% else %}
-        {{ fennecForm.mozillaRelbranch()|safe }}
-    {% endif %}
-    <p class="text-muted">The relbranch to put version bumps/tags for this release on. If not specified, one will be generated automatically during tagging. When provided the release will be created from tip of this branch thus it cannot be used in conjunction with revision.</p>
-</div>
+{%- set disable_mozillaRelbranch = False %}
+{%- if fennecForm.mozillaRevision.data %}
+{%- set disable_mozillaRelbranch = True %}
+{%- endif %}
+{{ input(element=fennecForm.mozillaRelbranch,
+         placeholder='',
+         disable=disable_mozillaRelbranch,
+         help="The relbranch to put version bumps/tags for this release on. If not specified, one will be generated automatically during tagging. When provided the release will be created from tip of this branch thus it cannot be used in conjunction with revision." )}}
 </div><!-- advanced -->
+<div class="form-group">
+  <div class="col-sm-offset-2 col-sm-6">
+    <button type="submit" class="btn btn-default">Gimme a Fennec</button>
+   </div>
+<div>
+</form>
