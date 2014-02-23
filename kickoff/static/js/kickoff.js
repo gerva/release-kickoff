@@ -3,7 +3,6 @@ function viewReleases(){
   // initial sorting by SubmittedAt (descending)
   // and then saving user table state using localStorage
   $( "#reviewed" ).dataTable({
-    "bJQueryUI": true,
     "aaSorting": [[ 3, "desc" ]],
     "bStateSave": true,
     "fnStateSave": function (oSettings, oData) {
@@ -14,7 +13,6 @@ function viewReleases(){
     }
   });
   $( "#complete" ).dataTable({
-    "bJQueryUI": true,
     "aaSorting": [[ 2, "desc" ]],
     "bStateSave": true,
     "fnStateSave": function (oSettings, oData) {
