@@ -16,10 +16,8 @@ $(document).ready(function() {
     );
 })
 </script>
-{%- from 'includes/macro.html' import input, input_checkbox, gimme_button %}
-{%- from 'includes/macro.html' import new_release_form_open, new_release_form_close %}
+{%- from 'includes/macro.html' import input, input_checkbox %}
 {%- from 'includes/macro.html' import advanced_options %}
-{{ new_release_form_open() }}
 {{ fennecForm.hidden_tag() }}
 
 {{ input(element=fennecForm.version,
@@ -62,5 +60,3 @@ $(document).ready(function() {
          placeholder='',
          disable=disable_mozillaRelbranch,
          help="The relbranch to put version bumps/tags for this release on. If not specified, one will be generated automatically during tagging. When provided the release will be created from tip of this branch thus it cannot be used in conjunction with revision." )}}
-{{ gimme_button('fennec') }}
-{{ new_release_form_close() }}

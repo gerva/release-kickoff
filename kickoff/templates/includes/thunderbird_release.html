@@ -22,10 +22,8 @@ $(document).ready(function() {
     );
 })
 </script>
-{%- from 'includes/macro.html' import input, input_checkbox, gimme_button %}
-{%- from 'includes/macro.html' import new_release_form_open, new_release_form_close %}
+{%- from 'includes/macro.html' import input, input_checkbox %}
 {%- from 'includes/macro.html' import advanced_options %}
-{{ new_release_form_open() }}
 {{ thunderbirdForm.hidden_tag() }}
 {{ input(element=thunderbirdForm.version,
          placeholder='15.0b6',
@@ -90,5 +88,3 @@ $(document).ready(function() {
          placeholder='',
          disable=False,
          help='Amount of time to wait before prompting users to apply the update to this release. Not specifying this will use the default value as specified in the application.', ) }}
-{{ gimme_button('thubderbird') }}
-{{ new_release_form_close() }}

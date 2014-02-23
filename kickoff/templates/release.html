@@ -9,7 +9,7 @@
 </ul>
 </div> <!-- id=errors -->
 {% endif %}
-<div id='edit_container'>
+<div id='edit_container' class="container">
 <h3>{{ release }}</h3>
 <form class='submit_release_form' action='{{ url_for('release', name=release) }}' method='post'>
 {% if form.product.data == 'fennec' %}
@@ -23,8 +23,9 @@
     {% include 'includes/thunderbird_release.html' %}
 {% endif %}
 <div>
-    <input type='submit' value='Update' />
+    <input type='submit' value='Update' class="btn"/>
 </div>
 </form>
 </div>
+<div>&nbsp;</div>
 {% endblock %}

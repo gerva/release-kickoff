@@ -1,8 +1,8 @@
 {% set label_size = 2 %}
-{% set input_size = 8 %}
+{% set input_size = 9 %}
 
 {%- macro new_release_form_open() %}
-<form class='form-horizontal submit_release_form' action='{{ url_for('submit_release') }}' method='post' role='form'>
+<form class='submit_release_form' action='{{ url_for('submit_release') }}' method='post' role='form'>
 {%- endmacro %}
 
 {%- macro new_release_form_close() %}
@@ -11,41 +11,37 @@
 
 {%- macro input(element, placeholder, disable, help, title="") -%}
 <div class="form-group">
-    {{ element.label(class="col-sm-2 control-label")|safe }}
-    <div class="col-sm-{{ input_size }}">
+    {{ element.label()|safe }}
     {%- if disabled %}
-      {{ element(class='form-control', placeholder=placeholder, disable='disabled', title=title)|safe }}
+    {{ element(class="form-control", placeholder=placeholder, disable='disabled', title=title)|safe }}
     {%- else %}
-      {{ element(class='form-control', placeholder=placeholder, title=title)|safe }}
+    {{ element(class="form-control", placeholder=placeholder, title=title)|safe }}
     {%- endif %}
-    </div>
     {{ help_text(help) }}
 </div> <!-- form-group {{ element.id }} -->
 {%- endmacro %}
 
 {%- macro input_checkbox(element, disable, help="", title="") %}
 <div class="form-group">
-    {{ element.label(class="col-sm-2 control-label")|safe }}
-    <div class="col-sm-{{ input_size }}">
+    {{ element.label()|safe }}
     {%- if disabled %}
-      {{ element(placeholder=placeholder, disable='disabled', title=title)|safe }}
+    {{ element(placeholder=placeholder, disable='disabled', title=title)|safe }}
     {%- else %}
-      {{ element(placeholder=placeholder, title=title)|safe }}
+    {{ element(placeholder=placeholder, title=title)|safe }}
     {%- endif %}
-    </div>
     {{ help_text(help) }}
 </div> <!-- form-group {{ element.id }} -->
 {% endmacro %}
 
 {%- macro help_text(text) %}
-<!-- <div class="col-sm-1">
-       <p class="text-muted">{{ text }}</p>
-     </div>
+<!--
+<span class="help-box">?</span>
+<button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Tooltip on top">?</button>
 -->
 {%- endmacro %}
 
 {%- macro add_button(action, release, btn_style) %}
-     <label class="btn {{ btn_style }}" >
+     <label class="btn {{ btn_style }}">
       <input id="{{ action }}Releases_{{ release.name }}" type="checkbox" name="{{ action }}Releases" value="{{ release.name }}" onclick='submittedReleaseButtons(this.id)'>
        {{ action|capitalize }}
      </label>
@@ -62,7 +58,7 @@
 
 {%- set name_size = 3 %}
 {%- macro advanced_options() %}
-<div class="col-sm-offset-{{ label_size }}"><h4>Advanced options:</h4></div>
+<h4>Advanced options:</h4>
 {%- endmacro %}
 {%- macro _option_value(name, value) %}
 {%- if name == 'l10n' %}
@@ -110,7 +106,7 @@
     {%- endif %}
     {%- endif %}
     {{ _option_value('l10n', release.name ) }}
-    <div class="btn-group col-sm-10">
+    <div class="btn-group" data-toggle="buttons">
     {{ add_button('ready', release, 'btn-success') }}
     {{ add_button('delete', release, 'btn-danger') }}
     </div><!-- btn-group -->

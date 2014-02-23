@@ -8,17 +8,20 @@
     {% endfor %}
 </ul>
 </div> <!-- id=errors -->
+{%- from 'includes/macro.html' import new_release_form_open, new_release_form_close %}
+{%- from 'includes/macro.html' import gimme_buttoni, cane %}
 {% endif %}
-<ul class="nav nav-pills">
-  {%- for prod in ('fennec', 'firefox', 'thunderbird') %}
-  {%- if loop.first %}
-  <li class="active"><a href="#{{ prod }}" data-toggle="tab">{{ prod|capitalize }}</a></li>
-  {%- else %}
-  <li><a href="#{{ prod }}" data-toggle="tab">{{ prod|capitalize }}</a></li>
-  {%- endif %}
-  {%- endfor %}
+<ul class="nav nav-tabs">
+ {%- for prod in ('fennec', 'firefox', 'thunderbird') %}
+ {%- if loop.first %}
+ <li class="active"><a href="#{{ prod }}" data-toggle="tab">{{ prod|capitalize }}</a></li>
+ {%- else %}
+ <li><a href="#{{ prod }}" data-toggle="tab">{{ prod|capitalize }}</a></li>
+ {%- endif %}
+ {%- endfor %}
 </ul>
-<div class="tab-content">
+
+<div class="tab-content container">
 {%- for prod in ('fennec', 'firefox', 'thunderbird') %}
 {%- set product_template = 'includes/' + prod + '_release.html' %}
   {%- if loop.first %}
@@ -26,7 +29,13 @@
   {%- else %}
   <div class="tab-pane" id="{{ prod }}">
   {%- endif %}
+  <div>&nbsp;</div>
+  <form class='submit_release_form' action='{{ url_for('submit_release') }}' method='post' role='form'>
   {% include product_template %}
+{#  
+  {{ gimme_button( prod ) }}
+#}
+  </form>
   </div> <!-- tab-pane {{ prod }} -->
 {%- endfor %}
 </div> <!-- tab-content -->
