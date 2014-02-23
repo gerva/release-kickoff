@@ -44,6 +44,13 @@
 -->
 {%- endmacro %}
 
+{%- macro add_button(action, release, btn_style) %}
+     <label class="btn {{ btn_style }}" >
+      <input id="{{ action }}Releases_{{ release.name }}" type="checkbox" name="{{ action }}Releases" value="{{ release.name }}" onclick='submittedReleaseButtons(this.id)'>
+       {{ action|capitalize }}
+     </label>
+{%- endmacro %}
+
 {%- macro gimme_button(product) -%}
 <div class="form-group">
   <div class="col-sm-offset-{{ label_size }} col-sm-{{ input_size }}">
@@ -57,7 +64,6 @@
 {%- macro advanced_options() %}
 <div class="col-sm-offset-{{ label_size }}"><h4>Advanced options:</h4></div>
 {%- endmacro %}
-
 {%- macro _option_value(name, value) %}
 {%- if name == 'l10n' %}
     <div class='col-sm-{{ name_size }}'><a href="/releases/{{ value }}/l10n">L10n Changeset</a></div>
@@ -66,17 +72,14 @@
     <div class='col-sm-offset-{{ name_size }}'>{{ value }}</div>
 {%- endif %}
 {%- endmacro %}
-
 {%- macro _status_error(status) %}
     <div class='col-sm-{{ name_size }}'><strong>Status: </strong></div>
     <div class='col-sm-offset-{{ name_size }} text-danger'><strong>{{ status }}</strong></div>
 {%- endmacro %}
-
 {%- macro _submittedAt(submittedAt) %}
     <div class='col-sm-{{ name_size }}'><strong>Submitted At:</strong></div>
     <div class='col-sm-offset-{{ name_size }} submittedAt'><strong>{{ submittedAt }}</strong></div>
 {% endmacro %}
-
 {%- macro _l10n(name) %}
     <div class='col-sm-12'><a href="/releases/{{ value }}/l10n">L10n Changeset</a><div>
 {% endmacro %}
@@ -107,10 +110,10 @@
     {%- endif %}
     {%- endif %}
     {{ _option_value('l10n', release.name ) }}
-    <div class="form-group col-sm-12">
-    <button type="button" class="btn btn-success">Ready</button>
-    <button type="button" class="btn btn-danger">Delete</button>
-    </div><!-- form-group -->
+    <div class="btn-group col-sm-10">
+    {{ add_button('ready', release, 'btn-success') }}
+    {{ add_button('delete', release, 'btn-danger') }}
+    </div><!-- btn-group -->
 {%- endmacro %}
 
 {%- macro ready_delte_buttons(release) %}
