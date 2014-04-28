@@ -43,7 +43,7 @@ $(document).ready(function() {
 
 
 {{ input(element=fennecForm.l10nChangesets,
-         placeholder='{"ca": {"revision": "abcdef123456", "platforms": ["android"]}',
+         placeholder='{"ca": {"revision": "abcdef123456", "platforms": ["android"]}}',
          disable=False,
          help='The l10n changesets for this release, in JSON format. Betas and release-channel releases these are normally copied from the <a href="https://l10n.mozilla.org/shipping/milestones">L10n Dashboard</a>. ESR releases re-use the same changesets as the previous release on the same branch. For more information consult <a href="https://wiki.mozilla.org/Release:Release_Automation_on_Mercurial:Starting_a_Release#L10N_Changesets">the milestone creation documentation</a>') }}
 
@@ -62,5 +62,5 @@ $(document).ready(function() {
          help="The relbranch to put version bumps/tags for this release on. If not specified, one will be generated automatically during tagging. When provided the release will be created from tip of this branch thus it cannot be used in conjunction with revision." )}}
 
 <script>
-$('.form-control').tooltip();
+$('.form-control').popover();
 </script>

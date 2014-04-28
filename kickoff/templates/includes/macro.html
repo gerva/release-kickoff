@@ -9,19 +9,20 @@
 </form>
 {%- endmacro %}
 
-{%- macro input(element, placeholder, disable, help, title="", placement="bottom") -%}
+{%- macro input(element, placeholder, disable, help, title="", placement="right") -%}
 <div class="form-group">
     {{ element.label()|safe }}
     {%- if disabled %}
     {{ element(class="form-control", placeholder=placeholder, disable='disabled',)|safe }}
     {%- else %}
-    {{ element(class="form-control",
-               placeholder=placeholder,
-               title=help.encode(),
-               **{'data-toggle': 'tooltip',
-                  'data-placement': placement}, )|safe }}
+    {{ element(class="form-control", placeholder=placeholder, )|safe }}
     {%- endif %}
+    {{ help_text(help=help) }}
 </div> <!-- form-group {{ element.id }} -->
+{%- endmacro %}
+
+{%- macro help_text(help) -%}
+<div class="hidden">{{ help }}</div>
 {%- endmacro %}
 
 {%- macro input_checkbox(element, disable, help="", title="") %}
