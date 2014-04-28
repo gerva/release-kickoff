@@ -48,7 +48,7 @@ function submittedReleaseButtons(buttonId) {
     }
     if ( $( btnId ).is(':checked') ) {
         $( other_btnId ).attr('checked', false);
-        $( other_btnId ).attr('disabled', true);
+        $( other_btnId ).attr('disabled', 'disabled');
     }
     else {
         $( other_btnId ).attr('disabled', false);

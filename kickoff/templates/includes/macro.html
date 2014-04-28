@@ -9,15 +9,18 @@
 </form>
 {%- endmacro %}
 
-{%- macro input(element, placeholder, disable, help, title="") -%}
+{%- macro input(element, placeholder, disable, help, title="", placement="bottom") -%}
 <div class="form-group">
     {{ element.label()|safe }}
     {%- if disabled %}
-    {{ element(class="form-control", placeholder=placeholder, disable='disabled', title=title)|safe }}
+    {{ element(class="form-control", placeholder=placeholder, disable='disabled',)|safe }}
     {%- else %}
-    {{ element(class="form-control", placeholder=placeholder, title=title)|safe }}
+    {{ element(class="form-control",
+               placeholder=placeholder,
+               title=help.encode(),
+               **{'data-toggle': 'tooltip',
+                  'data-placement': placement}, )|safe }}
     {%- endif %}
-    {{ help_text(help) }}
 </div> <!-- form-group {{ element.id }} -->
 {%- endmacro %}
 
@@ -29,16 +32,8 @@
     {%- else %}
     {{ element(placeholder=placeholder, title=title)|safe }}
     {%- endif %}
-    {{ help_text(help) }}
 </div> <!-- form-group {{ element.id }} -->
 {% endmacro %}
-
-{%- macro help_text(text) %}
-<!--
-<span class="help-box">?</span>
-<button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Tooltip on top">?</button>
--->
-{%- endmacro %}
 
 {%- macro add_button(action, release, btn_style) %}
      <label class="btn {{ btn_style }}">

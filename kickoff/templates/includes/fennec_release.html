@@ -23,7 +23,7 @@ $(document).ready(function() {
 {{ input(element=fennecForm.version,
          placeholder="15.0b6",
          disable=False,
-         help="") }}
+         help="Fennec (Android) beta releases are only generated for beta 1, 2, 4, 6, 8 and 10. However, in some cases, release manager might want to build an extra Fennec release (ex: critical bug fixes).") }}
 {{ input(element=fennecForm.buildNumber,
          placeholder="1",
          disable=False,
@@ -60,3 +60,7 @@ $(document).ready(function() {
          placeholder='',
          disable=disable_mozillaRelbranch,
          help="The relbranch to put version bumps/tags for this release on. If not specified, one will be generated automatically during tagging. When provided the release will be created from tip of this branch thus it cannot be used in conjunction with revision." )}}
+
+<script>
+$('.form-control').tooltip();
+</script>
