@@ -14,12 +14,9 @@ function setupVersionSuggestions(versionElement, versions, buildNumberElement, b
     versionElement.autocomplete({
         source: versions,
         minLength: 0,
-        delay: 0,
         // Put the autocomplete drop down to the right of the field, unless
         // that would cause horizontal scrolling.
         position: {
-            my: 'left',
-            at: 'right',
             of: versionElement,
             collision: 'flipfit',
         },
@@ -40,10 +37,7 @@ function setupBranchSuggestions(branchElement, branches, partialsElement, partia
     branchElement.autocomplete({
         source: branches,
         minLength: 0,
-        delay: 0,
         position: {
-            my: 'left',
-            at: 'right',
             of: branchElement,
             collision: 'flipfit',
         },
@@ -69,10 +63,7 @@ function setupBranchSuggestions(branchElement, branches, partialsElement, partia
                     ));
                 },
                 minLength: 0,
-                delay: 0,
                 position: {
-                    my: 'left',
-                    at: 'right',
                     of: partialsElement,
                     collision: 'flipfit',
                 },
