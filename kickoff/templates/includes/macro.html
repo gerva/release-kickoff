@@ -2,7 +2,7 @@
 {% set input_size = 9 %}
 
 {%- macro new_release_form_open() %}
-<form class='submit_release_form' action='{{ url_for('submit_release') }}' method='post' role='form'>
+<form class='submit_release_form' action='{{ url_for('releasessubmitted') }}' method='post' role='form'>
 {%- endmacro %}
 
 {%- macro new_release_form_close() %}
@@ -37,10 +37,12 @@
 {% endmacro %}
 
 {%- macro add_button(action, release, btn_style) %}
-     <label class="btn {{ btn_style }}">
+    <div id="{{ release.name }}-{{ actions }}" class="{{ actions }}-button">
+     <label class="btn btn-default">
       <input id="{{ action }}Releases_{{ release.name }}" type="checkbox" name="{{ action }}Releases" value="{{ release.name }}" onclick='submittedReleaseButtons(this.id)'>
-       {{ action|capitalize }}
+       <span>{{ action|capitalize }}</span>
      </label>
+    </div>
 {%- endmacro %}
 
 {%- macro gimme_button(product) -%}

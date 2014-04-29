@@ -10,6 +10,7 @@
 </div> <!-- id=errors -->
 {%- endif %}
 {%- from 'includes/macro.html' import submit_release %}
+<div class="container">
 <form id='release_readyness' action='{{ url_for('releases') }}' method='post'>
 {{ form.hidden_tag() }}
 {% for rel in releases if not rel.ready %}
@@ -30,4 +31,5 @@
 {%- else %}
 <h1>Hurray no releases waiting!</h1>
 {%- endfor %}
+</div> <!-- container -->
 {%- endblock %}
