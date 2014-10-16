@@ -1,26 +1,3 @@
-<script type='text/javascript'>
-$(document).ready(function() {
-    setupVersionSuggestions(
-        $('#{{ firefoxForm.version.id }}'),
-        {{ firefoxForm.version.suggestions|safe }},
-        $('#{{ firefoxForm.buildNumber.id }}'),
-        {{ firefoxForm.buildNumber.suggestions|safe }},
-        $('#{{ firefoxForm.branch.id }}'),
-        $('#{{ firefoxForm.dashboardCheck.id }}')
-    );
-    setupBranchSuggestions(
-        $('#{{ firefoxForm.branch.id }}'),
-        {{ firefoxForm.branch.suggestions|safe }},
-        $('#{{ firefoxForm.partials.id }}'),
-        {{ firefoxForm.partials.suggestions|safe }}
-    );
-    setupRevisionDisabling(
-        $('#{{ firefoxForm.mozillaRelbranch.id }}'),
-        $('#{{ firefoxForm.mozillaRevision.id }}')
-    );
-})
-
-</script>
 {{ firefoxForm.hidden_tag() }}
 <div class="submit_release">
     {{ firefoxForm.version.label()|safe }}
@@ -79,3 +56,29 @@ $(document).ready(function() {
 </div>
 </div> <!-- advanced -->
 
+<script type='text/javascript'>
+$(document).ready(function() {
+    setupVersionSuggestions(
+        $('#{{ firefoxForm.version.id }}'),
+        {{ firefoxForm.version.suggestions|safe }},
+        $('#{{ firefoxForm.buildNumber.id }}'),
+        {{ firefoxForm.buildNumber.suggestions|safe }},
+        $('#{{ firefoxForm.branch.id }}'),
+        $('#{{ firefoxForm.dashboardCheck.id }}')
+    );
+    setupBranchSuggestions(
+        $('#{{ firefoxForm.branch.id }}'),
+        {{ firefoxForm.branch.suggestions|safe }},
+        $('#{{ firefoxForm.partials.id }}'),
+        {{ firefoxForm.partials.suggestions|safe }}
+    );
+    setupRevisionDisabling(
+        $('#{{ firefoxForm.mozillaRelbranch.id }}'),
+        $('#{{ firefoxForm.mozillaRevision.id }}')
+    );
+
+    // check branch/revision
+    $('#firefox-mozillaRevision').blur(function(){checkRevision('firefox')});
+    $('#firefox-branch').blur(function(){checkBranch('firefox')});
+})
+</script>
