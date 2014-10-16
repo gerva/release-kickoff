@@ -359,3 +359,9 @@ h4 {
 table.dataTable tr.odd td.sorting_1 { background-color: transparent; }
 table.dataTable tr.even td.sorting_1 { background-color: transparent; }
 
+/* red bold text for validation error */
+.bold-red {
+   color: red;
+   font-weight: bold;
+}
+
