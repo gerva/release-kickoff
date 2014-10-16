@@ -81,3 +81,69 @@ function submittedReleaseButtons(buttonId) {
         $( other_btnId ).attr('disabled', false);
     }
 }
+
+function disableSubmitButton(product, reason) {
+    // disables submit button
+    // and makes the branch/revision red bold
+    "use strict"
+    $( '#submit_' + product ).prop('disabled', true);
+    $( '#' + product + reason ).addClass('bold-red');
+}
+
+function enableSubmitButton(product) {
+    // enables submit button
+    // and resets the input to the standard color
+    "use strict"
+    $( '#' + product + '-branch' ).removeClass('bold-red');
+    $( '#' + product + '-mozillaRevision' ).removeClass('bold-red');
+    $( '#submit_' + product ).prop('disabled', false);
+
+}
+
+function checkBranch(product) {
+    // checks if the branch exists on the hg server
+    "use strict"
+    var branch = $( '#' + product + '-branch' ).val();
+    if ( branch ) {
+        // we have a branch!
+        var url = 'https://hg.mozilla.org/' + branch;
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: function() {
+                // branch is ok, let's check the revision
+                checkRevision(product);
+            },
+            error: function() {
+                // boo bad branch
+                disableSubmitButton(product, '-branch');
+            },
+
+        });
+    }
+}
+
+function checkRevision(product) {
+    // checks if  branch + revision exist on the hg server
+    "use strict"
+    var branch = $( '#' + product + '-branch' ).val();
+    var revision = $( '#' + product + '-mozillaRevision' ).val();
+    var valid = true;
+    if (( branch ) && ( revision )) {
+        // branch and revision are defined
+        var url = 'https://hg.mozilla.org/' + branch + '/rev/' + revision;
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: function() {
+                enableSubmitButton(product);
+            },
+            error: function() {
+                disableSubmitButton(product, '-mozillaRevision');
+            },
+        });
+    } else {
+        // branch/revision is not set, flask will take care of this use case
+        enableSubmitButton(product);
+    }
+}
