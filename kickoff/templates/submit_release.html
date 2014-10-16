@@ -26,7 +26,7 @@
     {% set product_template = 'includes/' + prod + '_release.html' %}
     {% include product_template %}
     <div>
-        <input type='submit' value="Gimme a {{ prod|capitalize }}"/>
+        <input id="submit_{{ prod }}" type='submit' value="Gimme a {{ prod|capitalize }}"/>
     </div>
     </form>
    </div>
