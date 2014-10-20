@@ -63,7 +63,18 @@ $(document).ready(function() {
         $('#{{ fennecForm.mozillaRelbranch.id }}'),
         $('#{{ fennecForm.mozillaRevision.id }}')
     );
-    $('#fennec-mozillaRevision').blur(function(){checkRevision('fennec')});
-    $('#fennec-branch').blur(function(){checkBranch('fennec')});
+    // check branch/revision
+    $('#fennec-mozillaRevision').keyup(function() {
+        delay( function() {
+            validateForm('fennec', 'revision'), 200});
+    });
+
+    $('#fennec-branch').keyup(function() {
+        delay( function() {
+            validateForm('fennec', 'branch'), 200 });
+    });
+    // hide the validation element
+    $('#fennec-validation').hide();
+    $('#submit_firefox').prop('disabled', true);
 })
 </script>

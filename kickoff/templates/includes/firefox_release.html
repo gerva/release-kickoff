@@ -1,4 +1,7 @@
 {{ firefoxForm.hidden_tag() }}
+<div id='firefox-validation'>
+    <i class="fa fa-cog fa-spin fa-3x"></i><p>validating...</p>
+</div>
 <div class="submit_release">
     {{ firefoxForm.version.label()|safe }}
     {{ firefoxForm.version(placeholder='28.0b6')|safe }}
@@ -78,7 +81,17 @@ $(document).ready(function() {
     );
 
     // check branch/revision
-    $('#firefox-mozillaRevision').blur(function(){checkRevision('firefox')});
-    $('#firefox-branch').blur(function(){checkBranch('firefox')});
+    $('#firefox-mozillaRevision').keyup(function() {
+        delay( function() {
+            validateForm('firefox', 'revision'), 200});
+    });
+
+    $('#firefox-branch').keyup(function() {
+        delay( function() {
+            validateForm('firefox', 'branch'), 200 });
+    });
+    // hide the validation element
+    $('#firefox-validation').hide();
+    $('#submit_firefox').prop('disabled', true);
 })
 </script>

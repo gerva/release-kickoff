@@ -87,7 +87,6 @@ function disableSubmitButton(product, reason) {
     // and makes the branch/revision red bold
     "use strict"
     $( '#submit_' + product ).prop('disabled', true);
-    $( '#' + product + reason ).addClass('bold-red');
 }
 
 function enableSubmitButton(product) {
@@ -110,17 +109,22 @@ function checkBranch(product) {
         $.ajax({
             url: url,
             type: "GET",
-            success: function() {
+            success: function(data) {
                 // branch is ok, let's check the revision
-                checkRevision(product);
+                $( '#' + product + '-branch' ).removeClass('bold-red');
+                return checkRevision(product);
             },
-            error: function() {
+            error: function(data) {
                 // boo bad branch
-                disableSubmitButton(product, '-branch');
+                // mark it red & bold
+                $( '#' + product + '-branch' ).addClass('bold-red');
+                return false
             },
 
         });
     }
+    // no branch, nothing to validate
+    return true;
 }
 
 function checkRevision(product) {
@@ -128,22 +132,63 @@ function checkRevision(product) {
     "use strict"
     var branch = $( '#' + product + '-branch' ).val();
     var revision = $( '#' + product + '-mozillaRevision' ).val();
-    var valid = true;
     if (( branch ) && ( revision )) {
         // branch and revision are defined
         var url = 'https://hg.mozilla.org/' + branch + '/rev/' + revision;
         $.ajax({
             url: url,
             type: "GET",
-            success: function() {
-                enableSubmitButton(product);
+            success: function(data) {
+                $( '#' + product + '-branch' ).removeClass('bold-red');
+                $( '#' + product + '-mozillaRevision' ).removeClass('bold-red');
+                return true;
             },
-            error: function() {
-                disableSubmitButton(product, '-mozillaRevision');
+            error: function(data) {
+                checkBranch(product);
+                $( '#' + product + '-mozillaRevision' ).addClass('bold-red');
+                return false;
             },
         });
     } else {
         // branch/revision is not set, flask will take care of this use case
-        enableSubmitButton(product);
+        return true;
     }
 }
+
+
+function validateForm(product, what) {
+    "use strict"
+    var validation = $( '#' + product + '-validation' )
+    // show the validation message...
+    validation.show("slow");
+    // no errors, for now
+    var valid = false;
+
+    switch ( what ) {
+        case 'branch':
+            valid = checkBranch(product);
+            break;
+        case 'revision':
+            valid = checkBranch(product);
+            break;
+    } // switch
+    if ( valid ) {
+        // no errors
+        enableSubmitButton(product);
+    } else {
+        // Huston we have a problem
+        // disable the submit button
+        disableSubmitButton(product);
+    }
+    // validation completed
+    validation.hide("slow");
+}
+
+var delay = ( function() {
+    "use strict";
+    var timer = 0;
+    return function(callback, ms) {
+        clearTimeout (timer);
+        timer = setTimeout(callback, ms);
+    };
+})();
