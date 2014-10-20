@@ -103,28 +103,29 @@ function checkBranch(product) {
     // checks if the branch exists on the hg server
     "use strict"
     var branch = $( '#' + product + '-branch' ).val();
+    var valid = true;
     if ( branch ) {
         // we have a branch!
         var url = 'https://hg.mozilla.org/' + branch;
         $.ajax({
             url: url,
             type: "GET",
+            async: false, // blocking call
             success: function(data) {
                 // branch is ok, let's check the revision
                 $( '#' + product + '-branch' ).removeClass('bold-red');
-                return checkRevision(product);
+                valid = checkRevision(product);
             },
             error: function(data) {
                 // boo bad branch
                 // mark it red & bold
                 $( '#' + product + '-branch' ).addClass('bold-red');
-                return false
+                valid = false;
             },
 
         });
     }
-    // no branch, nothing to validate
-    return true;
+    return valid;
 }
 
 function checkRevision(product) {
@@ -132,46 +133,45 @@ function checkRevision(product) {
     "use strict"
     var branch = $( '#' + product + '-branch' ).val();
     var revision = $( '#' + product + '-mozillaRevision' ).val();
+    var valid = true;
     if (( branch ) && ( revision )) {
         // branch and revision are defined
         var url = 'https://hg.mozilla.org/' + branch + '/rev/' + revision;
         $.ajax({
             url: url,
             type: "GET",
+            async: false, // blocking call
             success: function(data) {
                 $( '#' + product + '-branch' ).removeClass('bold-red');
                 $( '#' + product + '-mozillaRevision' ).removeClass('bold-red');
-                return true;
+                valid = true;
             },
             error: function(data) {
-                checkBranch(product);
+                // no 'revision' in hg...
                 $( '#' + product + '-mozillaRevision' ).addClass('bold-red');
-                return false;
+                valid = false;
             },
         });
-    } else {
-        // branch/revision is not set, flask will take care of this use case
-        return true;
     }
+    // we have a value or branch/revision is not set
+    // (flask will take care of this last case)
+    return valid;
 }
 
-
-function validateForm(product, what) {
+function validateForm(product, updated_input) {
     "use strict"
-    var validation = $( '#' + product + '-validation' )
-    // show the validation message...
-    validation.show("slow");
-    // no errors, for now
     var valid = false;
-
-    switch ( what ) {
+    switch ( updated_input ) {
         case 'branch':
             valid = checkBranch(product);
             break;
         case 'revision':
-            valid = checkBranch(product);
+            valid = checkRevision(product);
             break;
-    } // switch
+        case 'default':
+            // add other checks here
+            break;
+    }
     if ( valid ) {
         // no errors
         enableSubmitButton(product);
@@ -181,7 +181,7 @@ function validateForm(product, what) {
         disableSubmitButton(product);
     }
     // validation completed
-    validation.hide("slow");
+    return valid;
 }
 
 var delay = ( function() {
