@@ -64,20 +64,11 @@ $(document).ready(function() {
         $('#{{ fennecForm.mozillaRevision.id }}')
     );
 
-    var key_up_delay = 350; // ms
-    $('#fennec-validation').hide();
+    // disable the submit button
     $('#submit_fennec').prop('disabled', true);
-    // check branch/revision
-    $('#fennec-mozillaRevision').keyup(function() {
-        delay( function() {
-            validateForm('fennec', 'revision'), 350 });
-    });
 
-    $('#fennec-branch').keyup(function() {
-        delay( function() {
-            validateForm('fennec', 'branch'), 350 });
-    });
-    // hide the validation element
-    $('#submit_fennec').prop('disabled', true);
+    // check branch/revision
+    $('#fennec-mozillaRevision').keyup(function() { validateForm('fennec', 'revision') });
+    $('#fennec-branch').keyup(function() { validateForm('fennec', 'branch')});
 })
 </script>

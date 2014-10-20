@@ -77,16 +77,12 @@ $(document).ready(function() {
         $('#{{ firefoxForm.mozillaRevision.id }}')
     );
 
-    // check branch/revision
-    $('#firefox-mozillaRevision').keyup(function() {
-        delay( function() {
-            validateForm('firefox', 'revision'), 350 });
-    });
-
-    $('#firefox-branch').keyup(function() {
-        delay( function() {
-            validateForm('firefox', 'branch'), 350 });
-    });
+    // disable the submit button
     $('#submit_firefox').prop('disabled', true);
+
+    // check branch/revision
+    $('#firefox-branch').keyup(function() {validateForm('firefox', 'branch')});
+    $('#firefox-mozillaRevision').keyup(function() { validateForm('firefox', 'revision') });
+
 })
 </script>
