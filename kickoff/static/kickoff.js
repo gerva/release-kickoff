@@ -82,7 +82,7 @@ function submittedReleaseButtons(buttonId) {
     }
 }
 
-function disableSubmitButton(product, reason) {
+function disableSubmitButton(product) {
     // disables submit button
     // and makes the branch/revision red bold
     "use strict"
@@ -103,7 +103,6 @@ function checkBranch(product) {
     // checks if the branch exists on the hg server
     "use strict"
     var branch = $( '#' + product + '-branch' ).val();
-    var valid = true;
     if ( branch ) {
         // we have a branch!
         var url = 'https://hg.mozilla.org/' + branch;
@@ -112,20 +111,34 @@ function checkBranch(product) {
             type: "GET",
             async: false, // blocking call
             success: function(data) {
+                isValid(product, '-branch');
                 // branch is ok, let's check the revision
-                $( '#' + product + '-branch' ).removeClass('bold-red');
-                valid = checkRevision(product);
+                checkRevision(product);
+                // There's no need to call checkErrors(product) here,
+                // checkRevision() does it.
             },
             error: function(data) {
                 // boo bad branch
                 // mark it red & bold
-                $( '#' + product + '-branch' ).addClass('bold-red');
-                valid = false;
+                isNotValid(product, '-branch');
+                checkErrors(product)
             },
-
         });
     }
-    return valid;
+}
+
+
+function isValid(product, input) {
+    "use strict"
+    // removes special formatting from the input field
+    $( '#' + product + input ).removeClass('bold-red');
+}
+
+function isNotValid(product, input) {
+    "use strict"
+    // disables the submit button and makes the input filed, red and bold
+    $( '#' + product + input ).addClass('bold-red');
+    disableSubmitButton(product);
 }
 
 function checkRevision(product) {
@@ -133,62 +146,61 @@ function checkRevision(product) {
     "use strict"
     var branch = $( '#' + product + '-branch' ).val();
     var revision = $( '#' + product + '-mozillaRevision' ).val();
-    var valid = true;
     if (( branch ) && ( revision )) {
         // branch and revision are defined
         var url = 'https://hg.mozilla.org/' + branch + '/rev/' + revision;
         $.ajax({
             url: url,
             type: "GET",
-            async: false, // blocking call
             success: function(data) {
-                $( '#' + product + '-branch' ).removeClass('bold-red');
-                $( '#' + product + '-mozillaRevision' ).removeClass('bold-red');
-                valid = true;
+                isValid(product, '-branch');
+                isValid(product, '-mozillaRevision');
+                checkErrors(product);
             },
             error: function(data) {
                 // no 'revision' in hg...
-                $( '#' + product + '-mozillaRevision' ).addClass('bold-red');
-                valid = false;
+                isNotValid(product, '-mozillaRevision');
+                checkErrors(product);
             },
         });
+    } else {
+    // branch/revision is not set
+        if ( ! branch ) {
+            isValid(product, '-branch');
+        }
+        if ( ! revision ) {
+            isValid(product, '-mozillaRevision');
+        }
     }
-    // we have a value or branch/revision is not set
-    // (flask will take care of this last case)
-    return valid;
+}
+
+function checkErrors(product) {
+    // if we have a wrong input element on the page, disable the submit button
+    // if no errors, enable it
+    "use strict"
+    // select whatever has an id that starts with product and has
+    // a bold red class e.g: <div id="firefox-branch" class="bold-red">...</div>
+    var errors = $( '[id^=' + product + ']' ).find(".bold-red");
+    if ( errors.length != 0 ) {
+        // there are some errors on the page...
+        disableSubmitButton( product );
+    } else {
+        // the page looks good
+        enableSubmitButton( product );
+    }
 }
 
 function validateForm(product, updated_input) {
     "use strict"
-    var valid = false;
     switch ( updated_input ) {
         case 'branch':
-            valid = checkBranch(product);
+            checkBranch(product);
             break;
         case 'revision':
-            valid = checkRevision(product);
+            checkRevision(product);
             break;
         case 'default':
             // add other checks here
             break;
     }
-    if ( valid ) {
-        // no errors
-        enableSubmitButton(product);
-    } else {
-        // Huston we have a problem
-        // disable the submit button
-        disableSubmitButton(product);
-    }
-    // validation completed
-    return valid;
 }
-
-var delay = ( function() {
-    "use strict";
-    var timer = 0;
-    return function(callback, ms) {
-        clearTimeout (timer);
-        timer = setTimeout(callback, ms);
-    };
-})();
